@@ -1,0 +1,14 @@
+{
+  "name": "td-mcp-server",
+  "version": "1.0.0",
+  "description": "TouchDesigner MCP Server — bridges AI agents to TD via WebServer DAT",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.4"
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "api": {
+    "endpoint": "http://127.0.0.1:9980/execute",
+    "method": "POST",
+    "parameter": "script",
+    "contentType": "application/json",
+    "timeout": 5000,
+    "useBasicParsing": true
+  },
+  "defaults": {
+    "container": "/project1",
+    "spacing": {
+      "horizontal": 300,
+      "vertical": 150
+    },
+    "camera": {
+      "defaultPosition": [
+        0,
+        3,
+        5
+      ],
+      "defaultTarget": [
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "unicode_replacements": {
+    "description": "Replace these Unicode characters before sending to TouchDesigner",
+    "replacements": {
+      "0x2014": "-",
+      "0x2013": "-",
+      "0x201C": "\"",
+      "0x201D": "\"",
+      "0x2018": "'",
+      "0x2019": "'"
+    }
+  },
+  "operator_types": {
+    "TOP": [
+      "noiseTOP",
+      "glslTOP",
+      "moviefileinTOP",
+      "renderTOP",
+      "compositeTOP"
+    ],
+    "CHOP": [
+      "constantCHOP",
+      "mathCHOP",
+      "noiseCHOP",
+      "timerCHOP"
+    ],
+    "SOP": [
+      "boxSOP",
+      "sphereSOP",
+      "gridSOP",
+      "noiseSOP"
+    ],
+    "MAT": [
+      "phongMAT",
+      "pbrMAT",
+      "constantMAT"
+    ],
+    "COMP": [
+      "cameraCOMP",
+      "lightCOMP",
+      "geometryCOMP"
+    ],
+    "DAT": [
+      "textDAT",
+      "tableDat",
+      "scriptDAT",
+      "webserverDAT"
+    ]
+  },
+  "common_parameters": {
+    "position": [
+      "tx",
+      "ty",
+      "tz"
+    ],
+    "rotation": [
+      "rx",
+      "ry",
+      "rz"
+    ],
+    "scale": [
+      "sx",
+      "sy",
+      "sz"
+    ],
+    "camera": [
+      "lookat",
+      "lookatpath",
+      "fov"
+    ],
+    "glsl": [
+      "pixeldat",
+      "vertexdat",
+      "computedat"
+    ]
+  },
+  "workflows": {
+    "glsl_pipeline": {
+      "enabled": true,
+      "auto_create_text_dats": true,
+      "naming_convention": "{shader_name}_pixel"
+    },
+    "camera_setup": {
+      "enabled": true,
+      "auto_enable_lookat": true
+    }
+  }
+}
