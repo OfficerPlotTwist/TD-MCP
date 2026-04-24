@@ -1,0 +1,53 @@
+VIDEO PROCESSOR — Operation Overview
+=====================================
+
+PURPOSE
+  Batch-processes video files from a watched folder.
+  Applies monochrome + threshold filter to each video,
+  auto-tunes the threshold to hit a target proportion of
+  white pixels, drops statistical outlier frames, and
+  writes a reconstructed filtered video.
+
+PIPELINE STAGES
+  1. WATCHER  (every 5 s via timer)
+     Scans Input Folder for new .mp4 / .mov / .avi / .mkv.
+     Queues unseen files in table_queue.
+
+  2. OPTIMIZER  (per video)
+     Streams ~250 downscaled sample frames via ffmpeg.
+     Binary-searches the threshold value [0–1] until the
+     mean proportion of white pixels falls inside
+     [Target Min, Target Max].  Max 20 iterations.
+
+  3. ANALYZER  (per video)
+     Full pass through all frames at optimal threshold.
+     Records per-frame proportion in table_frame_data.
+     Computes mean ± (Stdev Multiplier × stdev).
+     Frames outside that band are marked keep=0 (dropped).
+
+  4. EXPORTER  (per video — background process)
+     Streams full-resolution frames via ffmpeg pipe.
+     Writes only kept frames (binary threshold applied)
+     to Output Folder as  <name>_filtered.mp4  (h264).
+     Returns immediately; TD stays responsive.
+     Completion written to  C:/tmp/vp_export_status.json.
+
+UI CONTROLS  (click this container to open)
+  Input Folder    — folder to watch for new videos
+  Output Folder   — destination for filtered outputs
+  Target Min/Max  — desired white-pixel proportion range
+  Stdev Mult      — outlier rejection tightness (1 = 1σ)
+  Sample Frames   — frames used during optimization
+  Run Now         — trigger scan + process immediately
+
+PREVIEW TOPs  (inside container)
+  null_minprop    — frame with fewest white pixels (threshold applied)
+  null_maxprop    — frame with most  white pixels (threshold applied)
+  preview_null    — live threshold output of main moviefilein
+
+STATE  (table_state)
+  status / stage / threshold / mean_prop / stdev_prop
+  frames_total / frames_kept / min_prop_frame / max_prop_frame
+
+LOG  (text_metrics DAT)
+  Timestamped [INFO] lines for every pipeline event.

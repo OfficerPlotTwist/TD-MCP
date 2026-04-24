@@ -8,7 +8,9 @@
  *
  * Tools:  execute_script, validate_script, get_errors,
  *         create_operator, delete_operator, connect_operators, disconnect_operators,
- *         get_operator_info, list_operators, get_par_value, set_par_value
+ *         get_operator_info, list_operators, get_par_value, set_par_value,
+ *         analyze_image_tone, set_tone_rule, list_tone_rules, take_screenshot,
+ *         save_checkpoint, restore_checkpoint, list_checkpoints, delete_checkpoint
  *
  * Resources: td://api/classes, td://api/class/{name}
  */
@@ -16,9 +18,31 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { readFileSync, writeFileSync } from "fs";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 import * as bridge from "./td-bridge.js";
 import * as api from "./api-validator.js";
+import * as ckpt from "./checkpoints.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const RULES_PATH = join(__dirname, "tone-rules.json");
+
+function loadRules() {
+  return JSON.parse(readFileSync(RULES_PATH, "utf-8"));
+}
+
+/** Evaluate a single rule's conditions against overall stats. Returns true if all conditions pass. */
+function evalRule(rule, overall) {
+  return rule.conditions.every((cond) => {
+    const stat = overall[cond.channel]?.[cond.stat];
+    if (stat === undefined) return false;
+    if (cond.min !== undefined && stat < cond.min) return false;
+    if (cond.max !== undefined && stat > cond.max) return false;
+    return true;
+  });
+}
 
 const server = new McpServer({
   name: "touchdesigner",
@@ -289,6 +313,271 @@ print(op('${path}').par.${par_name}.val)
     );
     return {
       content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+    };
+  }
+);
+
+// 12. analyze_image_tone
+server.tool(
+  "analyze_image_tone",
+  "Read row/column average CHOPs from TouchDesigner, compute R,G,B,A and luminance stats, evaluate tone rules, and return matched conditions with the skill to apply for each. Use this to decide how to approach the current visual output.",
+  {
+    rows_chop: z.string().describe("Path to the rows-average CHOP (e.g. '/project1/analyze_rows')"),
+    cols_chop: z.string().describe("Path to the cols-average CHOP (e.g. '/project1/analyze_cols')"),
+  },
+  async ({ rows_chop, cols_chop }) => {
+    const stats = await bridge.getImageStats(rows_chop, cols_chop);
+    if (stats.error) {
+      return { content: [{ type: "text", text: JSON.stringify(stats, null, 2) }] };
+    }
+
+    const { rules } = loadRules();
+    const matched = rules
+      .filter((r) => evalRule(r, stats.overall))
+      .sort((a, b) => (b.priority ?? 0) - (a.priority ?? 0));
+
+    const overall = stats.overall;
+    const summary = {
+      luminance_mean: overall.luminance?.mean?.toFixed(4),
+      luminance_min: overall.luminance?.min?.toFixed(4),
+      luminance_max: overall.luminance?.max?.toFixed(4),
+      r_mean: overall.r?.mean?.toFixed(4),
+      g_mean: overall.g?.mean?.toFixed(4),
+      b_mean: overall.b?.mean?.toFixed(4),
+      a_mean: overall.a?.mean?.toFixed(4),
+    };
+
+    const result = {
+      summary,
+      matched_conditions: matched.map((r) => ({
+        name: r.name,
+        description: r.description,
+        skill: r.skill,
+        priority: r.priority,
+      })),
+      top_condition: matched[0] ?? null,
+      recommendation: matched[0]
+        ? `Apply skill: ${matched[0].skill} — ${matched[0].description}`
+        : "No rules matched — image appears within normal range. Use fine_tune_details.",
+      raw_stats: stats.overall,
+    };
+
+    return { content: [{ type: "text", text: JSON.stringify(result, null, 2) }] };
+  }
+);
+
+// 13. set_tone_rule
+server.tool(
+  "set_tone_rule",
+  "Add or update a tone rule in tone-rules.json. Use this to configure custom thresholds and skills for different image states.",
+  {
+    name: z.string().describe("Rule name (snake_case identifier, e.g. 'near_white')"),
+    description: z.string().describe("Human-readable description of when this rule fires"),
+    skill: z.string().describe("Skill/approach to apply when this rule matches (e.g. 'reduce_brightness')"),
+    priority: z.number().optional().describe("Higher priority rules are recommended first (default: 5)"),
+    conditions: z.array(
+      z.object({
+        channel: z.enum(["r", "g", "b", "a", "luminance"]).describe("Which channel to test"),
+        stat: z.enum(["mean", "min", "max"]).describe("Which aggregate stat to test"),
+        min: z.number().optional().describe("Value must be >= this (0.0–1.0)"),
+        max: z.number().optional().describe("Value must be <= this (0.0–1.0)"),
+      })
+    ).describe("All conditions must be true for the rule to match"),
+  },
+  async ({ name, description, skill, priority, conditions }) => {
+    const config = loadRules();
+    const idx = config.rules.findIndex((r) => r.name === name);
+    const rule = { name, description, skill, priority: priority ?? 5, conditions };
+    if (idx >= 0) {
+      config.rules[idx] = rule;
+    } else {
+      config.rules.push(rule);
+    }
+    writeFileSync(RULES_PATH, JSON.stringify(config, null, 2));
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ ok: true, action: idx >= 0 ? "updated" : "added", rule }, null, 2),
+      }],
+    };
+  }
+);
+
+// 14. list_tone_rules
+server.tool(
+  "list_tone_rules",
+  "List all configured tone rules and their thresholds from tone-rules.json.",
+  {},
+  async () => {
+    const config = loadRules();
+    return {
+      content: [{ type: "text", text: JSON.stringify(config.rules, null, 2) }],
+    };
+  }
+);
+
+// 16. take_screenshot
+server.tool(
+  "take_screenshot",
+  "Capture a TOP operator's current output as a PNG image. Returns the image so you can see the visual output directly. Defaults to /project1/out1 if no path given.",
+  {
+    op_path: z
+      .string()
+      .optional()
+      .describe("Path to the TOP operator to capture (default: /project1/out1)"),
+    save_dir: z
+      .string()
+      .optional()
+      .describe("Directory to save screenshots on the TD machine (default: C:/Users/nik/Documents/AI/TD MCP/screenshots)"),
+  },
+  async ({ op_path, save_dir }) => {
+    const result = await bridge.takeScreenshot(
+      op_path || "/project1/out1",
+      save_dir
+    );
+    if (result.error) {
+      return {
+        content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
+      };
+    }
+    return {
+      content: [
+        {
+          type: "image",
+          data: result.image_b64,
+          mimeType: result.mime_type || "image/png",
+        },
+        {
+          type: "text",
+          text: `Screenshot saved to: ${result.saved_to}`,
+        },
+      ],
+    };
+  }
+);
+
+// ──────────────────────────────────────────────────────────────────────
+// CHECKPOINT TOOLS
+// ──────────────────────────────────────────────────────────────────────
+
+// 17. save_checkpoint
+server.tool(
+  "save_checkpoint",
+  "Save the current state of a TouchDesigner COMP operator as a named .tox checkpoint. Use this before experiments so you can restore a known-good state. The op_path must be a COMP (baseCOMP, container, etc.).",
+  {
+    name: z.string().describe("Checkpoint name (e.g. 'pre_blur_experiment'). Overwrites any existing checkpoint with the same name."),
+    op_path: z.string().describe("TD path to the COMP to snapshot (e.g. '/project1/myComp')"),
+    description: z.string().optional().describe("What state this captures and why"),
+  },
+  async ({ name, op_path, description }) => {
+    const safeName = name.replace(/[^a-zA-Z0-9_-]/g, "_");
+    const timestamp = Date.now();
+    const toxPath = `${ckpt.CHECKPOINTS_DIR.replace(/\\/g, "/")}/${safeName}_${timestamp}.tox`;
+
+    const script = ckpt.buildSaveScript(op_path, toxPath);
+    const result = await bridge.executeScript(script, `Checkpoint: ${name}`);
+
+    const errors = await bridge.getErrors();
+    const tdErrors = errors.errors ?? [];
+
+    if (result.output?.startsWith("ERROR:") || result.errors?.length > 0) {
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({ ok: false, output: result.output, errors: result.errors, td_errors: tdErrors }, null, 2),
+        }],
+      };
+    }
+
+    const entry = ckpt.addCheckpoint(name, op_path, toxPath, description ?? "");
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ ok: true, checkpoint: entry, td_errors: tdErrors }, null, 2),
+      }],
+    };
+  }
+);
+
+// 18. restore_checkpoint
+server.tool(
+  "restore_checkpoint",
+  "Restore a previously saved checkpoint. Destroys the current operator at the saved path and loads the .tox back into its parent. The restored op will have the same name it had when saved.",
+  {
+    name: z.string().describe("Name of the checkpoint to restore"),
+  },
+  async ({ name }) => {
+    const entry = ckpt.getCheckpoint(name);
+    if (!entry) {
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({ ok: false, error: `No checkpoint named '${name}'. Use list_checkpoints to see available checkpoints.` }, null, 2),
+        }],
+      };
+    }
+
+    const script = ckpt.buildRestoreScript(entry.op_path, entry.tox_path);
+    const result = await bridge.executeScript(script, `Restore checkpoint: ${name}`);
+
+    const errors = await bridge.getErrors();
+    const tdErrors = errors.errors ?? [];
+
+    const ok = result.output?.startsWith("restored:") && !result.errors?.length;
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({
+          ok,
+          restored_to: ok ? result.output.replace("restored:", "").trim() : null,
+          output: result.output,
+          errors: result.errors,
+          td_errors: tdErrors,
+          checkpoint: entry,
+        }, null, 2),
+      }],
+    };
+  }
+);
+
+// 19. list_checkpoints
+server.tool(
+  "list_checkpoints",
+  "List all saved checkpoints with their names, operator paths, descriptions, and creation timestamps.",
+  {},
+  async () => {
+    const checkpoints = ckpt.listCheckpoints();
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ count: checkpoints.length, checkpoints }, null, 2),
+      }],
+    };
+  }
+);
+
+// 20. delete_checkpoint
+server.tool(
+  "delete_checkpoint",
+  "Delete a saved checkpoint and its .tox file from disk.",
+  {
+    name: z.string().describe("Name of the checkpoint to delete"),
+  },
+  async ({ name }) => {
+    const removed = ckpt.removeCheckpoint(name);
+    if (!removed) {
+      return {
+        content: [{
+          type: "text",
+          text: JSON.stringify({ ok: false, error: `No checkpoint named '${name}'` }, null, 2),
+        }],
+      };
+    }
+    return {
+      content: [{
+        type: "text",
+        text: JSON.stringify({ ok: true, deleted: removed }, null, 2),
+      }],
     };
   }
 );

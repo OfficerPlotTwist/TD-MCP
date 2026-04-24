@@ -3,10 +3,10 @@
     "touchdesigner": {
       "command": "node",
       "args": [
-        "c:/Users/immer/Documents/Touchdesigner/MCP config/td-mcp-server/index.js"
+        "c:/Users/nik/Documents/AI/TD MCP/td-mcp-server/index.js"
       ],
       "env": {
-        "TD_API_DB": "c:/Users/immer/Documents/Touchdesigner/MCP config/td_python_api.json",
+        "TD_API_DB": "c:/Users/nik/Documents/AI/TD MCP/td_python_api.json",
         "TD_HOST": "localhost",
         "TD_PORT": "9980"
       }

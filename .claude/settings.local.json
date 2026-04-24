@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__touchdesigner__execute_script",
+      "mcp__touchdesigner__get_errors"
+    ]
+  }
+}

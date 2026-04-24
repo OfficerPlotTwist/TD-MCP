@@ -1,0 +1,74 @@
+{
+  "_comment": "Tone rules for analyze_image_tone. Each rule matches when ALL conditions are satisfied.",
+  "_channels": "r, g, b, a, luminance — each has mean/min/max from row+col CHOP averages",
+  "_ops": "min (>=), max (<=), range ([min,max] inclusive)",
+  "rules": [
+    {
+      "name": "near_white",
+      "description": "Image is very close to all white — nearly blown out",
+      "skill": "reduce_brightness",
+      "priority": 10,
+      "conditions": [
+        { "channel": "luminance", "stat": "mean", "min": 0.90 }
+      ]
+    },
+    {
+      "name": "near_black",
+      "description": "Image is very close to all black — nearly crushed",
+      "skill": "increase_brightness",
+      "priority": 10,
+      "conditions": [
+        { "channel": "luminance", "stat": "mean", "max": 0.10 }
+      ]
+    },
+    {
+      "name": "low_contrast",
+      "description": "Image has very little dynamic range across rows/cols",
+      "skill": "increase_contrast",
+      "priority": 5,
+      "conditions": [
+        { "channel": "luminance", "stat": "max", "max": 0.70 },
+        { "channel": "luminance", "stat": "min", "min": 0.30 }
+      ]
+    },
+    {
+      "name": "clipping_highlights",
+      "description": "Highlights are clipping in at least one channel",
+      "skill": "add_tonemapping",
+      "priority": 7,
+      "conditions": [
+        { "channel": "luminance", "stat": "max", "min": 0.95 },
+        { "channel": "luminance", "stat": "mean", "max": 0.89 }
+      ]
+    },
+    {
+      "name": "color_cast_red",
+      "description": "Red channel dominates — red color cast",
+      "skill": "balance_color_temperature",
+      "priority": 6,
+      "conditions": [
+        { "channel": "r", "stat": "mean", "min": 0.65 },
+        { "channel": "b", "stat": "mean", "max": 0.35 }
+      ]
+    },
+    {
+      "name": "color_cast_blue",
+      "description": "Blue channel dominates — cool/blue color cast",
+      "skill": "balance_color_temperature",
+      "priority": 6,
+      "conditions": [
+        { "channel": "b", "stat": "mean", "min": 0.65 },
+        { "channel": "r", "stat": "mean", "max": 0.35 }
+      ]
+    },
+    {
+      "name": "midtone_balanced",
+      "description": "Image is well exposed with good tonal balance",
+      "skill": "fine_tune_details",
+      "priority": 1,
+      "conditions": [
+        { "channel": "luminance", "stat": "mean", "min": 0.35, "max": 0.65 }
+      ]
+    }
+  ]
+}

@@ -56,6 +56,37 @@ export async function getOperatorInfo(path) {
 }
 
 /**
+ * GET image stats from row/column average CHOPs.
+ * @param {string} rowsChop - Path to the rows CHOP (e.g. "/project1/analyze_rows")
+ * @param {string} colsChop - Path to the cols CHOP (e.g. "/project1/analyze_cols")
+ * @returns {{ rows, cols, overall }} — per-sample arrays + aggregate stats per channel
+ */
+export async function getImageStats(rowsChop, colsChop) {
+  const url = `${BASE_URL}/image_stats?rows_chop=${encodeURIComponent(rowsChop)}&cols_chop=${encodeURIComponent(colsChop)}`;
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    throw new Error(`TD returned ${resp.status}: ${await resp.text()}`);
+  }
+  return resp.json();
+}
+
+/**
+ * GET a screenshot of a TOP operator.
+ * @param {string} opPath - Operator path (e.g. "/project1/out1")
+ * @param {string} [saveDir] - Directory to save the PNG on the TD machine
+ * @returns {{ path, saved_to, image_b64, mime_type }}
+ */
+export async function takeScreenshot(opPath, saveDir) {
+  let url = `${BASE_URL}/screenshot?path=${encodeURIComponent(opPath)}`;
+  if (saveDir) url += `&save_dir=${encodeURIComponent(saveDir)}`;
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    throw new Error(`TD returned ${resp.status}: ${await resp.text()}`);
+  }
+  return resp.json();
+}
+
+/**
  * Health-check: is TD's WebServer DAT reachable?
  * @returns {boolean}
  */
