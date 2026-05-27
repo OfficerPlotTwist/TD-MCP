@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"C:/Users/nik/Documents/AI/TD MCP/.claude/td-action-hook.js\"",
+            "command": "node \"C:/Users/nik/Documents/AI/MCP/TD MCP/.claude/td-action-hook.js\"",
             "timeout": 15
           }
         ]

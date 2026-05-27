@@ -1,0 +1,220 @@
+{
+  "queue": [
+    {
+      "sid": "287",
+      "src_id": "XsXXDn",
+      "src_name": "Creation by Silexars",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/287.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 1
+    },
+    {
+      "sid": "276",
+      "src_id": "3sc3z4",
+      "src_name": "3sc3z4",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/276.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 2
+    },
+    {
+      "sid": "042",
+      "src_id": "lsl3RH",
+      "src_name": "lsl3RH",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/042.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 3
+    },
+    {
+      "sid": "125",
+      "src_id": "MdXSWn",
+      "src_name": "MdXSWn",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/125.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 4
+    },
+    {
+      "sid": "058",
+      "src_id": "MlsfR4",
+      "src_name": "Fractal (Mandelbox-like)",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/058.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 5
+    },
+    {
+      "sid": "129",
+      "src_id": "Ms2SD1",
+      "src_name": "Seascape",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/129.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 6
+    },
+    {
+      "sid": "301",
+      "src_id": "MdXyzs",
+      "src_name": "MdXyzs",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/301.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 7
+    },
+    {
+      "sid": "315",
+      "src_id": "llXfRr",
+      "src_name": "llXfRr",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/315.frag",
+      "favorite": true,
+      "status": "queued",
+      "rank": 8
+    },
+    {
+      "sid": "108",
+      "src_id": "tlGXRz",
+      "src_name": "tlGXRz",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/108.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 9
+    },
+    {
+      "sid": "119",
+      "src_id": "4s2SRt",
+      "src_name": "4s2SRt",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/119.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 10
+    },
+    {
+      "sid": "242",
+      "src_id": "lsX3W4",
+      "src_name": "lsX3W4",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/242.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 11
+    },
+    {
+      "sid": "339",
+      "src_id": "Xd23Dh",
+      "src_name": "Xd23Dh",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/339.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 12
+    },
+    {
+      "sid": "336",
+      "src_id": "3ttSzr",
+      "src_name": "3ttSzr",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/336.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 13
+    },
+    {
+      "sid": "084",
+      "src_id": "MdX3zr",
+      "src_name": "MdX3zr",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/084.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 14
+    },
+    {
+      "sid": "161",
+      "src_id": "Ml2XRD",
+      "src_name": "Ml2XRD",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/161.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 15
+    },
+    {
+      "sid": "097",
+      "src_id": "tsXBzS",
+      "src_name": "tsXBzS",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/097.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 16
+    },
+    {
+      "sid": "015",
+      "src_id": "3sySRK",
+      "src_name": "3sySRK",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/015.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 17
+    },
+    {
+      "sid": "250",
+      "src_id": "4tdSWr",
+      "src_name": "4tdSWr",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/250.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 18
+    },
+    {
+      "sid": "244",
+      "src_id": "ll2GD3",
+      "src_name": "ll2GD3",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/244.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 19
+    },
+    {
+      "sid": "028",
+      "src_id": "MdlXz8",
+      "src_name": "MdlXz8",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/028.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 20
+    },
+    {
+      "sid": "317",
+      "src_id": "3tBGRm",
+      "src_name": "3tBGRm",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/317.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 21
+    },
+    {
+      "sid": "022",
+      "src_id": "lllSR2",
+      "src_name": "lllSR2",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/022.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 22
+    },
+    {
+      "sid": "014",
+      "src_id": "XsX3zl",
+      "src_name": "XsX3zl",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/014.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 23
+    },
+    {
+      "sid": "344",
+      "src_id": "MttGz7",
+      "src_name": "MttGz7",
+      "frag_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/dailies/shaders/344.frag",
+      "favorite": false,
+      "status": "queued",
+      "rank": 24
+    }
+  ]
+}

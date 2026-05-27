@@ -1,0 +1,412 @@
+{
+  "grids": [
+    {
+      "id": "sgr_0001",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr_0001.png",
+      "created_at": "2026-05-27T18:50:05.277Z",
+      "status": "resolved",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "108",
+          "src_id": "tlGXRz",
+          "src_name": "tlGXRz",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/tlGXRz_baseline.png",
+          "composite_score": 0.91105
+        },
+        "2": {
+          "sid": "301",
+          "src_id": "MdXyzs",
+          "src_name": "MdXyzs",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MdXyzs_baseline.png",
+          "composite_score": 0.90569
+        },
+        "3": {
+          "sid": "119",
+          "src_id": "4s2SRt",
+          "src_name": "4s2SRt",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/4s2SRt_baseline.png",
+          "composite_score": 0.88659
+        },
+        "4": {
+          "sid": "242",
+          "src_id": "lsX3W4",
+          "src_name": "lsX3W4",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/lsX3W4_baseline.png",
+          "composite_score": 0.86837
+        },
+        "5": {
+          "sid": "315",
+          "src_id": "llXfRr",
+          "src_name": "llXfRr",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/llXfRr_baseline.png",
+          "composite_score": 0.86788
+        },
+        "6": {
+          "sid": "277",
+          "src_id": "WldSRn",
+          "src_name": "SDF Shapes",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/WldSRn_baseline.png",
+          "composite_score": 0.85166
+        },
+        "7": {
+          "sid": "029",
+          "src_id": "tlVGDt",
+          "src_name": "tlVGDt",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/tlVGDt_baseline.png",
+          "composite_score": 0.8498
+        },
+        "8": {
+          "sid": "101",
+          "src_id": "MtKXRh",
+          "src_name": "MtKXRh",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MtKXRh_baseline.png",
+          "composite_score": 0.8487
+        },
+        "9": {
+          "sid": "263",
+          "src_id": "WtKSzt",
+          "src_name": "WtKSzt",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/WtKSzt_baseline.png",
+          "composite_score": 0.84742
+        }
+      }
+    },
+    {
+      "id": "sgr_0002",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr_0002.png",
+      "created_at": "2026-05-27T19:24:13.738Z",
+      "status": "resolved",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "032",
+          "src_id": "Wt33Wf",
+          "src_name": "Wt33Wf",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/Wt33Wf_baseline.png",
+          "composite_score": 0.84644
+        },
+        "2": {
+          "sid": "339",
+          "src_id": "Xd23Dh",
+          "src_name": "Xd23Dh",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/Xd23Dh_baseline.png",
+          "composite_score": 0.8455
+        },
+        "3": {
+          "sid": "125",
+          "src_id": "MdXSWn",
+          "src_name": "MdXSWn",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MdXSWn_baseline.png",
+          "composite_score": 0.84428
+        },
+        "4": {
+          "sid": "237",
+          "src_id": "mtyGWy",
+          "src_name": "mtyGWy",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/mtyGWy_baseline.png",
+          "composite_score": 0.84355
+        },
+        "5": {
+          "sid": "058",
+          "src_id": "MlsfR4",
+          "src_name": "Fractal (Mandelbox-like)",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MlsfR4_baseline.png",
+          "composite_score": 0.82415
+        },
+        "6": {
+          "sid": "203",
+          "src_id": "XsBfRW",
+          "src_name": "XsBfRW",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/XsBfRW_baseline.png",
+          "composite_score": 0.81798
+        },
+        "7": {
+          "sid": "129",
+          "src_id": "Ms2SD1",
+          "src_name": "Seascape",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/Ms2SD1_baseline.png",
+          "composite_score": 0.81017
+        },
+        "8": {
+          "sid": "075",
+          "src_id": "MsfXRf",
+          "src_name": "MsfXRf",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MsfXRf_baseline.png",
+          "composite_score": 0.80885
+        },
+        "9": {
+          "sid": "217",
+          "src_id": "4dsXzM",
+          "src_name": "4dsXzM",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/4dsXzM_baseline.png",
+          "composite_score": 0.80619
+        }
+      }
+    },
+    {
+      "id": "sgr_0003",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr_0003.png",
+      "created_at": "2026-05-27T19:24:13.946Z",
+      "status": "resolved",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "064",
+          "src_id": "tt3XDn",
+          "src_name": "tt3XDn",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/tt3XDn_baseline.png",
+          "composite_score": 0.79532
+        },
+        "2": {
+          "sid": "276",
+          "src_id": "3sc3z4",
+          "src_name": "3sc3z4",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/3sc3z4_baseline.png",
+          "composite_score": 0.78325
+        },
+        "3": {
+          "sid": "336",
+          "src_id": "3ttSzr",
+          "src_name": "3ttSzr",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/3ttSzr_baseline.png",
+          "composite_score": 0.77226
+        },
+        "4": {
+          "sid": "264",
+          "src_id": "XlfGRj",
+          "src_name": "XlfGRj",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/XlfGRj_baseline.png",
+          "composite_score": 0.76891
+        },
+        "5": {
+          "sid": "042",
+          "src_id": "lsl3RH",
+          "src_name": "lsl3RH",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/lsl3RH_baseline.png",
+          "composite_score": 0.74142
+        },
+        "6": {
+          "sid": "084",
+          "src_id": "MdX3zr",
+          "src_name": "MdX3zr",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MdX3zr_baseline.png",
+          "composite_score": 0.73383
+        },
+        "7": {
+          "sid": "161",
+          "src_id": "Ml2XRD",
+          "src_name": "Ml2XRD",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/Ml2XRD_baseline.png",
+          "composite_score": 0.72043
+        },
+        "8": {
+          "sid": "327",
+          "src_id": "ttKGDt",
+          "src_name": "ttKGDt",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/ttKGDt_baseline.png",
+          "composite_score": 0.71201
+        },
+        "9": {
+          "sid": "097",
+          "src_id": "tsXBzS",
+          "src_name": "tsXBzS",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/tsXBzS_baseline.png",
+          "composite_score": 0.69036
+        }
+      }
+    },
+    {
+      "id": "sgr_0004",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr_0004.png",
+      "created_at": "2026-05-27T19:24:14.138Z",
+      "status": "resolved",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "015",
+          "src_id": "3sySRK",
+          "src_name": "3sySRK",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/3sySRK_baseline.png",
+          "composite_score": 0.65996
+        },
+        "2": {
+          "sid": "250",
+          "src_id": "4tdSWr",
+          "src_name": "4tdSWr",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/4tdSWr_baseline.png",
+          "composite_score": 0.60362
+        },
+        "3": {
+          "sid": "280",
+          "src_id": "WdXBW4",
+          "src_name": "WdXBW4",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/WdXBW4_baseline.png",
+          "composite_score": 0.60362
+        },
+        "4": {
+          "sid": "244",
+          "src_id": "ll2GD3",
+          "src_name": "ll2GD3",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/ll2GD3_baseline.png",
+          "composite_score": 0.59973
+        },
+        "5": {
+          "sid": "177",
+          "src_id": "4tjSDt",
+          "src_name": "4tjSDt",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/4tjSDt_baseline.png",
+          "composite_score": 0.59811
+        },
+        "6": {
+          "sid": "287",
+          "src_id": "XsXXDn",
+          "src_name": "Creation by Silexars",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/XsXXDn_baseline.png",
+          "composite_score": 0.5249
+        },
+        "7": {
+          "sid": "028",
+          "src_id": "MdlXz8",
+          "src_name": "MdlXz8",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MdlXz8_baseline.png",
+          "composite_score": 0.4866
+        },
+        "8": {
+          "sid": "317",
+          "src_id": "3tBGRm",
+          "src_name": "3tBGRm",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/3tBGRm_baseline.png",
+          "composite_score": 0.45431
+        },
+        "9": {
+          "sid": "025",
+          "src_id": "4t2SRh",
+          "src_name": "4t2SRh",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/4t2SRh_baseline.png",
+          "composite_score": 0.45334
+        }
+      }
+    },
+    {
+      "id": "sgr_0005",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr_0005.png",
+      "created_at": "2026-05-27T19:24:14.298Z",
+      "status": "resolved",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "182",
+          "src_id": "ll3SWl",
+          "src_name": "ll3SWl",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/ll3SWl_baseline.png",
+          "composite_score": 0.44684
+        },
+        "2": {
+          "sid": "201",
+          "src_id": "wdsfDH",
+          "src_name": "wdsfDH",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/wdsfDH_baseline.png",
+          "composite_score": 0.44684
+        },
+        "3": {
+          "sid": "022",
+          "src_id": "lllSR2",
+          "src_name": "lllSR2",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/lllSR2_baseline.png",
+          "composite_score": 0.43433
+        },
+        "4": {
+          "sid": "218",
+          "src_id": "wtdSR8",
+          "src_name": "Repeated Boxes",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/wtdSR8_baseline.png",
+          "composite_score": 0.42324
+        },
+        "5": {
+          "sid": "014",
+          "src_id": "XsX3zl",
+          "src_name": "XsX3zl",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/XsX3zl_baseline.png",
+          "composite_score": 0.41198
+        },
+        "6": {
+          "sid": "340",
+          "src_id": "WslGWl",
+          "src_name": "WslGWl",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/WslGWl_baseline.png",
+          "composite_score": 0.40918
+        },
+        "7": {
+          "sid": "073",
+          "src_id": "lt33z7",
+          "src_name": "lt33z7",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/lt33z7_baseline.png",
+          "composite_score": 0.38688
+        },
+        "8": {
+          "sid": "344",
+          "src_id": "MttGz7",
+          "src_name": "MttGz7",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/MttGz7_baseline.png",
+          "composite_score": 0.33835
+        },
+        "9": {
+          "sid": "171",
+          "src_id": "Xtd3z7",
+          "src_name": "Tutorial Cube (SDF)",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/Xtd3z7_baseline.png",
+          "composite_score": 0.33562
+        }
+      }
+    },
+    {
+      "id": "sgr06",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/GLSL implement with agents/sgr06.png",
+      "created_at": "2026-05-27T19:24:14.367Z",
+      "status": "pending",
+      "destinations": [
+        "Approved → Human-Selected-Good-Shaders DB",
+        "Approved → TouchDesigner queue  /project1/shader_queue"
+      ],
+      "tiles": {
+        "1": {
+          "sid": "197",
+          "src_id": "XtcGWn",
+          "src_name": "XtcGWn",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/XtcGWn_baseline.png",
+          "composite_score": 0.33243
+        },
+        "2": {
+          "sid": "036",
+          "src_id": "llt3R4",
+          "src_name": "llt3R4",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/llt3R4_baseline.png",
+          "composite_score": 0.31886
+        },
+        "3": {
+          "sid": "216",
+          "src_id": "3l23Rh",
+          "src_name": "3l23Rh",
+          "thumb_path": "C:/Users/nik/Documents/AI/OpenGLSL_Code_Reference/screenshots/3l23Rh_baseline.png",
+          "composite_score": 0.28685
+        }
+      }
+    }
+  ]
+}

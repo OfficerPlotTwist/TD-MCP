@@ -44,10 +44,29 @@ function evalRule(rule, overall) {
   });
 }
 
-const server = new McpServer({
-  name: "touchdesigner",
-  version: "1.0.0",
-});
+const server = new McpServer(
+  {
+    name: "touchdesigner",
+    version: "1.0.0",
+  },
+  {
+    instructions: [
+      "This server bridges to a live, unsaved TouchDesigner session. Edits made via execute_script / set_par_value / create_operator mutate the running project immediately but are NOT persisted to the .toe on disk until the project is saved.",
+      "",
+      "Project save discipline (follow this around every editing task):",
+      "1. BEFORE you make the first mutating edit of a task, save the open project so there is a known-good restore point on disk:",
+      "     execute_script(\"project.save()\")",
+      "   (For a non-destructive snapshot, use project.saveBackup() which writes a timestamped copy without overwriting the live .toe.)",
+      "2. Make the scoped changes.",
+      "3. VERIFY the changes are complete and correct (get_operator_info / get_par_value / get_errors / take_screenshot as appropriate).",
+      "4. ONLY AFTER verification passes, save again to persist the finished work:",
+      "     execute_script(\"project.save()\")",
+      "   If verification fails, do NOT save over the good state — fix or revert first.",
+      "",
+      "For bulk-destructive operations (mass delete, containerize, mass param rewrite), additionally use save_checkpoint on the parent COMP before the destructive step, and never combine bulk destroy with force-cook in one script (it can freeze TD).",
+    ].join("\n"),
+  }
+);
 
 // ──────────────────────────────────────────────────────────────────────
 // TOOLS
@@ -428,7 +447,7 @@ server.tool(
     save_dir: z
       .string()
       .optional()
-      .describe("Directory to save screenshots on the TD machine (default: C:/Users/nik/Documents/AI/TD MCP/screenshots)"),
+      .describe("Directory to save screenshots on the TD machine (default: C:/Users/nik/Documents/AI/MCP/TD MCP/screenshots)"),
   },
   async ({ op_path, save_dir }) => {
     const result = await bridge.takeScreenshot(

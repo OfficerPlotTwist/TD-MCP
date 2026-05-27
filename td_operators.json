@@ -1,0 +1,3925 @@
+{
+  "generated_at": "2026-05-11T22:19:15.640709+00:00",
+  "source": "https://docs.derivative.ca/",
+  "total": 558,
+  "by_family": {
+    "TOP": [
+      {
+        "name": "Add",
+        "family": "TOP",
+        "python_type": "addTOP",
+        "slug": "Add_TOP",
+        "url": "https://docs.derivative.ca/Add_TOP"
+      },
+      {
+        "name": "Analyze",
+        "family": "TOP",
+        "python_type": "analyzeTOP",
+        "slug": "Analyze_TOP",
+        "url": "https://docs.derivative.ca/Analyze_TOP"
+      },
+      {
+        "name": "Anti Alias",
+        "family": "TOP",
+        "python_type": "antialiasTOP",
+        "slug": "Anti_Alias_TOP",
+        "url": "https://docs.derivative.ca/Anti_Alias_TOP"
+      },
+      {
+        "name": "Blob Track",
+        "family": "TOP",
+        "python_type": "blobtrackTOP",
+        "slug": "Blob_Track_TOP",
+        "url": "https://docs.derivative.ca/Blob_Track_TOP"
+      },
+      {
+        "name": "Bloom",
+        "family": "TOP",
+        "python_type": "bloomTOP",
+        "slug": "Bloom_TOP",
+        "url": "https://docs.derivative.ca/Bloom_TOP"
+      },
+      {
+        "name": "Blur",
+        "family": "TOP",
+        "python_type": "blurTOP",
+        "slug": "Blur_TOP",
+        "url": "https://docs.derivative.ca/Blur_TOP"
+      },
+      {
+        "name": "CHOP to",
+        "family": "TOP",
+        "python_type": "choptoTOP",
+        "slug": "CHOP_to_TOP",
+        "url": "https://docs.derivative.ca/CHOP_to_TOP"
+      },
+      {
+        "name": "CPlusPlus",
+        "family": "TOP",
+        "python_type": "cplusplusTOP",
+        "slug": "CPlusPlus_TOP",
+        "url": "https://docs.derivative.ca/CPlusPlus_TOP"
+      },
+      {
+        "name": "Cache Select",
+        "family": "TOP",
+        "python_type": "cacheselectTOP",
+        "slug": "Cache_Select_TOP",
+        "url": "https://docs.derivative.ca/Cache_Select_TOP"
+      },
+      {
+        "name": "Cache",
+        "family": "TOP",
+        "python_type": "cacheTOP",
+        "slug": "Cache_TOP",
+        "url": "https://docs.derivative.ca/Cache_TOP"
+      },
+      {
+        "name": "Channel Mix",
+        "family": "TOP",
+        "python_type": "channelmixTOP",
+        "slug": "Channel_Mix_TOP",
+        "url": "https://docs.derivative.ca/Channel_Mix_TOP"
+      },
+      {
+        "name": "Chroma Key",
+        "family": "TOP",
+        "python_type": "chromakeyTOP",
+        "slug": "Chroma_Key_TOP",
+        "url": "https://docs.derivative.ca/Chroma_Key_TOP"
+      },
+      {
+        "name": "Circle",
+        "family": "TOP",
+        "python_type": "circleTOP",
+        "slug": "Circle_TOP",
+        "url": "https://docs.derivative.ca/Circle_TOP"
+      },
+      {
+        "name": "Composite",
+        "family": "TOP",
+        "python_type": "compositeTOP",
+        "slug": "Composite_TOP",
+        "url": "https://docs.derivative.ca/Composite_TOP"
+      },
+      {
+        "name": "Constant",
+        "family": "TOP",
+        "python_type": "constantTOP",
+        "slug": "Constant_TOP",
+        "url": "https://docs.derivative.ca/Constant_TOP"
+      },
+      {
+        "name": "Convolve",
+        "family": "TOP",
+        "python_type": "convolveTOP",
+        "slug": "Convolve_TOP",
+        "url": "https://docs.derivative.ca/Convolve_TOP"
+      },
+      {
+        "name": "Corner Pin",
+        "family": "TOP",
+        "python_type": "cornerpinTOP",
+        "slug": "Corner_Pin_TOP",
+        "url": "https://docs.derivative.ca/Corner_Pin_TOP"
+      },
+      {
+        "name": "Crop",
+        "family": "TOP",
+        "python_type": "cropTOP",
+        "slug": "Crop_TOP",
+        "url": "https://docs.derivative.ca/Crop_TOP"
+      },
+      {
+        "name": "Cross",
+        "family": "TOP",
+        "python_type": "crossTOP",
+        "slug": "Cross_TOP",
+        "url": "https://docs.derivative.ca/Cross_TOP"
+      },
+      {
+        "name": "Cube Map",
+        "family": "TOP",
+        "python_type": "cubemapTOP",
+        "slug": "Cube_Map_TOP",
+        "url": "https://docs.derivative.ca/Cube_Map_TOP"
+      },
+      {
+        "name": "Depth",
+        "family": "TOP",
+        "python_type": "depthTOP",
+        "slug": "Depth_TOP",
+        "url": "https://docs.derivative.ca/Depth_TOP"
+      },
+      {
+        "name": "Difference",
+        "family": "TOP",
+        "python_type": "differenceTOP",
+        "slug": "Difference_TOP",
+        "url": "https://docs.derivative.ca/Difference_TOP"
+      },
+      {
+        "name": "DirectX In",
+        "family": "TOP",
+        "python_type": "directxinTOP",
+        "slug": "DirectX_In_TOP",
+        "url": "https://docs.derivative.ca/DirectX_In_TOP"
+      },
+      {
+        "name": "DirectX Out",
+        "family": "TOP",
+        "python_type": "directxoutTOP",
+        "slug": "DirectX_Out_TOP",
+        "url": "https://docs.derivative.ca/DirectX_Out_TOP"
+      },
+      {
+        "name": "Direct Display Out",
+        "family": "TOP",
+        "python_type": "directdisplayoutTOP",
+        "slug": "Direct_Display_Out_TOP",
+        "url": "https://docs.derivative.ca/Direct_Display_Out_TOP"
+      },
+      {
+        "name": "Displace",
+        "family": "TOP",
+        "python_type": "displaceTOP",
+        "slug": "Displace_TOP",
+        "url": "https://docs.derivative.ca/Displace_TOP"
+      },
+      {
+        "name": "Edge",
+        "family": "TOP",
+        "python_type": "edgeTOP",
+        "slug": "Edge_TOP",
+        "url": "https://docs.derivative.ca/Edge_TOP"
+      },
+      {
+        "name": "Emboss",
+        "family": "TOP",
+        "python_type": "embossTOP",
+        "slug": "Emboss_TOP",
+        "url": "https://docs.derivative.ca/Emboss_TOP"
+      },
+      {
+        "name": "Feedback",
+        "family": "TOP",
+        "python_type": "feedbackTOP",
+        "slug": "Feedback_TOP",
+        "url": "https://docs.derivative.ca/Feedback_TOP"
+      },
+      {
+        "name": "Fit",
+        "family": "TOP",
+        "python_type": "fitTOP",
+        "slug": "Fit_TOP",
+        "url": "https://docs.derivative.ca/Fit_TOP"
+      },
+      {
+        "name": "Flip",
+        "family": "TOP",
+        "python_type": "flipTOP",
+        "slug": "Flip_TOP",
+        "url": "https://docs.derivative.ca/Flip_TOP"
+      },
+      {
+        "name": "Function",
+        "family": "TOP",
+        "python_type": "functionTOP",
+        "slug": "Function_TOP",
+        "url": "https://docs.derivative.ca/Function_TOP"
+      },
+      {
+        "name": "GLSL Multi",
+        "family": "TOP",
+        "python_type": "glslmultiTOP",
+        "slug": "GLSL_Multi_TOP",
+        "url": "https://docs.derivative.ca/GLSL_Multi_TOP"
+      },
+      {
+        "name": "GLSL",
+        "family": "TOP",
+        "python_type": "glslTOP",
+        "slug": "GLSL_TOP",
+        "url": "https://docs.derivative.ca/GLSL_TOP"
+      },
+      {
+        "name": "HSV Adjust",
+        "family": "TOP",
+        "python_type": "hsvadjustTOP",
+        "slug": "HSV_Adjust_TOP",
+        "url": "https://docs.derivative.ca/HSV_Adjust_TOP"
+      },
+      {
+        "name": "HSV to RGB",
+        "family": "TOP",
+        "python_type": "hsvtorgbTOP",
+        "slug": "HSV_to_RGB_TOP",
+        "url": "https://docs.derivative.ca/HSV_to_RGB_TOP"
+      },
+      {
+        "name": "Import Select",
+        "family": "TOP",
+        "python_type": "importselectTOP",
+        "slug": "Import_Select_TOP",
+        "url": "https://docs.derivative.ca/Import_Select_TOP"
+      },
+      {
+        "name": "In",
+        "family": "TOP",
+        "python_type": "inTOP",
+        "slug": "In_TOP",
+        "url": "https://docs.derivative.ca/In_TOP"
+      },
+      {
+        "name": "Inside",
+        "family": "TOP",
+        "python_type": "insideTOP",
+        "slug": "Inside_TOP",
+        "url": "https://docs.derivative.ca/Inside_TOP"
+      },
+      {
+        "name": "Kinect Azure Select",
+        "family": "TOP",
+        "python_type": "kinectazureselectTOP",
+        "slug": "Kinect_Azure_Select_TOP",
+        "url": "https://docs.derivative.ca/Kinect_Azure_Select_TOP"
+      },
+      {
+        "name": "Kinect Azure",
+        "family": "TOP",
+        "python_type": "kinectazureTOP",
+        "slug": "Kinect_Azure_TOP",
+        "url": "https://docs.derivative.ca/Kinect_Azure_TOP"
+      },
+      {
+        "name": "Kinect",
+        "family": "TOP",
+        "python_type": "kinectTOP",
+        "slug": "Kinect_TOP",
+        "url": "https://docs.derivative.ca/Kinect_TOP"
+      },
+      {
+        "name": "Layer Mix",
+        "family": "TOP",
+        "python_type": "layermixTOP",
+        "slug": "Layer_Mix_TOP",
+        "url": "https://docs.derivative.ca/Layer_Mix_TOP"
+      },
+      {
+        "name": "Layer",
+        "family": "TOP",
+        "python_type": "layerTOP",
+        "slug": "Layer_TOP",
+        "url": "https://docs.derivative.ca/Layer_TOP"
+      },
+      {
+        "name": "Layout",
+        "family": "TOP",
+        "python_type": "layoutTOP",
+        "slug": "Layout_TOP",
+        "url": "https://docs.derivative.ca/Layout_TOP"
+      },
+      {
+        "name": "Leap Motion",
+        "family": "TOP",
+        "python_type": "leapmotionTOP",
+        "slug": "Leap_Motion_TOP",
+        "url": "https://docs.derivative.ca/Leap_Motion_TOP"
+      },
+      {
+        "name": "Lens Distort",
+        "family": "TOP",
+        "python_type": "lensdistortTOP",
+        "slug": "Lens_Distort_TOP",
+        "url": "https://docs.derivative.ca/Lens_Distort_TOP"
+      },
+      {
+        "name": "Level",
+        "family": "TOP",
+        "python_type": "levelTOP",
+        "slug": "Level_TOP",
+        "url": "https://docs.derivative.ca/Level_TOP"
+      },
+      {
+        "name": "Limit",
+        "family": "TOP",
+        "python_type": "limitTOP",
+        "slug": "Limit_TOP",
+        "url": "https://docs.derivative.ca/Limit_TOP"
+      },
+      {
+        "name": "Lookup",
+        "family": "TOP",
+        "python_type": "lookupTOP",
+        "slug": "Lookup_TOP",
+        "url": "https://docs.derivative.ca/Lookup_TOP"
+      },
+      {
+        "name": "Luma Blur",
+        "family": "TOP",
+        "python_type": "lumablurTOP",
+        "slug": "Luma_Blur_TOP",
+        "url": "https://docs.derivative.ca/Luma_Blur_TOP"
+      },
+      {
+        "name": "Luma Level",
+        "family": "TOP",
+        "python_type": "lumalevelTOP",
+        "slug": "Luma_Level_TOP",
+        "url": "https://docs.derivative.ca/Luma_Level_TOP"
+      },
+      {
+        "name": "MPCDI",
+        "family": "TOP",
+        "python_type": "mpcdiTOP",
+        "slug": "MPCDI_TOP",
+        "url": "https://docs.derivative.ca/MPCDI_TOP"
+      },
+      {
+        "name": "Math",
+        "family": "TOP",
+        "python_type": "mathTOP",
+        "slug": "Math_TOP",
+        "url": "https://docs.derivative.ca/Math_TOP"
+      },
+      {
+        "name": "Matte",
+        "family": "TOP",
+        "python_type": "matteTOP",
+        "slug": "Matte_TOP",
+        "url": "https://docs.derivative.ca/Matte_TOP"
+      },
+      {
+        "name": "Mirror",
+        "family": "TOP",
+        "python_type": "mirrorTOP",
+        "slug": "Mirror_TOP",
+        "url": "https://docs.derivative.ca/Mirror_TOP"
+      },
+      {
+        "name": "MoSys",
+        "family": "TOP",
+        "python_type": "mosysTOP",
+        "slug": "MoSys_TOP",
+        "url": "https://docs.derivative.ca/MoSys_TOP"
+      },
+      {
+        "name": "Monochrome",
+        "family": "TOP",
+        "python_type": "monochromeTOP",
+        "slug": "Monochrome_TOP",
+        "url": "https://docs.derivative.ca/Monochrome_TOP"
+      },
+      {
+        "name": "Movie File In",
+        "family": "TOP",
+        "python_type": "moviefileinTOP",
+        "slug": "Movie_File_In_TOP",
+        "url": "https://docs.derivative.ca/Movie_File_In_TOP"
+      },
+      {
+        "name": "Movie File Out",
+        "family": "TOP",
+        "python_type": "moviefileoutTOP",
+        "slug": "Movie_File_Out_TOP",
+        "url": "https://docs.derivative.ca/Movie_File_Out_TOP"
+      },
+      {
+        "name": "Multiply",
+        "family": "TOP",
+        "python_type": "multiplyTOP",
+        "slug": "Multiply_TOP",
+        "url": "https://docs.derivative.ca/Multiply_TOP"
+      },
+      {
+        "name": "NDI In",
+        "family": "TOP",
+        "python_type": "ndiinTOP",
+        "slug": "NDI_In_TOP",
+        "url": "https://docs.derivative.ca/NDI_In_TOP"
+      },
+      {
+        "name": "NDI Out",
+        "family": "TOP",
+        "python_type": "ndioutTOP",
+        "slug": "NDI_Out_TOP",
+        "url": "https://docs.derivative.ca/NDI_Out_TOP"
+      },
+      {
+        "name": "NVIDIA Background",
+        "family": "TOP",
+        "python_type": "nvidiabackgroundTOP",
+        "slug": "NVIDIA_Background_TOP",
+        "url": "https://docs.derivative.ca/NVIDIA_Background_TOP"
+      },
+      {
+        "name": "NVIDIA Denoise",
+        "family": "TOP",
+        "python_type": "nvidiadenoiseTOP",
+        "slug": "NVIDIA_Denoise_TOP",
+        "url": "https://docs.derivative.ca/NVIDIA_Denoise_TOP"
+      },
+      {
+        "name": "NVIDIA Flex",
+        "family": "TOP",
+        "python_type": "nvidiaflexTOP",
+        "slug": "NVIDIA_Flex_TOP",
+        "url": "https://docs.derivative.ca/NVIDIA_Flex_TOP"
+      },
+      {
+        "name": "NVIDIA Flow",
+        "family": "TOP",
+        "python_type": "nvidiaflowTOP",
+        "slug": "NVIDIA_Flow_TOP",
+        "url": "https://docs.derivative.ca/NVIDIA_Flow_TOP"
+      },
+      {
+        "name": "NVIDIA Upscaler",
+        "family": "TOP",
+        "python_type": "nvidiaupscalerTOP",
+        "slug": "NVIDIA_Upscaler_TOP",
+        "url": "https://docs.derivative.ca/NVIDIA_Upscaler_TOP"
+      },
+      {
+        "name": "Ncam",
+        "family": "TOP",
+        "python_type": "ncamTOP",
+        "slug": "Ncam_TOP",
+        "url": "https://docs.derivative.ca/Ncam_TOP"
+      },
+      {
+        "name": "Noise",
+        "family": "TOP",
+        "python_type": "noiseTOP",
+        "slug": "Noise_TOP",
+        "url": "https://docs.derivative.ca/Noise_TOP"
+      },
+      {
+        "name": "Normal Map",
+        "family": "TOP",
+        "python_type": "normalmapTOP",
+        "slug": "Normal_Map_TOP",
+        "url": "https://docs.derivative.ca/Normal_Map_TOP"
+      },
+      {
+        "name": "Notch",
+        "family": "TOP",
+        "python_type": "notchTOP",
+        "slug": "Notch_TOP",
+        "url": "https://docs.derivative.ca/Notch_TOP"
+      },
+      {
+        "name": "Null",
+        "family": "TOP",
+        "python_type": "nullTOP",
+        "slug": "Null_TOP",
+        "url": "https://docs.derivative.ca/Null_TOP"
+      },
+      {
+        "name": "OAK Select",
+        "family": "TOP",
+        "python_type": "oakselectTOP",
+        "slug": "OAK_Select_TOP",
+        "url": "https://docs.derivative.ca/OAK_Select_TOP"
+      },
+      {
+        "name": "OP Viewer",
+        "family": "TOP",
+        "python_type": "opviewerTOP",
+        "slug": "OP_Viewer_TOP",
+        "url": "https://docs.derivative.ca/OP_Viewer_TOP"
+      },
+      {
+        "name": "Oculus Rift",
+        "family": "TOP",
+        "python_type": "oculusriftTOP",
+        "slug": "Oculus_Rift_TOP",
+        "url": "https://docs.derivative.ca/Oculus_Rift_TOP"
+      },
+      {
+        "name": "OpenColorIO",
+        "family": "TOP",
+        "python_type": "opencolorioTOP",
+        "slug": "OpenColorIO_TOP",
+        "url": "https://docs.derivative.ca/OpenColorIO_TOP"
+      },
+      {
+        "name": "OpenVR",
+        "family": "TOP",
+        "python_type": "openvrTOP",
+        "slug": "OpenVR_TOP",
+        "url": "https://docs.derivative.ca/OpenVR_TOP"
+      },
+      {
+        "name": "Optical Flow",
+        "family": "TOP",
+        "python_type": "opticalflowTOP",
+        "slug": "Optical_Flow_TOP",
+        "url": "https://docs.derivative.ca/Optical_Flow_TOP"
+      },
+      {
+        "name": "Orbbec Select",
+        "family": "TOP",
+        "python_type": "orbbecselectTOP",
+        "slug": "Orbbec_Select_TOP",
+        "url": "https://docs.derivative.ca/Orbbec_Select_TOP"
+      },
+      {
+        "name": "Orbbec",
+        "family": "TOP",
+        "python_type": "orbbecTOP",
+        "slug": "Orbbec_TOP",
+        "url": "https://docs.derivative.ca/Orbbec_TOP"
+      },
+      {
+        "name": "Ouster Select",
+        "family": "TOP",
+        "python_type": "ousterselectTOP",
+        "slug": "Ouster_Select_TOP",
+        "url": "https://docs.derivative.ca/Ouster_Select_TOP"
+      },
+      {
+        "name": "Ouster",
+        "family": "TOP",
+        "python_type": "ousterTOP",
+        "slug": "Ouster_TOP",
+        "url": "https://docs.derivative.ca/Ouster_TOP"
+      },
+      {
+        "name": "Out",
+        "family": "TOP",
+        "python_type": "outTOP",
+        "slug": "Out_TOP",
+        "url": "https://docs.derivative.ca/Out_TOP"
+      },
+      {
+        "name": "Outside",
+        "family": "TOP",
+        "python_type": "outsideTOP",
+        "slug": "Outside_TOP",
+        "url": "https://docs.derivative.ca/Outside_TOP"
+      },
+      {
+        "name": "Over",
+        "family": "TOP",
+        "python_type": "overTOP",
+        "slug": "Over_TOP",
+        "url": "https://docs.derivative.ca/Over_TOP"
+      },
+      {
+        "name": "POP to",
+        "family": "TOP",
+        "python_type": "poptoTOP",
+        "slug": "POP_to_TOP",
+        "url": "https://docs.derivative.ca/POP_to_TOP"
+      },
+      {
+        "name": "Pack",
+        "family": "TOP",
+        "python_type": "packTOP",
+        "slug": "Pack_TOP",
+        "url": "https://docs.derivative.ca/Pack_TOP"
+      },
+      {
+        "name": "Photoshop In",
+        "family": "TOP",
+        "python_type": "photoshopinTOP",
+        "slug": "Photoshop_In_TOP",
+        "url": "https://docs.derivative.ca/Photoshop_In_TOP"
+      },
+      {
+        "name": "Point File In",
+        "family": "TOP",
+        "python_type": "pointfileinTOP",
+        "slug": "Point_File_In_TOP",
+        "url": "https://docs.derivative.ca/Point_File_In_TOP"
+      },
+      {
+        "name": "Point File Select",
+        "family": "TOP",
+        "python_type": "pointfileselectTOP",
+        "slug": "Point_File_Select_TOP",
+        "url": "https://docs.derivative.ca/Point_File_Select_TOP"
+      },
+      {
+        "name": "Point Transform",
+        "family": "TOP",
+        "python_type": "pointtransformTOP",
+        "slug": "Point_Transform_TOP",
+        "url": "https://docs.derivative.ca/Point_Transform_TOP"
+      },
+      {
+        "name": "PreFilter Map",
+        "family": "TOP",
+        "python_type": "prefiltermapTOP",
+        "slug": "PreFilter_Map_TOP",
+        "url": "https://docs.derivative.ca/PreFilter_Map_TOP"
+      },
+      {
+        "name": "Projection",
+        "family": "TOP",
+        "python_type": "projectionTOP",
+        "slug": "Projection_TOP",
+        "url": "https://docs.derivative.ca/Projection_TOP"
+      },
+      {
+        "name": "RGB Key",
+        "family": "TOP",
+        "python_type": "rgbkeyTOP",
+        "slug": "RGB_Key_TOP",
+        "url": "https://docs.derivative.ca/RGB_Key_TOP"
+      },
+      {
+        "name": "RGB to HSV",
+        "family": "TOP",
+        "python_type": "rgbtohsvTOP",
+        "slug": "RGB_to_HSV_TOP",
+        "url": "https://docs.derivative.ca/RGB_to_HSV_TOP"
+      },
+      {
+        "name": "Ramp",
+        "family": "TOP",
+        "python_type": "rampTOP",
+        "slug": "Ramp_TOP",
+        "url": "https://docs.derivative.ca/Ramp_TOP"
+      },
+      {
+        "name": "RealSense",
+        "family": "TOP",
+        "python_type": "realsenseTOP",
+        "slug": "RealSense_TOP",
+        "url": "https://docs.derivative.ca/RealSense_TOP"
+      },
+      {
+        "name": "Rectangle",
+        "family": "TOP",
+        "python_type": "rectangleTOP",
+        "slug": "Rectangle_TOP",
+        "url": "https://docs.derivative.ca/Rectangle_TOP"
+      },
+      {
+        "name": "Remap",
+        "family": "TOP",
+        "python_type": "remapTOP",
+        "slug": "Remap_TOP",
+        "url": "https://docs.derivative.ca/Remap_TOP"
+      },
+      {
+        "name": "RenderStream In",
+        "family": "TOP",
+        "python_type": "renderstreaminTOP",
+        "slug": "RenderStream_In_TOP",
+        "url": "https://docs.derivative.ca/RenderStream_In_TOP"
+      },
+      {
+        "name": "RenderStream Out",
+        "family": "TOP",
+        "python_type": "renderstreamoutTOP",
+        "slug": "RenderStream_Out_TOP",
+        "url": "https://docs.derivative.ca/RenderStream_Out_TOP"
+      },
+      {
+        "name": "Render Pass",
+        "family": "TOP",
+        "python_type": "renderpassTOP",
+        "slug": "Render_Pass_TOP",
+        "url": "https://docs.derivative.ca/Render_Pass_TOP"
+      },
+      {
+        "name": "Render Select",
+        "family": "TOP",
+        "python_type": "renderselectTOP",
+        "slug": "Render_Select_TOP",
+        "url": "https://docs.derivative.ca/Render_Select_TOP"
+      },
+      {
+        "name": "Render Simple",
+        "family": "TOP",
+        "python_type": "rendersimpleTOP",
+        "slug": "Render_Simple_TOP",
+        "url": "https://docs.derivative.ca/Render_Simple_TOP"
+      },
+      {
+        "name": "Render",
+        "family": "TOP",
+        "python_type": "renderTOP",
+        "slug": "Render_TOP",
+        "url": "https://docs.derivative.ca/Render_TOP"
+      },
+      {
+        "name": "Reorder",
+        "family": "TOP",
+        "python_type": "reorderTOP",
+        "slug": "Reorder_TOP",
+        "url": "https://docs.derivative.ca/Reorder_TOP"
+      },
+      {
+        "name": "Resolution",
+        "family": "TOP",
+        "python_type": "resolutionTOP",
+        "slug": "Resolution_TOP",
+        "url": "https://docs.derivative.ca/Resolution_TOP"
+      },
+      {
+        "name": "SICK",
+        "family": "TOP",
+        "python_type": "sickTOP",
+        "slug": "SICK_TOP",
+        "url": "https://docs.derivative.ca/SICK_TOP"
+      },
+      {
+        "name": "SSAO",
+        "family": "TOP",
+        "python_type": "ssaoTOP",
+        "slug": "SSAO_TOP",
+        "url": "https://docs.derivative.ca/SSAO_TOP"
+      },
+      {
+        "name": "ST2110 In",
+        "family": "TOP",
+        "python_type": "st2110inTOP",
+        "slug": "ST2110_In_TOP",
+        "url": "https://docs.derivative.ca/ST2110_In_TOP"
+      },
+      {
+        "name": "ST2110 Out",
+        "family": "TOP",
+        "python_type": "st2110outTOP",
+        "slug": "ST2110_Out_TOP",
+        "url": "https://docs.derivative.ca/ST2110_Out_TOP"
+      },
+      {
+        "name": "SVG",
+        "family": "TOP",
+        "python_type": "svgTOP",
+        "slug": "SVG_TOP",
+        "url": "https://docs.derivative.ca/SVG_TOP"
+      },
+      {
+        "name": "Scalable Display",
+        "family": "TOP",
+        "python_type": "scalabledisplayTOP",
+        "slug": "Scalable_Display_TOP",
+        "url": "https://docs.derivative.ca/Scalable_Display_TOP"
+      },
+      {
+        "name": "Screen Grab",
+        "family": "TOP",
+        "python_type": "screengrabTOP",
+        "slug": "Screen_Grab_TOP",
+        "url": "https://docs.derivative.ca/Screen_Grab_TOP"
+      },
+      {
+        "name": "Screen",
+        "family": "TOP",
+        "python_type": "screenTOP",
+        "slug": "Screen_TOP",
+        "url": "https://docs.derivative.ca/Screen_TOP"
+      },
+      {
+        "name": "Script",
+        "family": "TOP",
+        "python_type": "scriptTOP",
+        "slug": "Script_TOP",
+        "url": "https://docs.derivative.ca/Script_TOP"
+      },
+      {
+        "name": "Select",
+        "family": "TOP",
+        "python_type": "selectTOP",
+        "slug": "Select_TOP",
+        "url": "https://docs.derivative.ca/Select_TOP"
+      },
+      {
+        "name": "Shared Mem In",
+        "family": "TOP",
+        "python_type": "sharedmeminTOP",
+        "slug": "Shared_Mem_In_TOP",
+        "url": "https://docs.derivative.ca/Shared_Mem_In_TOP"
+      },
+      {
+        "name": "Shared Mem Out",
+        "family": "TOP",
+        "python_type": "sharedmemoutTOP",
+        "slug": "Shared_Mem_Out_TOP",
+        "url": "https://docs.derivative.ca/Shared_Mem_Out_TOP"
+      },
+      {
+        "name": "Slope",
+        "family": "TOP",
+        "python_type": "slopeTOP",
+        "slug": "Slope_TOP",
+        "url": "https://docs.derivative.ca/Slope_TOP"
+      },
+      {
+        "name": "Spectrum",
+        "family": "TOP",
+        "python_type": "spectrumTOP",
+        "slug": "Spectrum_TOP",
+        "url": "https://docs.derivative.ca/Spectrum_TOP"
+      },
+      {
+        "name": "Stype",
+        "family": "TOP",
+        "python_type": "stypeTOP",
+        "slug": "Stype_TOP",
+        "url": "https://docs.derivative.ca/Stype_TOP"
+      },
+      {
+        "name": "Substance Select",
+        "family": "TOP",
+        "python_type": "substanceselectTOP",
+        "slug": "Substance_Select_TOP",
+        "url": "https://docs.derivative.ca/Substance_Select_TOP"
+      },
+      {
+        "name": "Substance",
+        "family": "TOP",
+        "python_type": "substanceTOP",
+        "slug": "Substance_TOP",
+        "url": "https://docs.derivative.ca/Substance_TOP"
+      },
+      {
+        "name": "Subtract",
+        "family": "TOP",
+        "python_type": "subtractTOP",
+        "slug": "Subtract_TOP",
+        "url": "https://docs.derivative.ca/Subtract_TOP"
+      },
+      {
+        "name": "Switch",
+        "family": "TOP",
+        "python_type": "switchTOP",
+        "slug": "Switch_TOP",
+        "url": "https://docs.derivative.ca/Switch_TOP"
+      },
+      {
+        "name": "Syphon Spout In",
+        "family": "TOP",
+        "python_type": "syphonspoutinTOP",
+        "slug": "Syphon_Spout_In_TOP",
+        "url": "https://docs.derivative.ca/Syphon_Spout_In_TOP"
+      },
+      {
+        "name": "Syphon Spout Out",
+        "family": "TOP",
+        "python_type": "syphonspoutoutTOP",
+        "slug": "Syphon_Spout_Out_TOP",
+        "url": "https://docs.derivative.ca/Syphon_Spout_Out_TOP"
+      },
+      {
+        "name": "Text",
+        "family": "TOP",
+        "python_type": "textTOP",
+        "slug": "Text_TOP",
+        "url": "https://docs.derivative.ca/Text_TOP"
+      },
+      {
+        "name": "Texture 3D",
+        "family": "TOP",
+        "python_type": "texture3dTOP",
+        "slug": "Texture_3D_TOP",
+        "url": "https://docs.derivative.ca/Texture_3D_TOP"
+      },
+      {
+        "name": "Threshold",
+        "family": "TOP",
+        "python_type": "thresholdTOP",
+        "slug": "Threshold_TOP",
+        "url": "https://docs.derivative.ca/Threshold_TOP"
+      },
+      {
+        "name": "Tile",
+        "family": "TOP",
+        "python_type": "tileTOP",
+        "slug": "Tile_TOP",
+        "url": "https://docs.derivative.ca/Tile_TOP"
+      },
+      {
+        "name": "Time Machine",
+        "family": "TOP",
+        "python_type": "timemachineTOP",
+        "slug": "Time_Machine_TOP",
+        "url": "https://docs.derivative.ca/Time_Machine_TOP"
+      },
+      {
+        "name": "Tone Map",
+        "family": "TOP",
+        "python_type": "tonemapTOP",
+        "slug": "Tone_Map_TOP",
+        "url": "https://docs.derivative.ca/Tone_Map_TOP"
+      },
+      {
+        "name": "Touch In",
+        "family": "TOP",
+        "python_type": "touchinTOP",
+        "slug": "Touch_In_TOP",
+        "url": "https://docs.derivative.ca/Touch_In_TOP"
+      },
+      {
+        "name": "Touch Out",
+        "family": "TOP",
+        "python_type": "touchoutTOP",
+        "slug": "Touch_Out_TOP",
+        "url": "https://docs.derivative.ca/Touch_Out_TOP"
+      },
+      {
+        "name": "Transform",
+        "family": "TOP",
+        "python_type": "transformTOP",
+        "slug": "Transform_TOP",
+        "url": "https://docs.derivative.ca/Transform_TOP"
+      },
+      {
+        "name": "Under",
+        "family": "TOP",
+        "python_type": "underTOP",
+        "slug": "Under_TOP",
+        "url": "https://docs.derivative.ca/Under_TOP"
+      },
+      {
+        "name": "Video Device In",
+        "family": "TOP",
+        "python_type": "videodeviceinTOP",
+        "slug": "Video_Device_In_TOP",
+        "url": "https://docs.derivative.ca/Video_Device_In_TOP"
+      },
+      {
+        "name": "Video Device Out",
+        "family": "TOP",
+        "python_type": "videodeviceoutTOP",
+        "slug": "Video_Device_Out_TOP",
+        "url": "https://docs.derivative.ca/Video_Device_Out_TOP"
+      },
+      {
+        "name": "Video Stream In",
+        "family": "TOP",
+        "python_type": "videostreaminTOP",
+        "slug": "Video_Stream_In_TOP",
+        "url": "https://docs.derivative.ca/Video_Stream_In_TOP"
+      },
+      {
+        "name": "Video Stream Out",
+        "family": "TOP",
+        "python_type": "videostreamoutTOP",
+        "slug": "Video_Stream_Out_TOP",
+        "url": "https://docs.derivative.ca/Video_Stream_Out_TOP"
+      },
+      {
+        "name": "Vioso",
+        "family": "TOP",
+        "python_type": "viosoTOP",
+        "slug": "Vioso_TOP",
+        "url": "https://docs.derivative.ca/Vioso_TOP"
+      },
+      {
+        "name": "Web Render",
+        "family": "TOP",
+        "python_type": "webrenderTOP",
+        "slug": "Web_Render_TOP",
+        "url": "https://docs.derivative.ca/Web_Render_TOP"
+      },
+      {
+        "name": "ZED Select",
+        "family": "TOP",
+        "python_type": "zedselectTOP",
+        "slug": "ZED_Select_TOP",
+        "url": "https://docs.derivative.ca/ZED_Select_TOP"
+      },
+      {
+        "name": "ZED",
+        "family": "TOP",
+        "python_type": "zedTOP",
+        "slug": "ZED_TOP",
+        "url": "https://docs.derivative.ca/ZED_TOP"
+      }
+    ],
+    "CHOP": [
+      {
+        "name": "Ableton Link",
+        "family": "CHOP",
+        "python_type": "abletonlinkCHOP",
+        "slug": "Ableton_Link_CHOP",
+        "url": "https://docs.derivative.ca/Ableton_Link_CHOP"
+      },
+      {
+        "name": "Analyze",
+        "family": "CHOP",
+        "python_type": "analyzeCHOP",
+        "slug": "Analyze_CHOP",
+        "url": "https://docs.derivative.ca/Analyze_CHOP"
+      },
+      {
+        "name": "Angle",
+        "family": "CHOP",
+        "python_type": "angleCHOP",
+        "slug": "Angle_CHOP",
+        "url": "https://docs.derivative.ca/Angle_CHOP"
+      },
+      {
+        "name": "Attribute",
+        "family": "CHOP",
+        "python_type": "attributeCHOP",
+        "slug": "Attribute_CHOP",
+        "url": "https://docs.derivative.ca/Attribute_CHOP"
+      },
+      {
+        "name": "Audio Band EQ",
+        "family": "CHOP",
+        "python_type": "audiobandeqCHOP",
+        "slug": "Audio_Band_EQ_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Band_EQ_CHOP"
+      },
+      {
+        "name": "Audio Binaural",
+        "family": "CHOP",
+        "python_type": "audiobinauralCHOP",
+        "slug": "Audio_Binaural_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Binaural_CHOP"
+      },
+      {
+        "name": "Audio Device In",
+        "family": "CHOP",
+        "python_type": "audiodeviceinCHOP",
+        "slug": "Audio_Device_In_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Device_In_CHOP"
+      },
+      {
+        "name": "Audio Device Out",
+        "family": "CHOP",
+        "python_type": "audiodeviceoutCHOP",
+        "slug": "Audio_Device_Out_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Device_Out_CHOP"
+      },
+      {
+        "name": "Audio Dynamics",
+        "family": "CHOP",
+        "python_type": "audiodynamicsCHOP",
+        "slug": "Audio_Dynamics_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Dynamics_CHOP"
+      },
+      {
+        "name": "Audio File In",
+        "family": "CHOP",
+        "python_type": "audiofileinCHOP",
+        "slug": "Audio_File_In_CHOP",
+        "url": "https://docs.derivative.ca/Audio_File_In_CHOP"
+      },
+      {
+        "name": "Audio File Out",
+        "family": "CHOP",
+        "python_type": "audiofileoutCHOP",
+        "slug": "Audio_File_Out_CHOP",
+        "url": "https://docs.derivative.ca/Audio_File_Out_CHOP"
+      },
+      {
+        "name": "Audio Filter",
+        "family": "CHOP",
+        "python_type": "audiofilterCHOP",
+        "slug": "Audio_Filter_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Filter_CHOP"
+      },
+      {
+        "name": "Audio Movie",
+        "family": "CHOP",
+        "python_type": "audiomovieCHOP",
+        "slug": "Audio_Movie_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Movie_CHOP"
+      },
+      {
+        "name": "Audio NDI",
+        "family": "CHOP",
+        "python_type": "audiondiCHOP",
+        "slug": "Audio_NDI_CHOP",
+        "url": "https://docs.derivative.ca/Audio_NDI_CHOP"
+      },
+      {
+        "name": "Audio Oscillator",
+        "family": "CHOP",
+        "python_type": "audiooscillatorCHOP",
+        "slug": "Audio_Oscillator_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Oscillator_CHOP"
+      },
+      {
+        "name": "Audio Para EQ",
+        "family": "CHOP",
+        "python_type": "audioparaeqCHOP",
+        "slug": "Audio_Para_EQ_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Para_EQ_CHOP"
+      },
+      {
+        "name": "Audio Play",
+        "family": "CHOP",
+        "python_type": "audioplayCHOP",
+        "slug": "Audio_Play_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Play_CHOP"
+      },
+      {
+        "name": "Audio Render",
+        "family": "CHOP",
+        "python_type": "audiorenderCHOP",
+        "slug": "Audio_Render_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Render_CHOP"
+      },
+      {
+        "name": "Audio Spectrum",
+        "family": "CHOP",
+        "python_type": "audiospectrumCHOP",
+        "slug": "Audio_Spectrum_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Spectrum_CHOP"
+      },
+      {
+        "name": "Audio Stream In",
+        "family": "CHOP",
+        "python_type": "audiostreaminCHOP",
+        "slug": "Audio_Stream_In_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Stream_In_CHOP"
+      },
+      {
+        "name": "Audio Stream Out",
+        "family": "CHOP",
+        "python_type": "audiostreamoutCHOP",
+        "slug": "Audio_Stream_Out_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Stream_Out_CHOP"
+      },
+      {
+        "name": "Audio VST",
+        "family": "CHOP",
+        "python_type": "audiovstCHOP",
+        "slug": "Audio_VST_CHOP",
+        "url": "https://docs.derivative.ca/Audio_VST_CHOP"
+      },
+      {
+        "name": "Audio Web Render",
+        "family": "CHOP",
+        "python_type": "audiowebrenderCHOP",
+        "slug": "Audio_Web_Render_CHOP",
+        "url": "https://docs.derivative.ca/Audio_Web_Render_CHOP"
+      },
+      {
+        "name": "Beat",
+        "family": "CHOP",
+        "python_type": "beatCHOP",
+        "slug": "Beat_CHOP",
+        "url": "https://docs.derivative.ca/Beat_CHOP"
+      },
+      {
+        "name": "Bind",
+        "family": "CHOP",
+        "python_type": "bindCHOP",
+        "slug": "Bind_CHOP",
+        "url": "https://docs.derivative.ca/Bind_CHOP"
+      },
+      {
+        "name": "BlackTrax",
+        "family": "CHOP",
+        "python_type": "blacktraxCHOP",
+        "slug": "BlackTrax_CHOP",
+        "url": "https://docs.derivative.ca/BlackTrax_CHOP"
+      },
+      {
+        "name": "Blend",
+        "family": "CHOP",
+        "python_type": "blendCHOP",
+        "slug": "Blend_CHOP",
+        "url": "https://docs.derivative.ca/Blend_CHOP"
+      },
+      {
+        "name": "Blob Track",
+        "family": "CHOP",
+        "python_type": "blobtrackCHOP",
+        "slug": "Blob_Track_CHOP",
+        "url": "https://docs.derivative.ca/Blob_Track_CHOP"
+      },
+      {
+        "name": "Body Track",
+        "family": "CHOP",
+        "python_type": "bodytrackCHOP",
+        "slug": "Body_Track_CHOP",
+        "url": "https://docs.derivative.ca/Body_Track_CHOP"
+      },
+      {
+        "name": "Bullet Solver",
+        "family": "CHOP",
+        "python_type": "bulletsolverCHOP",
+        "slug": "Bullet_Solver_CHOP",
+        "url": "https://docs.derivative.ca/Bullet_Solver_CHOP"
+      },
+      {
+        "name": "CPlusPlus",
+        "family": "CHOP",
+        "python_type": "cplusplusCHOP",
+        "slug": "CPlusPlus_CHOP",
+        "url": "https://docs.derivative.ca/CPlusPlus_CHOP"
+      },
+      {
+        "name": "Clip Blender",
+        "family": "CHOP",
+        "python_type": "clipblenderCHOP",
+        "slug": "Clip_Blender_CHOP",
+        "url": "https://docs.derivative.ca/Clip_Blender_CHOP"
+      },
+      {
+        "name": "Clip",
+        "family": "CHOP",
+        "python_type": "clipCHOP",
+        "slug": "Clip_CHOP",
+        "url": "https://docs.derivative.ca/Clip_CHOP"
+      },
+      {
+        "name": "Clock",
+        "family": "CHOP",
+        "python_type": "clockCHOP",
+        "slug": "Clock_CHOP",
+        "url": "https://docs.derivative.ca/Clock_CHOP"
+      },
+      {
+        "name": "Composite",
+        "family": "CHOP",
+        "python_type": "compositeCHOP",
+        "slug": "Composite_CHOP",
+        "url": "https://docs.derivative.ca/Composite_CHOP"
+      },
+      {
+        "name": "Constant",
+        "family": "CHOP",
+        "python_type": "constantCHOP",
+        "slug": "Constant_CHOP",
+        "url": "https://docs.derivative.ca/Constant_CHOP"
+      },
+      {
+        "name": "Copy",
+        "family": "CHOP",
+        "python_type": "copyCHOP",
+        "slug": "Copy_CHOP",
+        "url": "https://docs.derivative.ca/Copy_CHOP"
+      },
+      {
+        "name": "Count",
+        "family": "CHOP",
+        "python_type": "countCHOP",
+        "slug": "Count_CHOP",
+        "url": "https://docs.derivative.ca/Count_CHOP"
+      },
+      {
+        "name": "Cross",
+        "family": "CHOP",
+        "python_type": "crossCHOP",
+        "slug": "Cross_CHOP",
+        "url": "https://docs.derivative.ca/Cross_CHOP"
+      },
+      {
+        "name": "Cycle",
+        "family": "CHOP",
+        "python_type": "cycleCHOP",
+        "slug": "Cycle_CHOP",
+        "url": "https://docs.derivative.ca/Cycle_CHOP"
+      },
+      {
+        "name": "DAT to",
+        "family": "CHOP",
+        "python_type": "dattoCHOP",
+        "slug": "DAT_to_CHOP",
+        "url": "https://docs.derivative.ca/DAT_to_CHOP"
+      },
+      {
+        "name": "DMX In",
+        "family": "CHOP",
+        "python_type": "dmxinCHOP",
+        "slug": "DMX_In_CHOP",
+        "url": "https://docs.derivative.ca/DMX_In_CHOP"
+      },
+      {
+        "name": "DMX Out",
+        "family": "CHOP",
+        "python_type": "dmxoutCHOP",
+        "slug": "DMX_Out_CHOP",
+        "url": "https://docs.derivative.ca/DMX_Out_CHOP"
+      },
+      {
+        "name": "Delay",
+        "family": "CHOP",
+        "python_type": "delayCHOP",
+        "slug": "Delay_CHOP",
+        "url": "https://docs.derivative.ca/Delay_CHOP"
+      },
+      {
+        "name": "Delete",
+        "family": "CHOP",
+        "python_type": "deleteCHOP",
+        "slug": "Delete_CHOP",
+        "url": "https://docs.derivative.ca/Delete_CHOP"
+      },
+      {
+        "name": "Envelope",
+        "family": "CHOP",
+        "python_type": "envelopeCHOP",
+        "slug": "Envelope_CHOP",
+        "url": "https://docs.derivative.ca/Envelope_CHOP"
+      },
+      {
+        "name": "EtherDream",
+        "family": "CHOP",
+        "python_type": "etherdreamCHOP",
+        "slug": "EtherDream_CHOP",
+        "url": "https://docs.derivative.ca/EtherDream_CHOP"
+      },
+      {
+        "name": "Event",
+        "family": "CHOP",
+        "python_type": "eventCHOP",
+        "slug": "Event_CHOP",
+        "url": "https://docs.derivative.ca/Event_CHOP"
+      },
+      {
+        "name": "Expression",
+        "family": "CHOP",
+        "python_type": "expressionCHOP",
+        "slug": "Expression_CHOP",
+        "url": "https://docs.derivative.ca/Expression_CHOP"
+      },
+      {
+        "name": "Extend",
+        "family": "CHOP",
+        "python_type": "extendCHOP",
+        "slug": "Extend_CHOP",
+        "url": "https://docs.derivative.ca/Extend_CHOP"
+      },
+      {
+        "name": "Face Track",
+        "family": "CHOP",
+        "python_type": "facetrackCHOP",
+        "slug": "Face_Track_CHOP",
+        "url": "https://docs.derivative.ca/Face_Track_CHOP"
+      },
+      {
+        "name": "Fan",
+        "family": "CHOP",
+        "python_type": "fanCHOP",
+        "slug": "Fan_CHOP",
+        "url": "https://docs.derivative.ca/Fan_CHOP"
+      },
+      {
+        "name": "Feedback",
+        "family": "CHOP",
+        "python_type": "feedbackCHOP",
+        "slug": "Feedback_CHOP",
+        "url": "https://docs.derivative.ca/Feedback_CHOP"
+      },
+      {
+        "name": "File In",
+        "family": "CHOP",
+        "python_type": "fileinCHOP",
+        "slug": "File_In_CHOP",
+        "url": "https://docs.derivative.ca/File_In_CHOP"
+      },
+      {
+        "name": "File Out",
+        "family": "CHOP",
+        "python_type": "fileoutCHOP",
+        "slug": "File_Out_CHOP",
+        "url": "https://docs.derivative.ca/File_Out_CHOP"
+      },
+      {
+        "name": "Filter",
+        "family": "CHOP",
+        "python_type": "filterCHOP",
+        "slug": "Filter_CHOP",
+        "url": "https://docs.derivative.ca/Filter_CHOP"
+      },
+      {
+        "name": "FreeD In",
+        "family": "CHOP",
+        "python_type": "freedinCHOP",
+        "slug": "FreeD_In_CHOP",
+        "url": "https://docs.derivative.ca/FreeD_In_CHOP"
+      },
+      {
+        "name": "FreeD Out",
+        "family": "CHOP",
+        "python_type": "freedoutCHOP",
+        "slug": "FreeD_Out_CHOP",
+        "url": "https://docs.derivative.ca/FreeD_Out_CHOP"
+      },
+      {
+        "name": "Function",
+        "family": "CHOP",
+        "python_type": "functionCHOP",
+        "slug": "Function_CHOP",
+        "url": "https://docs.derivative.ca/Function_CHOP"
+      },
+      {
+        "name": "Gesture",
+        "family": "CHOP",
+        "python_type": "gestureCHOP",
+        "slug": "Gesture_CHOP",
+        "url": "https://docs.derivative.ca/Gesture_CHOP"
+      },
+      {
+        "name": "Handle",
+        "family": "CHOP",
+        "python_type": "handleCHOP",
+        "slug": "Handle_CHOP",
+        "url": "https://docs.derivative.ca/Handle_CHOP"
+      },
+      {
+        "name": "Helios DAC",
+        "family": "CHOP",
+        "python_type": "heliosdacCHOP",
+        "slug": "Helios_DAC_CHOP",
+        "url": "https://docs.derivative.ca/Helios_DAC_CHOP"
+      },
+      {
+        "name": "Hog",
+        "family": "CHOP",
+        "python_type": "hogCHOP",
+        "slug": "Hog_CHOP",
+        "url": "https://docs.derivative.ca/Hog_CHOP"
+      },
+      {
+        "name": "Hokuyo",
+        "family": "CHOP",
+        "python_type": "hokuyoCHOP",
+        "slug": "Hokuyo_CHOP",
+        "url": "https://docs.derivative.ca/Hokuyo_CHOP"
+      },
+      {
+        "name": "Hold",
+        "family": "CHOP",
+        "python_type": "holdCHOP",
+        "slug": "Hold_CHOP",
+        "url": "https://docs.derivative.ca/Hold_CHOP"
+      },
+      {
+        "name": "Import Select",
+        "family": "CHOP",
+        "python_type": "importselectCHOP",
+        "slug": "Import_Select_CHOP",
+        "url": "https://docs.derivative.ca/Import_Select_CHOP"
+      },
+      {
+        "name": "In",
+        "family": "CHOP",
+        "python_type": "inCHOP",
+        "slug": "In_CHOP",
+        "url": "https://docs.derivative.ca/In_CHOP"
+      },
+      {
+        "name": "Info",
+        "family": "CHOP",
+        "python_type": "infoCHOP",
+        "slug": "Info_CHOP",
+        "url": "https://docs.derivative.ca/Info_CHOP"
+      },
+      {
+        "name": "Interpolate",
+        "family": "CHOP",
+        "python_type": "interpolateCHOP",
+        "slug": "Interpolate_CHOP",
+        "url": "https://docs.derivative.ca/Interpolate_CHOP"
+      },
+      {
+        "name": "Inverse Curve",
+        "family": "CHOP",
+        "python_type": "inversecurveCHOP",
+        "slug": "Inverse_Curve_CHOP",
+        "url": "https://docs.derivative.ca/Inverse_Curve_CHOP"
+      },
+      {
+        "name": "Inverse Kin",
+        "family": "CHOP",
+        "python_type": "inversekinCHOP",
+        "slug": "Inverse_Kin_CHOP",
+        "url": "https://docs.derivative.ca/Inverse_Kin_CHOP"
+      },
+      {
+        "name": "Join",
+        "family": "CHOP",
+        "python_type": "joinCHOP",
+        "slug": "Join_CHOP",
+        "url": "https://docs.derivative.ca/Join_CHOP"
+      },
+      {
+        "name": "Joystick",
+        "family": "CHOP",
+        "python_type": "joystickCHOP",
+        "slug": "Joystick_CHOP",
+        "url": "https://docs.derivative.ca/Joystick_CHOP"
+      },
+      {
+        "name": "Keyboard In",
+        "family": "CHOP",
+        "python_type": "keyboardinCHOP",
+        "slug": "Keyboard_In_CHOP",
+        "url": "https://docs.derivative.ca/Keyboard_In_CHOP"
+      },
+      {
+        "name": "Keyframe",
+        "family": "CHOP",
+        "python_type": "keyframeCHOP",
+        "slug": "Keyframe_CHOP",
+        "url": "https://docs.derivative.ca/Keyframe_CHOP"
+      },
+      {
+        "name": "Kinect Azure",
+        "family": "CHOP",
+        "python_type": "kinectazureCHOP",
+        "slug": "Kinect_Azure_CHOP",
+        "url": "https://docs.derivative.ca/Kinect_Azure_CHOP"
+      },
+      {
+        "name": "Kinect",
+        "family": "CHOP",
+        "python_type": "kinectCHOP",
+        "slug": "Kinect_CHOP",
+        "url": "https://docs.derivative.ca/Kinect_CHOP"
+      },
+      {
+        "name": "LFO",
+        "family": "CHOP",
+        "python_type": "lfoCHOP",
+        "slug": "LFO_CHOP",
+        "url": "https://docs.derivative.ca/LFO_CHOP"
+      },
+      {
+        "name": "LTC In",
+        "family": "CHOP",
+        "python_type": "ltcinCHOP",
+        "slug": "LTC_In_CHOP",
+        "url": "https://docs.derivative.ca/LTC_In_CHOP"
+      },
+      {
+        "name": "LTC Out",
+        "family": "CHOP",
+        "python_type": "ltcoutCHOP",
+        "slug": "LTC_Out_CHOP",
+        "url": "https://docs.derivative.ca/LTC_Out_CHOP"
+      },
+      {
+        "name": "Lag",
+        "family": "CHOP",
+        "python_type": "lagCHOP",
+        "slug": "Lag_CHOP",
+        "url": "https://docs.derivative.ca/Lag_CHOP"
+      },
+      {
+        "name": "Laser",
+        "family": "CHOP",
+        "python_type": "laserCHOP",
+        "slug": "Laser_CHOP",
+        "url": "https://docs.derivative.ca/Laser_CHOP"
+      },
+      {
+        "name": "Laser Device",
+        "family": "CHOP",
+        "python_type": "laserdeviceCHOP",
+        "slug": "Laser_Device_CHOP",
+        "url": "https://docs.derivative.ca/Laser_Device_CHOP"
+      },
+      {
+        "name": "Leap Motion",
+        "family": "CHOP",
+        "python_type": "leapmotionCHOP",
+        "slug": "Leap_Motion_CHOP",
+        "url": "https://docs.derivative.ca/Leap_Motion_CHOP"
+      },
+      {
+        "name": "Leuze ROD4",
+        "family": "CHOP",
+        "python_type": "leuzerod4CHOP",
+        "slug": "Leuze_ROD4_CHOP",
+        "url": "https://docs.derivative.ca/Leuze_ROD4_CHOP"
+      },
+      {
+        "name": "Limit",
+        "family": "CHOP",
+        "python_type": "limitCHOP",
+        "slug": "Limit_CHOP",
+        "url": "https://docs.derivative.ca/Limit_CHOP"
+      },
+      {
+        "name": "Logic",
+        "family": "CHOP",
+        "python_type": "logicCHOP",
+        "slug": "Logic_CHOP",
+        "url": "https://docs.derivative.ca/Logic_CHOP"
+      },
+      {
+        "name": "Lookup",
+        "family": "CHOP",
+        "python_type": "lookupCHOP",
+        "slug": "Lookup_CHOP",
+        "url": "https://docs.derivative.ca/Lookup_CHOP"
+      },
+      {
+        "name": "MIDI In",
+        "family": "CHOP",
+        "python_type": "midiinCHOP",
+        "slug": "MIDI_In_CHOP",
+        "url": "https://docs.derivative.ca/MIDI_In_CHOP"
+      },
+      {
+        "name": "MIDI In Map",
+        "family": "CHOP",
+        "python_type": "midiinmapCHOP",
+        "slug": "MIDI_In_Map_CHOP",
+        "url": "https://docs.derivative.ca/MIDI_In_Map_CHOP"
+      },
+      {
+        "name": "MIDI Out",
+        "family": "CHOP",
+        "python_type": "midioutCHOP",
+        "slug": "MIDI_Out_CHOP",
+        "url": "https://docs.derivative.ca/MIDI_Out_CHOP"
+      },
+      {
+        "name": "Math",
+        "family": "CHOP",
+        "python_type": "mathCHOP",
+        "slug": "Math_CHOP",
+        "url": "https://docs.derivative.ca/Math_CHOP"
+      },
+      {
+        "name": "Merge",
+        "family": "CHOP",
+        "python_type": "mergeCHOP",
+        "slug": "Merge_CHOP",
+        "url": "https://docs.derivative.ca/Merge_CHOP"
+      },
+      {
+        "name": "MoSys",
+        "family": "CHOP",
+        "python_type": "mosysCHOP",
+        "slug": "MoSys_CHOP",
+        "url": "https://docs.derivative.ca/MoSys_CHOP"
+      },
+      {
+        "name": "Mouse In",
+        "family": "CHOP",
+        "python_type": "mouseinCHOP",
+        "slug": "Mouse_In_CHOP",
+        "url": "https://docs.derivative.ca/Mouse_In_CHOP"
+      },
+      {
+        "name": "Mouse Out",
+        "family": "CHOP",
+        "python_type": "mouseoutCHOP",
+        "slug": "Mouse_Out_CHOP",
+        "url": "https://docs.derivative.ca/Mouse_Out_CHOP"
+      },
+      {
+        "name": "Ncam",
+        "family": "CHOP",
+        "python_type": "ncamCHOP",
+        "slug": "Ncam_CHOP",
+        "url": "https://docs.derivative.ca/Ncam_CHOP"
+      },
+      {
+        "name": "Noise",
+        "family": "CHOP",
+        "python_type": "noiseCHOP",
+        "slug": "Noise_CHOP",
+        "url": "https://docs.derivative.ca/Noise_CHOP"
+      },
+      {
+        "name": "Null",
+        "family": "CHOP",
+        "python_type": "nullCHOP",
+        "slug": "Null_CHOP",
+        "url": "https://docs.derivative.ca/Null_CHOP"
+      },
+      {
+        "name": "OAK Device",
+        "family": "CHOP",
+        "python_type": "oakdeviceCHOP",
+        "slug": "OAK_Device_CHOP",
+        "url": "https://docs.derivative.ca/OAK_Device_CHOP"
+      },
+      {
+        "name": "OAK Select",
+        "family": "CHOP",
+        "python_type": "oakselectCHOP",
+        "slug": "OAK_Select_CHOP",
+        "url": "https://docs.derivative.ca/OAK_Select_CHOP"
+      },
+      {
+        "name": "OSC In",
+        "family": "CHOP",
+        "python_type": "oscinCHOP",
+        "slug": "OSC_In_CHOP",
+        "url": "https://docs.derivative.ca/OSC_In_CHOP"
+      },
+      {
+        "name": "OSC Out",
+        "family": "CHOP",
+        "python_type": "oscoutCHOP",
+        "slug": "OSC_Out_CHOP",
+        "url": "https://docs.derivative.ca/OSC_Out_CHOP"
+      },
+      {
+        "name": "Object",
+        "family": "CHOP",
+        "python_type": "objectCHOP",
+        "slug": "Object_CHOP",
+        "url": "https://docs.derivative.ca/Object_CHOP"
+      },
+      {
+        "name": "Oculus Audio",
+        "family": "CHOP",
+        "python_type": "oculusaudioCHOP",
+        "slug": "Oculus_Audio_CHOP",
+        "url": "https://docs.derivative.ca/Oculus_Audio_CHOP"
+      },
+      {
+        "name": "Oculus Rift",
+        "family": "CHOP",
+        "python_type": "oculusriftCHOP",
+        "slug": "Oculus_Rift_CHOP",
+        "url": "https://docs.derivative.ca/Oculus_Rift_CHOP"
+      },
+      {
+        "name": "OpenVR",
+        "family": "CHOP",
+        "python_type": "openvrCHOP",
+        "slug": "OpenVR_CHOP",
+        "url": "https://docs.derivative.ca/OpenVR_CHOP"
+      },
+      {
+        "name": "OptiTrack In",
+        "family": "CHOP",
+        "python_type": "optitrackinCHOP",
+        "slug": "OptiTrack_In_CHOP",
+        "url": "https://docs.derivative.ca/OptiTrack_In_CHOP"
+      },
+      {
+        "name": "Out",
+        "family": "CHOP",
+        "python_type": "outCHOP",
+        "slug": "Out_CHOP",
+        "url": "https://docs.derivative.ca/Out_CHOP"
+      },
+      {
+        "name": "Override",
+        "family": "CHOP",
+        "python_type": "overrideCHOP",
+        "slug": "Override_CHOP",
+        "url": "https://docs.derivative.ca/Override_CHOP"
+      },
+      {
+        "name": "POP to",
+        "family": "CHOP",
+        "python_type": "poptoCHOP",
+        "slug": "POP_to_CHOP",
+        "url": "https://docs.derivative.ca/POP_to_CHOP"
+      },
+      {
+        "name": "Pan Tilt",
+        "family": "CHOP",
+        "python_type": "pantiltCHOP",
+        "slug": "Pan_Tilt_CHOP",
+        "url": "https://docs.derivative.ca/Pan_Tilt_CHOP"
+      },
+      {
+        "name": "Panel",
+        "family": "CHOP",
+        "python_type": "panelCHOP",
+        "slug": "Panel_CHOP",
+        "url": "https://docs.derivative.ca/Panel_CHOP"
+      },
+      {
+        "name": "Pangolin",
+        "family": "CHOP",
+        "python_type": "pangolinCHOP",
+        "slug": "Pangolin_CHOP",
+        "url": "https://docs.derivative.ca/Pangolin_CHOP"
+      },
+      {
+        "name": "Parameter",
+        "family": "CHOP",
+        "python_type": "parameterCHOP",
+        "slug": "Parameter_CHOP",
+        "url": "https://docs.derivative.ca/Parameter_CHOP"
+      },
+      {
+        "name": "Pattern",
+        "family": "CHOP",
+        "python_type": "patternCHOP",
+        "slug": "Pattern_CHOP",
+        "url": "https://docs.derivative.ca/Pattern_CHOP"
+      },
+      {
+        "name": "Perform",
+        "family": "CHOP",
+        "python_type": "performCHOP",
+        "slug": "Perform_CHOP",
+        "url": "https://docs.derivative.ca/Perform_CHOP"
+      },
+      {
+        "name": "Phaser",
+        "family": "CHOP",
+        "python_type": "phaserCHOP",
+        "slug": "Phaser_CHOP",
+        "url": "https://docs.derivative.ca/Phaser_CHOP"
+      },
+      {
+        "name": "Pipe In",
+        "family": "CHOP",
+        "python_type": "pipeinCHOP",
+        "slug": "Pipe_In_CHOP",
+        "url": "https://docs.derivative.ca/Pipe_In_CHOP"
+      },
+      {
+        "name": "Pipe Out",
+        "family": "CHOP",
+        "python_type": "pipeoutCHOP",
+        "slug": "Pipe_Out_CHOP",
+        "url": "https://docs.derivative.ca/Pipe_Out_CHOP"
+      },
+      {
+        "name": "PosiStageNet",
+        "family": "CHOP",
+        "python_type": "posistagenetCHOP",
+        "slug": "PosiStageNet_CHOP",
+        "url": "https://docs.derivative.ca/PosiStageNet_CHOP"
+      },
+      {
+        "name": "Pulse",
+        "family": "CHOP",
+        "python_type": "pulseCHOP",
+        "slug": "Pulse_CHOP",
+        "url": "https://docs.derivative.ca/Pulse_CHOP"
+      },
+      {
+        "name": "RealSense",
+        "family": "CHOP",
+        "python_type": "realsenseCHOP",
+        "slug": "RealSense_CHOP",
+        "url": "https://docs.derivative.ca/RealSense_CHOP"
+      },
+      {
+        "name": "Record",
+        "family": "CHOP",
+        "python_type": "recordCHOP",
+        "slug": "Record_CHOP",
+        "url": "https://docs.derivative.ca/Record_CHOP"
+      },
+      {
+        "name": "Rename",
+        "family": "CHOP",
+        "python_type": "renameCHOP",
+        "slug": "Rename_CHOP",
+        "url": "https://docs.derivative.ca/Rename_CHOP"
+      },
+      {
+        "name": "RenderStream In",
+        "family": "CHOP",
+        "python_type": "renderstreaminCHOP",
+        "slug": "RenderStream_In_CHOP",
+        "url": "https://docs.derivative.ca/RenderStream_In_CHOP"
+      },
+      {
+        "name": "Render Pick",
+        "family": "CHOP",
+        "python_type": "renderpickCHOP",
+        "slug": "Render_Pick_CHOP",
+        "url": "https://docs.derivative.ca/Render_Pick_CHOP"
+      },
+      {
+        "name": "Reorder",
+        "family": "CHOP",
+        "python_type": "reorderCHOP",
+        "slug": "Reorder_CHOP",
+        "url": "https://docs.derivative.ca/Reorder_CHOP"
+      },
+      {
+        "name": "Replace",
+        "family": "CHOP",
+        "python_type": "replaceCHOP",
+        "slug": "Replace_CHOP",
+        "url": "https://docs.derivative.ca/Replace_CHOP"
+      },
+      {
+        "name": "Resample",
+        "family": "CHOP",
+        "python_type": "resampleCHOP",
+        "slug": "Resample_CHOP",
+        "url": "https://docs.derivative.ca/Resample_CHOP"
+      },
+      {
+        "name": "SOP to",
+        "family": "CHOP",
+        "python_type": "soptoCHOP",
+        "slug": "SOP_to_CHOP",
+        "url": "https://docs.derivative.ca/SOP_to_CHOP"
+      },
+      {
+        "name": "ST2110 Device",
+        "family": "CHOP",
+        "python_type": "st2110deviceCHOP",
+        "slug": "ST2110_Device_CHOP",
+        "url": "https://docs.derivative.ca/ST2110_Device_CHOP"
+      },
+      {
+        "name": "S Curve",
+        "family": "CHOP",
+        "python_type": "scurveCHOP",
+        "slug": "S_Curve_CHOP",
+        "url": "https://docs.derivative.ca/S_Curve_CHOP"
+      },
+      {
+        "name": "Scan",
+        "family": "CHOP",
+        "python_type": "scanCHOP",
+        "slug": "Scan_CHOP",
+        "url": "https://docs.derivative.ca/Scan_CHOP"
+      },
+      {
+        "name": "Script",
+        "family": "CHOP",
+        "python_type": "scriptCHOP",
+        "slug": "Script_CHOP",
+        "url": "https://docs.derivative.ca/Script_CHOP"
+      },
+      {
+        "name": "Select",
+        "family": "CHOP",
+        "python_type": "selectCHOP",
+        "slug": "Select_CHOP",
+        "url": "https://docs.derivative.ca/Select_CHOP"
+      },
+      {
+        "name": "Sequencer",
+        "family": "CHOP",
+        "python_type": "sequencerCHOP",
+        "slug": "Sequencer_CHOP",
+        "url": "https://docs.derivative.ca/Sequencer_CHOP"
+      },
+      {
+        "name": "Serial",
+        "family": "CHOP",
+        "python_type": "serialCHOP",
+        "slug": "Serial_CHOP",
+        "url": "https://docs.derivative.ca/Serial_CHOP"
+      },
+      {
+        "name": "Shared Mem In",
+        "family": "CHOP",
+        "python_type": "sharedmeminCHOP",
+        "slug": "Shared_Mem_In_CHOP",
+        "url": "https://docs.derivative.ca/Shared_Mem_In_CHOP"
+      },
+      {
+        "name": "Shared Mem Out",
+        "family": "CHOP",
+        "python_type": "sharedmemoutCHOP",
+        "slug": "Shared_Mem_Out_CHOP",
+        "url": "https://docs.derivative.ca/Shared_Mem_Out_CHOP"
+      },
+      {
+        "name": "Shift",
+        "family": "CHOP",
+        "python_type": "shiftCHOP",
+        "slug": "Shift_CHOP",
+        "url": "https://docs.derivative.ca/Shift_CHOP"
+      },
+      {
+        "name": "Shuffle",
+        "family": "CHOP",
+        "python_type": "shuffleCHOP",
+        "slug": "Shuffle_CHOP",
+        "url": "https://docs.derivative.ca/Shuffle_CHOP"
+      },
+      {
+        "name": "Slope",
+        "family": "CHOP",
+        "python_type": "slopeCHOP",
+        "slug": "Slope_CHOP",
+        "url": "https://docs.derivative.ca/Slope_CHOP"
+      },
+      {
+        "name": "Sort",
+        "family": "CHOP",
+        "python_type": "sortCHOP",
+        "slug": "Sort_CHOP",
+        "url": "https://docs.derivative.ca/Sort_CHOP"
+      },
+      {
+        "name": "Speed",
+        "family": "CHOP",
+        "python_type": "speedCHOP",
+        "slug": "Speed_CHOP",
+        "url": "https://docs.derivative.ca/Speed_CHOP"
+      },
+      {
+        "name": "Splice",
+        "family": "CHOP",
+        "python_type": "spliceCHOP",
+        "slug": "Splice_CHOP",
+        "url": "https://docs.derivative.ca/Splice_CHOP"
+      },
+      {
+        "name": "Spring",
+        "family": "CHOP",
+        "python_type": "springCHOP",
+        "slug": "Spring_CHOP",
+        "url": "https://docs.derivative.ca/Spring_CHOP"
+      },
+      {
+        "name": "Stretch",
+        "family": "CHOP",
+        "python_type": "stretchCHOP",
+        "slug": "Stretch_CHOP",
+        "url": "https://docs.derivative.ca/Stretch_CHOP"
+      },
+      {
+        "name": "Stype In",
+        "family": "CHOP",
+        "python_type": "stypeinCHOP",
+        "slug": "Stype_In_CHOP",
+        "url": "https://docs.derivative.ca/Stype_In_CHOP"
+      },
+      {
+        "name": "Stype Out",
+        "family": "CHOP",
+        "python_type": "stypeoutCHOP",
+        "slug": "Stype_Out_CHOP",
+        "url": "https://docs.derivative.ca/Stype_Out_CHOP"
+      },
+      {
+        "name": "Switch",
+        "family": "CHOP",
+        "python_type": "switchCHOP",
+        "slug": "Switch_CHOP",
+        "url": "https://docs.derivative.ca/Switch_CHOP"
+      },
+      {
+        "name": "Sync In",
+        "family": "CHOP",
+        "python_type": "syncinCHOP",
+        "slug": "Sync_In_CHOP",
+        "url": "https://docs.derivative.ca/Sync_In_CHOP"
+      },
+      {
+        "name": "Sync Out",
+        "family": "CHOP",
+        "python_type": "syncoutCHOP",
+        "slug": "Sync_Out_CHOP",
+        "url": "https://docs.derivative.ca/Sync_Out_CHOP"
+      },
+      {
+        "name": "TOP to",
+        "family": "CHOP",
+        "python_type": "toptoCHOP",
+        "slug": "TOP_to_CHOP",
+        "url": "https://docs.derivative.ca/TOP_to_CHOP"
+      },
+      {
+        "name": "Tablet",
+        "family": "CHOP",
+        "python_type": "tabletCHOP",
+        "slug": "Tablet_CHOP",
+        "url": "https://docs.derivative.ca/Tablet_CHOP"
+      },
+      {
+        "name": "Time Slice",
+        "family": "CHOP",
+        "python_type": "timesliceCHOP",
+        "slug": "Time_Slice_CHOP",
+        "url": "https://docs.derivative.ca/Time_Slice_CHOP"
+      },
+      {
+        "name": "Timecode",
+        "family": "CHOP",
+        "python_type": "timecodeCHOP",
+        "slug": "Timecode_CHOP",
+        "url": "https://docs.derivative.ca/Timecode_CHOP"
+      },
+      {
+        "name": "Timeline",
+        "family": "CHOP",
+        "python_type": "timelineCHOP",
+        "slug": "Timeline_CHOP",
+        "url": "https://docs.derivative.ca/Timeline_CHOP"
+      },
+      {
+        "name": "Timer",
+        "family": "CHOP",
+        "python_type": "timerCHOP",
+        "slug": "Timer_CHOP",
+        "url": "https://docs.derivative.ca/Timer_CHOP"
+      },
+      {
+        "name": "Touch In",
+        "family": "CHOP",
+        "python_type": "touchinCHOP",
+        "slug": "Touch_In_CHOP",
+        "url": "https://docs.derivative.ca/Touch_In_CHOP"
+      },
+      {
+        "name": "Touch Out",
+        "family": "CHOP",
+        "python_type": "touchoutCHOP",
+        "slug": "Touch_Out_CHOP",
+        "url": "https://docs.derivative.ca/Touch_Out_CHOP"
+      },
+      {
+        "name": "Trail",
+        "family": "CHOP",
+        "python_type": "trailCHOP",
+        "slug": "Trail_CHOP",
+        "url": "https://docs.derivative.ca/Trail_CHOP"
+      },
+      {
+        "name": "Transform",
+        "family": "CHOP",
+        "python_type": "transformCHOP",
+        "slug": "Transform_CHOP",
+        "url": "https://docs.derivative.ca/Transform_CHOP"
+      },
+      {
+        "name": "Transform XYZ",
+        "family": "CHOP",
+        "python_type": "transformxyzCHOP",
+        "slug": "Transform_XYZ_CHOP",
+        "url": "https://docs.derivative.ca/Transform_XYZ_CHOP"
+      },
+      {
+        "name": "Trigger",
+        "family": "CHOP",
+        "python_type": "triggerCHOP",
+        "slug": "Trigger_CHOP",
+        "url": "https://docs.derivative.ca/Trigger_CHOP"
+      },
+      {
+        "name": "Trim",
+        "family": "CHOP",
+        "python_type": "trimCHOP",
+        "slug": "Trim_CHOP",
+        "url": "https://docs.derivative.ca/Trim_CHOP"
+      },
+      {
+        "name": "Warp",
+        "family": "CHOP",
+        "python_type": "warpCHOP",
+        "slug": "Warp_CHOP",
+        "url": "https://docs.derivative.ca/Warp_CHOP"
+      },
+      {
+        "name": "Wave",
+        "family": "CHOP",
+        "python_type": "waveCHOP",
+        "slug": "Wave_CHOP",
+        "url": "https://docs.derivative.ca/Wave_CHOP"
+      },
+      {
+        "name": "WrnchAI",
+        "family": "CHOP",
+        "python_type": "wrnchaiCHOP",
+        "slug": "WrnchAI_CHOP",
+        "url": "https://docs.derivative.ca/WrnchAI_CHOP"
+      },
+      {
+        "name": "ZED",
+        "family": "CHOP",
+        "python_type": "zedCHOP",
+        "slug": "ZED_CHOP",
+        "url": "https://docs.derivative.ca/ZED_CHOP"
+      }
+    ],
+    "SOP": [
+      {
+        "name": "Add",
+        "family": "SOP",
+        "python_type": "addSOP",
+        "slug": "Add_SOP",
+        "url": "https://docs.derivative.ca/Add_SOP"
+      },
+      {
+        "name": "Alembic",
+        "family": "SOP",
+        "python_type": "alembicSOP",
+        "slug": "Alembic_SOP",
+        "url": "https://docs.derivative.ca/Alembic_SOP"
+      },
+      {
+        "name": "Align",
+        "family": "SOP",
+        "python_type": "alignSOP",
+        "slug": "Align_SOP",
+        "url": "https://docs.derivative.ca/Align_SOP"
+      },
+      {
+        "name": "Arm",
+        "family": "SOP",
+        "python_type": "armSOP",
+        "slug": "Arm_SOP",
+        "url": "https://docs.derivative.ca/Arm_SOP"
+      },
+      {
+        "name": "Attribute Create",
+        "family": "SOP",
+        "python_type": "attributecreateSOP",
+        "slug": "Attribute_Create_SOP",
+        "url": "https://docs.derivative.ca/Attribute_Create_SOP"
+      },
+      {
+        "name": "Attribute",
+        "family": "SOP",
+        "python_type": "attributeSOP",
+        "slug": "Attribute_SOP",
+        "url": "https://docs.derivative.ca/Attribute_SOP"
+      },
+      {
+        "name": "Basis",
+        "family": "SOP",
+        "python_type": "basisSOP",
+        "slug": "Basis_SOP",
+        "url": "https://docs.derivative.ca/Basis_SOP"
+      },
+      {
+        "name": "Blend",
+        "family": "SOP",
+        "python_type": "blendSOP",
+        "slug": "Blend_SOP",
+        "url": "https://docs.derivative.ca/Blend_SOP"
+      },
+      {
+        "name": "Bone Group",
+        "family": "SOP",
+        "python_type": "bonegroupSOP",
+        "slug": "Bone_Group_SOP",
+        "url": "https://docs.derivative.ca/Bone_Group_SOP"
+      },
+      {
+        "name": "Boolean",
+        "family": "SOP",
+        "python_type": "booleanSOP",
+        "slug": "Boolean_SOP",
+        "url": "https://docs.derivative.ca/Boolean_SOP"
+      },
+      {
+        "name": "Box",
+        "family": "SOP",
+        "python_type": "boxSOP",
+        "slug": "Box_SOP",
+        "url": "https://docs.derivative.ca/Box_SOP"
+      },
+      {
+        "name": "Bridge",
+        "family": "SOP",
+        "python_type": "bridgeSOP",
+        "slug": "Bridge_SOP",
+        "url": "https://docs.derivative.ca/Bridge_SOP"
+      },
+      {
+        "name": "CHOP to",
+        "family": "SOP",
+        "python_type": "choptoSOP",
+        "slug": "CHOP_to_SOP",
+        "url": "https://docs.derivative.ca/CHOP_to_SOP"
+      },
+      {
+        "name": "CPlusPlus",
+        "family": "SOP",
+        "python_type": "cplusplusSOP",
+        "slug": "CPlusPlus_SOP",
+        "url": "https://docs.derivative.ca/CPlusPlus_SOP"
+      },
+      {
+        "name": "Cache",
+        "family": "SOP",
+        "python_type": "cacheSOP",
+        "slug": "Cache_SOP",
+        "url": "https://docs.derivative.ca/Cache_SOP"
+      },
+      {
+        "name": "Cap",
+        "family": "SOP",
+        "python_type": "capSOP",
+        "slug": "Cap_SOP",
+        "url": "https://docs.derivative.ca/Cap_SOP"
+      },
+      {
+        "name": "Capture Region",
+        "family": "SOP",
+        "python_type": "captureregionSOP",
+        "slug": "Capture_Region_SOP",
+        "url": "https://docs.derivative.ca/Capture_Region_SOP"
+      },
+      {
+        "name": "Capture",
+        "family": "SOP",
+        "python_type": "captureSOP",
+        "slug": "Capture_SOP",
+        "url": "https://docs.derivative.ca/Capture_SOP"
+      },
+      {
+        "name": "Carve",
+        "family": "SOP",
+        "python_type": "carveSOP",
+        "slug": "Carve_SOP",
+        "url": "https://docs.derivative.ca/Carve_SOP"
+      },
+      {
+        "name": "Circle",
+        "family": "SOP",
+        "python_type": "circleSOP",
+        "slug": "Circle_SOP",
+        "url": "https://docs.derivative.ca/Circle_SOP"
+      },
+      {
+        "name": "Clay",
+        "family": "SOP",
+        "python_type": "claySOP",
+        "slug": "Clay_SOP",
+        "url": "https://docs.derivative.ca/Clay_SOP"
+      },
+      {
+        "name": "Clip",
+        "family": "SOP",
+        "python_type": "clipSOP",
+        "slug": "Clip_SOP",
+        "url": "https://docs.derivative.ca/Clip_SOP"
+      },
+      {
+        "name": "Convert",
+        "family": "SOP",
+        "python_type": "convertSOP",
+        "slug": "Convert_SOP",
+        "url": "https://docs.derivative.ca/Convert_SOP"
+      },
+      {
+        "name": "Copy",
+        "family": "SOP",
+        "python_type": "copySOP",
+        "slug": "Copy_SOP",
+        "url": "https://docs.derivative.ca/Copy_SOP"
+      },
+      {
+        "name": "Creep",
+        "family": "SOP",
+        "python_type": "creepSOP",
+        "slug": "Creep_SOP",
+        "url": "https://docs.derivative.ca/Creep_SOP"
+      },
+      {
+        "name": "Curveclay",
+        "family": "SOP",
+        "python_type": "curveclaySOP",
+        "slug": "Curveclay_SOP",
+        "url": "https://docs.derivative.ca/Curveclay_SOP"
+      },
+      {
+        "name": "Curvesect",
+        "family": "SOP",
+        "python_type": "curvesectSOP",
+        "slug": "Curvesect_SOP",
+        "url": "https://docs.derivative.ca/Curvesect_SOP"
+      },
+      {
+        "name": "DAT to",
+        "family": "SOP",
+        "python_type": "dattoSOP",
+        "slug": "DAT_to_SOP",
+        "url": "https://docs.derivative.ca/DAT_to_SOP"
+      },
+      {
+        "name": "Deform",
+        "family": "SOP",
+        "python_type": "deformSOP",
+        "slug": "Deform_SOP",
+        "url": "https://docs.derivative.ca/Deform_SOP"
+      },
+      {
+        "name": "Delete",
+        "family": "SOP",
+        "python_type": "deleteSOP",
+        "slug": "Delete_SOP",
+        "url": "https://docs.derivative.ca/Delete_SOP"
+      },
+      {
+        "name": "Divide",
+        "family": "SOP",
+        "python_type": "divideSOP",
+        "slug": "Divide_SOP",
+        "url": "https://docs.derivative.ca/Divide_SOP"
+      },
+      {
+        "name": "Extrude",
+        "family": "SOP",
+        "python_type": "extrudeSOP",
+        "slug": "Extrude_SOP",
+        "url": "https://docs.derivative.ca/Extrude_SOP"
+      },
+      {
+        "name": "Face Track",
+        "family": "SOP",
+        "python_type": "facetrackSOP",
+        "slug": "Face_Track_SOP",
+        "url": "https://docs.derivative.ca/Face_Track_SOP"
+      },
+      {
+        "name": "Facet",
+        "family": "SOP",
+        "python_type": "facetSOP",
+        "slug": "Facet_SOP",
+        "url": "https://docs.derivative.ca/Facet_SOP"
+      },
+      {
+        "name": "File In",
+        "family": "SOP",
+        "python_type": "fileinSOP",
+        "slug": "File_In_SOP",
+        "url": "https://docs.derivative.ca/File_In_SOP"
+      },
+      {
+        "name": "Fillet",
+        "family": "SOP",
+        "python_type": "filletSOP",
+        "slug": "Fillet_SOP",
+        "url": "https://docs.derivative.ca/Fillet_SOP"
+      },
+      {
+        "name": "Fit",
+        "family": "SOP",
+        "python_type": "fitSOP",
+        "slug": "Fit_SOP",
+        "url": "https://docs.derivative.ca/Fit_SOP"
+      },
+      {
+        "name": "Font",
+        "family": "SOP",
+        "python_type": "fontSOP",
+        "slug": "Font_SOP",
+        "url": "https://docs.derivative.ca/Font_SOP"
+      },
+      {
+        "name": "Force",
+        "family": "SOP",
+        "python_type": "forceSOP",
+        "slug": "Force_SOP",
+        "url": "https://docs.derivative.ca/Force_SOP"
+      },
+      {
+        "name": "Fractal",
+        "family": "SOP",
+        "python_type": "fractalSOP",
+        "slug": "Fractal_SOP",
+        "url": "https://docs.derivative.ca/Fractal_SOP"
+      },
+      {
+        "name": "Grid",
+        "family": "SOP",
+        "python_type": "gridSOP",
+        "slug": "Grid_SOP",
+        "url": "https://docs.derivative.ca/Grid_SOP"
+      },
+      {
+        "name": "Group",
+        "family": "SOP",
+        "python_type": "groupSOP",
+        "slug": "Group_SOP",
+        "url": "https://docs.derivative.ca/Group_SOP"
+      },
+      {
+        "name": "Hole",
+        "family": "SOP",
+        "python_type": "holeSOP",
+        "slug": "Hole_SOP",
+        "url": "https://docs.derivative.ca/Hole_SOP"
+      },
+      {
+        "name": "Import Select",
+        "family": "SOP",
+        "python_type": "importselectSOP",
+        "slug": "Import_Select_SOP",
+        "url": "https://docs.derivative.ca/Import_Select_SOP"
+      },
+      {
+        "name": "In",
+        "family": "SOP",
+        "python_type": "inSOP",
+        "slug": "In_SOP",
+        "url": "https://docs.derivative.ca/In_SOP"
+      },
+      {
+        "name": "Inverse Curve",
+        "family": "SOP",
+        "python_type": "inversecurveSOP",
+        "slug": "Inverse_Curve_SOP",
+        "url": "https://docs.derivative.ca/Inverse_Curve_SOP"
+      },
+      {
+        "name": "Iso Surface",
+        "family": "SOP",
+        "python_type": "isosurfaceSOP",
+        "slug": "Iso_Surface_SOP",
+        "url": "https://docs.derivative.ca/Iso_Surface_SOP"
+      },
+      {
+        "name": "Join",
+        "family": "SOP",
+        "python_type": "joinSOP",
+        "slug": "Join_SOP",
+        "url": "https://docs.derivative.ca/Join_SOP"
+      },
+      {
+        "name": "Joint",
+        "family": "SOP",
+        "python_type": "jointSOP",
+        "slug": "Joint_SOP",
+        "url": "https://docs.derivative.ca/Joint_SOP"
+      },
+      {
+        "name": "Kinect",
+        "family": "SOP",
+        "python_type": "kinectSOP",
+        "slug": "Kinect_SOP",
+        "url": "https://docs.derivative.ca/Kinect_SOP"
+      },
+      {
+        "name": "LOD",
+        "family": "SOP",
+        "python_type": "lodSOP",
+        "slug": "LOD_SOP",
+        "url": "https://docs.derivative.ca/LOD_SOP"
+      },
+      {
+        "name": "LSystem",
+        "family": "SOP",
+        "python_type": "lsystemSOP",
+        "slug": "LSystem_SOP",
+        "url": "https://docs.derivative.ca/LSystem_SOP"
+      },
+      {
+        "name": "Lattice",
+        "family": "SOP",
+        "python_type": "latticeSOP",
+        "slug": "Lattice_SOP",
+        "url": "https://docs.derivative.ca/Lattice_SOP"
+      },
+      {
+        "name": "Limit",
+        "family": "SOP",
+        "python_type": "limitSOP",
+        "slug": "Limit_SOP",
+        "url": "https://docs.derivative.ca/Limit_SOP"
+      },
+      {
+        "name": "Line",
+        "family": "SOP",
+        "python_type": "lineSOP",
+        "slug": "Line_SOP",
+        "url": "https://docs.derivative.ca/Line_SOP"
+      },
+      {
+        "name": "Line Thick",
+        "family": "SOP",
+        "python_type": "linethickSOP",
+        "slug": "Line_Thick_SOP",
+        "url": "https://docs.derivative.ca/Line_Thick_SOP"
+      },
+      {
+        "name": "Magnet",
+        "family": "SOP",
+        "python_type": "magnetSOP",
+        "slug": "Magnet_SOP",
+        "url": "https://docs.derivative.ca/Magnet_SOP"
+      },
+      {
+        "name": "Material",
+        "family": "SOP",
+        "python_type": "materialSOP",
+        "slug": "Material_SOP",
+        "url": "https://docs.derivative.ca/Material_SOP"
+      },
+      {
+        "name": "Merge",
+        "family": "SOP",
+        "python_type": "mergeSOP",
+        "slug": "Merge_SOP",
+        "url": "https://docs.derivative.ca/Merge_SOP"
+      },
+      {
+        "name": "Metaball",
+        "family": "SOP",
+        "python_type": "metaballSOP",
+        "slug": "Metaball_SOP",
+        "url": "https://docs.derivative.ca/Metaball_SOP"
+      },
+      {
+        "name": "Model",
+        "family": "SOP",
+        "python_type": "modelSOP",
+        "slug": "Model_SOP",
+        "url": "https://docs.derivative.ca/Model_SOP"
+      },
+      {
+        "name": "Noise",
+        "family": "SOP",
+        "python_type": "noiseSOP",
+        "slug": "Noise_SOP",
+        "url": "https://docs.derivative.ca/Noise_SOP"
+      },
+      {
+        "name": "Null",
+        "family": "SOP",
+        "python_type": "nullSOP",
+        "slug": "Null_SOP",
+        "url": "https://docs.derivative.ca/Null_SOP"
+      },
+      {
+        "name": "Object Merge",
+        "family": "SOP",
+        "python_type": "objectmergeSOP",
+        "slug": "Object_Merge_SOP",
+        "url": "https://docs.derivative.ca/Object_Merge_SOP"
+      },
+      {
+        "name": "Oculus Rift",
+        "family": "SOP",
+        "python_type": "oculusriftSOP",
+        "slug": "Oculus_Rift_SOP",
+        "url": "https://docs.derivative.ca/Oculus_Rift_SOP"
+      },
+      {
+        "name": "OpenVR",
+        "family": "SOP",
+        "python_type": "openvrSOP",
+        "slug": "OpenVR_SOP",
+        "url": "https://docs.derivative.ca/OpenVR_SOP"
+      },
+      {
+        "name": "Out",
+        "family": "SOP",
+        "python_type": "outSOP",
+        "slug": "Out_SOP",
+        "url": "https://docs.derivative.ca/Out_SOP"
+      },
+      {
+        "name": "POP to",
+        "family": "SOP",
+        "python_type": "poptoSOP",
+        "slug": "POP_to_SOP",
+        "url": "https://docs.derivative.ca/POP_to_SOP"
+      },
+      {
+        "name": "Particle",
+        "family": "SOP",
+        "python_type": "particleSOP",
+        "slug": "Particle_SOP",
+        "url": "https://docs.derivative.ca/Particle_SOP"
+      },
+      {
+        "name": "Point",
+        "family": "SOP",
+        "python_type": "pointSOP",
+        "slug": "Point_SOP",
+        "url": "https://docs.derivative.ca/Point_SOP"
+      },
+      {
+        "name": "Polyloft",
+        "family": "SOP",
+        "python_type": "polyloftSOP",
+        "slug": "Polyloft_SOP",
+        "url": "https://docs.derivative.ca/Polyloft_SOP"
+      },
+      {
+        "name": "Polypatch",
+        "family": "SOP",
+        "python_type": "polypatchSOP",
+        "slug": "Polypatch_SOP",
+        "url": "https://docs.derivative.ca/Polypatch_SOP"
+      },
+      {
+        "name": "Polyreduce",
+        "family": "SOP",
+        "python_type": "polyreduceSOP",
+        "slug": "Polyreduce_SOP",
+        "url": "https://docs.derivative.ca/Polyreduce_SOP"
+      },
+      {
+        "name": "Polyspline",
+        "family": "SOP",
+        "python_type": "polysplineSOP",
+        "slug": "Polyspline_SOP",
+        "url": "https://docs.derivative.ca/Polyspline_SOP"
+      },
+      {
+        "name": "Polystitch",
+        "family": "SOP",
+        "python_type": "polystitchSOP",
+        "slug": "Polystitch_SOP",
+        "url": "https://docs.derivative.ca/Polystitch_SOP"
+      },
+      {
+        "name": "Primitive",
+        "family": "SOP",
+        "python_type": "primitiveSOP",
+        "slug": "Primitive_SOP",
+        "url": "https://docs.derivative.ca/Primitive_SOP"
+      },
+      {
+        "name": "Profile",
+        "family": "SOP",
+        "python_type": "profileSOP",
+        "slug": "Profile_SOP",
+        "url": "https://docs.derivative.ca/Profile_SOP"
+      },
+      {
+        "name": "Project",
+        "family": "SOP",
+        "python_type": "projectSOP",
+        "slug": "Project_SOP",
+        "url": "https://docs.derivative.ca/Project_SOP"
+      },
+      {
+        "name": "Rails",
+        "family": "SOP",
+        "python_type": "railsSOP",
+        "slug": "Rails_SOP",
+        "url": "https://docs.derivative.ca/Rails_SOP"
+      },
+      {
+        "name": "Raster",
+        "family": "SOP",
+        "python_type": "rasterSOP",
+        "slug": "Raster_SOP",
+        "url": "https://docs.derivative.ca/Raster_SOP"
+      },
+      {
+        "name": "Ray",
+        "family": "SOP",
+        "python_type": "raySOP",
+        "slug": "Ray_SOP",
+        "url": "https://docs.derivative.ca/Ray_SOP"
+      },
+      {
+        "name": "Rectangle",
+        "family": "SOP",
+        "python_type": "rectangleSOP",
+        "slug": "Rectangle_SOP",
+        "url": "https://docs.derivative.ca/Rectangle_SOP"
+      },
+      {
+        "name": "Refine",
+        "family": "SOP",
+        "python_type": "refineSOP",
+        "slug": "Refine_SOP",
+        "url": "https://docs.derivative.ca/Refine_SOP"
+      },
+      {
+        "name": "Resample",
+        "family": "SOP",
+        "python_type": "resampleSOP",
+        "slug": "Resample_SOP",
+        "url": "https://docs.derivative.ca/Resample_SOP"
+      },
+      {
+        "name": "Revolve",
+        "family": "SOP",
+        "python_type": "revolveSOP",
+        "slug": "Revolve_SOP",
+        "url": "https://docs.derivative.ca/Revolve_SOP"
+      },
+      {
+        "name": "Script",
+        "family": "SOP",
+        "python_type": "scriptSOP",
+        "slug": "Script_SOP",
+        "url": "https://docs.derivative.ca/Script_SOP"
+      },
+      {
+        "name": "Select",
+        "family": "SOP",
+        "python_type": "selectSOP",
+        "slug": "Select_SOP",
+        "url": "https://docs.derivative.ca/Select_SOP"
+      },
+      {
+        "name": "Sequence Blend",
+        "family": "SOP",
+        "python_type": "sequenceblendSOP",
+        "slug": "Sequence_Blend_SOP",
+        "url": "https://docs.derivative.ca/Sequence_Blend_SOP"
+      },
+      {
+        "name": "Skin",
+        "family": "SOP",
+        "python_type": "skinSOP",
+        "slug": "Skin_SOP",
+        "url": "https://docs.derivative.ca/Skin_SOP"
+      },
+      {
+        "name": "Sort",
+        "family": "SOP",
+        "python_type": "sortSOP",
+        "slug": "Sort_SOP",
+        "url": "https://docs.derivative.ca/Sort_SOP"
+      },
+      {
+        "name": "Sphere",
+        "family": "SOP",
+        "python_type": "sphereSOP",
+        "slug": "Sphere_SOP",
+        "url": "https://docs.derivative.ca/Sphere_SOP"
+      },
+      {
+        "name": "Spring",
+        "family": "SOP",
+        "python_type": "springSOP",
+        "slug": "Spring_SOP",
+        "url": "https://docs.derivative.ca/Spring_SOP"
+      },
+      {
+        "name": "Sprinkle",
+        "family": "SOP",
+        "python_type": "sprinkleSOP",
+        "slug": "Sprinkle_SOP",
+        "url": "https://docs.derivative.ca/Sprinkle_SOP"
+      },
+      {
+        "name": "Sprite",
+        "family": "SOP",
+        "python_type": "spriteSOP",
+        "slug": "Sprite_SOP",
+        "url": "https://docs.derivative.ca/Sprite_SOP"
+      },
+      {
+        "name": "Stitch",
+        "family": "SOP",
+        "python_type": "stitchSOP",
+        "slug": "Stitch_SOP",
+        "url": "https://docs.derivative.ca/Stitch_SOP"
+      },
+      {
+        "name": "Subdivide",
+        "family": "SOP",
+        "python_type": "subdivideSOP",
+        "slug": "Subdivide_SOP",
+        "url": "https://docs.derivative.ca/Subdivide_SOP"
+      },
+      {
+        "name": "Superquad",
+        "family": "SOP",
+        "python_type": "superquadSOP",
+        "slug": "Superquad_SOP",
+        "url": "https://docs.derivative.ca/Superquad_SOP"
+      },
+      {
+        "name": "Surfsect",
+        "family": "SOP",
+        "python_type": "surfsectSOP",
+        "slug": "Surfsect_SOP",
+        "url": "https://docs.derivative.ca/Surfsect_SOP"
+      },
+      {
+        "name": "Sweep",
+        "family": "SOP",
+        "python_type": "sweepSOP",
+        "slug": "Sweep_SOP",
+        "url": "https://docs.derivative.ca/Sweep_SOP"
+      },
+      {
+        "name": "Switch",
+        "family": "SOP",
+        "python_type": "switchSOP",
+        "slug": "Switch_SOP",
+        "url": "https://docs.derivative.ca/Switch_SOP"
+      },
+      {
+        "name": "Text",
+        "family": "SOP",
+        "python_type": "textSOP",
+        "slug": "Text_SOP",
+        "url": "https://docs.derivative.ca/Text_SOP"
+      },
+      {
+        "name": "Texture",
+        "family": "SOP",
+        "python_type": "textureSOP",
+        "slug": "Texture_SOP",
+        "url": "https://docs.derivative.ca/Texture_SOP"
+      },
+      {
+        "name": "Torus",
+        "family": "SOP",
+        "python_type": "torusSOP",
+        "slug": "Torus_SOP",
+        "url": "https://docs.derivative.ca/Torus_SOP"
+      },
+      {
+        "name": "Trace",
+        "family": "SOP",
+        "python_type": "traceSOP",
+        "slug": "Trace_SOP",
+        "url": "https://docs.derivative.ca/Trace_SOP"
+      },
+      {
+        "name": "Trail",
+        "family": "SOP",
+        "python_type": "trailSOP",
+        "slug": "Trail_SOP",
+        "url": "https://docs.derivative.ca/Trail_SOP"
+      },
+      {
+        "name": "Transform",
+        "family": "SOP",
+        "python_type": "transformSOP",
+        "slug": "Transform_SOP",
+        "url": "https://docs.derivative.ca/Transform_SOP"
+      },
+      {
+        "name": "Trim",
+        "family": "SOP",
+        "python_type": "trimSOP",
+        "slug": "Trim_SOP",
+        "url": "https://docs.derivative.ca/Trim_SOP"
+      },
+      {
+        "name": "Tristrip",
+        "family": "SOP",
+        "python_type": "tristripSOP",
+        "slug": "Tristrip_SOP",
+        "url": "https://docs.derivative.ca/Tristrip_SOP"
+      },
+      {
+        "name": "Tube",
+        "family": "SOP",
+        "python_type": "tubeSOP",
+        "slug": "Tube_SOP",
+        "url": "https://docs.derivative.ca/Tube_SOP"
+      },
+      {
+        "name": "Twist",
+        "family": "SOP",
+        "python_type": "twistSOP",
+        "slug": "Twist_SOP",
+        "url": "https://docs.derivative.ca/Twist_SOP"
+      },
+      {
+        "name": "Vertex",
+        "family": "SOP",
+        "python_type": "vertexSOP",
+        "slug": "Vertex_SOP",
+        "url": "https://docs.derivative.ca/Vertex_SOP"
+      },
+      {
+        "name": "Wireframe",
+        "family": "SOP",
+        "python_type": "wireframeSOP",
+        "slug": "Wireframe_SOP",
+        "url": "https://docs.derivative.ca/Wireframe_SOP"
+      },
+      {
+        "name": "ZED",
+        "family": "SOP",
+        "python_type": "zedSOP",
+        "slug": "ZED_SOP",
+        "url": "https://docs.derivative.ca/ZED_SOP"
+      }
+    ],
+    "DAT": [
+      {
+        "name": "Art-Net",
+        "family": "DAT",
+        "python_type": "artnetDAT",
+        "slug": "Art-Net_DAT",
+        "url": "https://docs.derivative.ca/Art-Net_DAT"
+      },
+      {
+        "name": "Audio Devices",
+        "family": "DAT",
+        "python_type": "audiodevicesDAT",
+        "slug": "Audio_Devices_DAT",
+        "url": "https://docs.derivative.ca/Audio_Devices_DAT"
+      },
+      {
+        "name": "CHOP Execute",
+        "family": "DAT",
+        "python_type": "chopexecuteDAT",
+        "slug": "CHOP_Execute_DAT",
+        "url": "https://docs.derivative.ca/CHOP_Execute_DAT"
+      },
+      {
+        "name": "CHOP to",
+        "family": "DAT",
+        "python_type": "choptoDAT",
+        "slug": "CHOP_to_DAT",
+        "url": "https://docs.derivative.ca/CHOP_to_DAT"
+      },
+      {
+        "name": "CPlusPlus",
+        "family": "DAT",
+        "python_type": "cplusplusDAT",
+        "slug": "CPlusPlus_DAT",
+        "url": "https://docs.derivative.ca/CPlusPlus_DAT"
+      },
+      {
+        "name": "Clip",
+        "family": "DAT",
+        "python_type": "clipDAT",
+        "slug": "Clip_DAT",
+        "url": "https://docs.derivative.ca/Clip_DAT"
+      },
+      {
+        "name": "Convert",
+        "family": "DAT",
+        "python_type": "convertDAT",
+        "slug": "Convert_DAT",
+        "url": "https://docs.derivative.ca/Convert_DAT"
+      },
+      {
+        "name": "DAT Execute",
+        "family": "DAT",
+        "python_type": "datexecuteDAT",
+        "slug": "DAT_Execute_DAT",
+        "url": "https://docs.derivative.ca/DAT_Execute_DAT"
+      },
+      {
+        "name": "Error",
+        "family": "DAT",
+        "python_type": "errorDAT",
+        "slug": "Error_DAT",
+        "url": "https://docs.derivative.ca/Error_DAT"
+      },
+      {
+        "name": "EtherDream",
+        "family": "DAT",
+        "python_type": "etherdreamDAT",
+        "slug": "EtherDream_DAT",
+        "url": "https://docs.derivative.ca/EtherDream_DAT"
+      },
+      {
+        "name": "Evaluate",
+        "family": "DAT",
+        "python_type": "evaluateDAT",
+        "slug": "Evaluate_DAT",
+        "url": "https://docs.derivative.ca/Evaluate_DAT"
+      },
+      {
+        "name": "Examine",
+        "family": "DAT",
+        "python_type": "examineDAT",
+        "slug": "Examine_DAT",
+        "url": "https://docs.derivative.ca/Examine_DAT"
+      },
+      {
+        "name": "Execute",
+        "family": "DAT",
+        "python_type": "executeDAT",
+        "slug": "Execute_DAT",
+        "url": "https://docs.derivative.ca/Execute_DAT"
+      },
+      {
+        "name": "FIFO",
+        "family": "DAT",
+        "python_type": "fifoDAT",
+        "slug": "FIFO_DAT",
+        "url": "https://docs.derivative.ca/FIFO_DAT"
+      },
+      {
+        "name": "File In",
+        "family": "DAT",
+        "python_type": "fileinDAT",
+        "slug": "File_In_DAT",
+        "url": "https://docs.derivative.ca/File_In_DAT"
+      },
+      {
+        "name": "File Out",
+        "family": "DAT",
+        "python_type": "fileoutDAT",
+        "slug": "File_Out_DAT",
+        "url": "https://docs.derivative.ca/File_Out_DAT"
+      },
+      {
+        "name": "Folder",
+        "family": "DAT",
+        "python_type": "folderDAT",
+        "slug": "Folder_DAT",
+        "url": "https://docs.derivative.ca/Folder_DAT"
+      },
+      {
+        "name": "In",
+        "family": "DAT",
+        "python_type": "inDAT",
+        "slug": "In_DAT",
+        "url": "https://docs.derivative.ca/In_DAT"
+      },
+      {
+        "name": "Indices",
+        "family": "DAT",
+        "python_type": "indicesDAT",
+        "slug": "Indices_DAT",
+        "url": "https://docs.derivative.ca/Indices_DAT"
+      },
+      {
+        "name": "Info",
+        "family": "DAT",
+        "python_type": "infoDAT",
+        "slug": "Info_DAT",
+        "url": "https://docs.derivative.ca/Info_DAT"
+      },
+      {
+        "name": "Insert",
+        "family": "DAT",
+        "python_type": "insertDAT",
+        "slug": "Insert_DAT",
+        "url": "https://docs.derivative.ca/Insert_DAT"
+      },
+      {
+        "name": "JSON",
+        "family": "DAT",
+        "python_type": "jsonDAT",
+        "slug": "JSON_DAT",
+        "url": "https://docs.derivative.ca/JSON_DAT"
+      },
+      {
+        "name": "Keyboard In",
+        "family": "DAT",
+        "python_type": "keyboardinDAT",
+        "slug": "Keyboard_In_DAT",
+        "url": "https://docs.derivative.ca/Keyboard_In_DAT"
+      },
+      {
+        "name": "Lookup",
+        "family": "DAT",
+        "python_type": "lookupDAT",
+        "slug": "Lookup_DAT",
+        "url": "https://docs.derivative.ca/Lookup_DAT"
+      },
+      {
+        "name": "MIDI Event",
+        "family": "DAT",
+        "python_type": "midieventDAT",
+        "slug": "MIDI_Event_DAT",
+        "url": "https://docs.derivative.ca/MIDI_Event_DAT"
+      },
+      {
+        "name": "MIDI In",
+        "family": "DAT",
+        "python_type": "midiinDAT",
+        "slug": "MIDI_In_DAT",
+        "url": "https://docs.derivative.ca/MIDI_In_DAT"
+      },
+      {
+        "name": "MPCDI",
+        "family": "DAT",
+        "python_type": "mpcdiDAT",
+        "slug": "MPCDI_DAT",
+        "url": "https://docs.derivative.ca/MPCDI_DAT"
+      },
+      {
+        "name": "MQTT Client",
+        "family": "DAT",
+        "python_type": "mqttclientDAT",
+        "slug": "MQTT_Client_DAT",
+        "url": "https://docs.derivative.ca/MQTT_Client_DAT"
+      },
+      {
+        "name": "Media File Info",
+        "family": "DAT",
+        "python_type": "mediafileinfoDAT",
+        "slug": "Media_File_Info_DAT",
+        "url": "https://docs.derivative.ca/Media_File_Info_DAT"
+      },
+      {
+        "name": "Merge",
+        "family": "DAT",
+        "python_type": "mergeDAT",
+        "slug": "Merge_DAT",
+        "url": "https://docs.derivative.ca/Merge_DAT"
+      },
+      {
+        "name": "Monitors",
+        "family": "DAT",
+        "python_type": "monitorsDAT",
+        "slug": "Monitors_DAT",
+        "url": "https://docs.derivative.ca/Monitors_DAT"
+      },
+      {
+        "name": "Multi Touch In",
+        "family": "DAT",
+        "python_type": "multitouchinDAT",
+        "slug": "Multi_Touch_In_DAT",
+        "url": "https://docs.derivative.ca/Multi_Touch_In_DAT"
+      },
+      {
+        "name": "NDI",
+        "family": "DAT",
+        "python_type": "ndiDAT",
+        "slug": "NDI_DAT",
+        "url": "https://docs.derivative.ca/NDI_DAT"
+      },
+      {
+        "name": "Null",
+        "family": "DAT",
+        "python_type": "nullDAT",
+        "slug": "Null_DAT",
+        "url": "https://docs.derivative.ca/Null_DAT"
+      },
+      {
+        "name": "OP Execute",
+        "family": "DAT",
+        "python_type": "opexecuteDAT",
+        "slug": "OP_Execute_DAT",
+        "url": "https://docs.derivative.ca/OP_Execute_DAT"
+      },
+      {
+        "name": "OP Find",
+        "family": "DAT",
+        "python_type": "opfindDAT",
+        "slug": "OP_Find_DAT",
+        "url": "https://docs.derivative.ca/OP_Find_DAT"
+      },
+      {
+        "name": "OSC In",
+        "family": "DAT",
+        "python_type": "oscinDAT",
+        "slug": "OSC_In_DAT",
+        "url": "https://docs.derivative.ca/OSC_In_DAT"
+      },
+      {
+        "name": "OSC Out",
+        "family": "DAT",
+        "python_type": "oscoutDAT",
+        "slug": "OSC_Out_DAT",
+        "url": "https://docs.derivative.ca/OSC_Out_DAT"
+      },
+      {
+        "name": "Out",
+        "family": "DAT",
+        "python_type": "outDAT",
+        "slug": "Out_DAT",
+        "url": "https://docs.derivative.ca/Out_DAT"
+      },
+      {
+        "name": "POP to",
+        "family": "DAT",
+        "python_type": "poptoDAT",
+        "slug": "POP_to_DAT",
+        "url": "https://docs.derivative.ca/POP_to_DAT"
+      },
+      {
+        "name": "Panel Execute",
+        "family": "DAT",
+        "python_type": "panelexecuteDAT",
+        "slug": "Panel_Execute_DAT",
+        "url": "https://docs.derivative.ca/Panel_Execute_DAT"
+      },
+      {
+        "name": "ParGroup Execute",
+        "family": "DAT",
+        "python_type": "pargroupexecuteDAT",
+        "slug": "ParGroup_Execute_DAT",
+        "url": "https://docs.derivative.ca/ParGroup_Execute_DAT"
+      },
+      {
+        "name": "Parameter",
+        "family": "DAT",
+        "python_type": "parameterDAT",
+        "slug": "Parameter_DAT",
+        "url": "https://docs.derivative.ca/Parameter_DAT"
+      },
+      {
+        "name": "Parameter Execute",
+        "family": "DAT",
+        "python_type": "parameterexecuteDAT",
+        "slug": "Parameter_Execute_DAT",
+        "url": "https://docs.derivative.ca/Parameter_Execute_DAT"
+      },
+      {
+        "name": "Perform",
+        "family": "DAT",
+        "python_type": "performDAT",
+        "slug": "Perform_DAT",
+        "url": "https://docs.derivative.ca/Perform_DAT"
+      },
+      {
+        "name": "Render Pick",
+        "family": "DAT",
+        "python_type": "renderpickDAT",
+        "slug": "Render_Pick_DAT",
+        "url": "https://docs.derivative.ca/Render_Pick_DAT"
+      },
+      {
+        "name": "Reorder",
+        "family": "DAT",
+        "python_type": "reorderDAT",
+        "slug": "Reorder_DAT",
+        "url": "https://docs.derivative.ca/Reorder_DAT"
+      },
+      {
+        "name": "SOP to",
+        "family": "DAT",
+        "python_type": "soptoDAT",
+        "slug": "SOP_to_DAT",
+        "url": "https://docs.derivative.ca/SOP_to_DAT"
+      },
+      {
+        "name": "Script",
+        "family": "DAT",
+        "python_type": "scriptDAT",
+        "slug": "Script_DAT",
+        "url": "https://docs.derivative.ca/Script_DAT"
+      },
+      {
+        "name": "Select",
+        "family": "DAT",
+        "python_type": "selectDAT",
+        "slug": "Select_DAT",
+        "url": "https://docs.derivative.ca/Select_DAT"
+      },
+      {
+        "name": "Serial",
+        "family": "DAT",
+        "python_type": "serialDAT",
+        "slug": "Serial_DAT",
+        "url": "https://docs.derivative.ca/Serial_DAT"
+      },
+      {
+        "name": "Serial Devices",
+        "family": "DAT",
+        "python_type": "serialdevicesDAT",
+        "slug": "Serial_Devices_DAT",
+        "url": "https://docs.derivative.ca/Serial_Devices_DAT"
+      },
+      {
+        "name": "SocketIO",
+        "family": "DAT",
+        "python_type": "socketioDAT",
+        "slug": "SocketIO_DAT",
+        "url": "https://docs.derivative.ca/SocketIO_DAT"
+      },
+      {
+        "name": "Sort",
+        "family": "DAT",
+        "python_type": "sortDAT",
+        "slug": "Sort_DAT",
+        "url": "https://docs.derivative.ca/Sort_DAT"
+      },
+      {
+        "name": "Substitute",
+        "family": "DAT",
+        "python_type": "substituteDAT",
+        "slug": "Substitute_DAT",
+        "url": "https://docs.derivative.ca/Substitute_DAT"
+      },
+      {
+        "name": "Switch",
+        "family": "DAT",
+        "python_type": "switchDAT",
+        "slug": "Switch_DAT",
+        "url": "https://docs.derivative.ca/Switch_DAT"
+      },
+      {
+        "name": "TCP/IP",
+        "family": "DAT",
+        "python_type": "tcpipDAT",
+        "slug": "TCP/IP_DAT",
+        "url": "https://docs.derivative.ca/TCP/IP_DAT"
+      },
+      {
+        "name": "TUIO In",
+        "family": "DAT",
+        "python_type": "tuioinDAT",
+        "slug": "TUIO_In_DAT",
+        "url": "https://docs.derivative.ca/TUIO_In_DAT"
+      },
+      {
+        "name": "Table",
+        "family": "DAT",
+        "python_type": "tableDAT",
+        "slug": "Table_DAT",
+        "url": "https://docs.derivative.ca/Table_DAT"
+      },
+      {
+        "name": "Text",
+        "family": "DAT",
+        "python_type": "textDAT",
+        "slug": "Text_DAT",
+        "url": "https://docs.derivative.ca/Text_DAT"
+      },
+      {
+        "name": "Touch In",
+        "family": "DAT",
+        "python_type": "touchinDAT",
+        "slug": "Touch_In_DAT",
+        "url": "https://docs.derivative.ca/Touch_In_DAT"
+      },
+      {
+        "name": "Touch Out",
+        "family": "DAT",
+        "python_type": "touchoutDAT",
+        "slug": "Touch_Out_DAT",
+        "url": "https://docs.derivative.ca/Touch_Out_DAT"
+      },
+      {
+        "name": "Transpose",
+        "family": "DAT",
+        "python_type": "transposeDAT",
+        "slug": "Transpose_DAT",
+        "url": "https://docs.derivative.ca/Transpose_DAT"
+      },
+      {
+        "name": "UDP In",
+        "family": "DAT",
+        "python_type": "udpinDAT",
+        "slug": "UDP_In_DAT",
+        "url": "https://docs.derivative.ca/UDP_In_DAT"
+      },
+      {
+        "name": "UDP Out",
+        "family": "DAT",
+        "python_type": "udpoutDAT",
+        "slug": "UDP_Out_DAT",
+        "url": "https://docs.derivative.ca/UDP_Out_DAT"
+      },
+      {
+        "name": "UDT In",
+        "family": "DAT",
+        "python_type": "udtinDAT",
+        "slug": "UDT_In_DAT",
+        "url": "https://docs.derivative.ca/UDT_In_DAT"
+      },
+      {
+        "name": "UDT Out",
+        "family": "DAT",
+        "python_type": "udtoutDAT",
+        "slug": "UDT_Out_DAT",
+        "url": "https://docs.derivative.ca/UDT_Out_DAT"
+      },
+      {
+        "name": "Video Devices",
+        "family": "DAT",
+        "python_type": "videodevicesDAT",
+        "slug": "Video_Devices_DAT",
+        "url": "https://docs.derivative.ca/Video_Devices_DAT"
+      },
+      {
+        "name": "WebRTC",
+        "family": "DAT",
+        "python_type": "webrtcDAT",
+        "slug": "WebRTC_DAT",
+        "url": "https://docs.derivative.ca/WebRTC_DAT"
+      },
+      {
+        "name": "WebSocket",
+        "family": "DAT",
+        "python_type": "websocketDAT",
+        "slug": "WebSocket_DAT",
+        "url": "https://docs.derivative.ca/WebSocket_DAT"
+      },
+      {
+        "name": "Web Client",
+        "family": "DAT",
+        "python_type": "webclientDAT",
+        "slug": "Web_Client_DAT",
+        "url": "https://docs.derivative.ca/Web_Client_DAT"
+      },
+      {
+        "name": "Web",
+        "family": "DAT",
+        "python_type": "webDAT",
+        "slug": "Web_DAT",
+        "url": "https://docs.derivative.ca/Web_DAT"
+      },
+      {
+        "name": "Web Server",
+        "family": "DAT",
+        "python_type": "webserverDAT",
+        "slug": "Web_Server_DAT",
+        "url": "https://docs.derivative.ca/Web_Server_DAT"
+      },
+      {
+        "name": "XML",
+        "family": "DAT",
+        "python_type": "xmlDAT",
+        "slug": "XML_DAT",
+        "url": "https://docs.derivative.ca/XML_DAT"
+      }
+    ],
+    "COMP": [
+      {
+        "name": "Actor",
+        "family": "COMP",
+        "python_type": "actorCOMP",
+        "slug": "Actor_COMP",
+        "url": "https://docs.derivative.ca/Actor_COMP"
+      },
+      {
+        "name": "Ambient Light",
+        "family": "COMP",
+        "python_type": "ambientlightCOMP",
+        "slug": "Ambient_Light_COMP",
+        "url": "https://docs.derivative.ca/Ambient_Light_COMP"
+      },
+      {
+        "name": "Animation",
+        "family": "COMP",
+        "python_type": "animationCOMP",
+        "slug": "Animation_COMP",
+        "url": "https://docs.derivative.ca/Animation_COMP"
+      },
+      {
+        "name": "Annotate",
+        "family": "COMP",
+        "python_type": "annotateCOMP",
+        "slug": "Annotate_COMP",
+        "url": "https://docs.derivative.ca/Annotate_COMP"
+      },
+      {
+        "name": "Base",
+        "family": "COMP",
+        "python_type": "baseCOMP",
+        "slug": "Base_COMP",
+        "url": "https://docs.derivative.ca/Base_COMP"
+      },
+      {
+        "name": "Blend",
+        "family": "COMP",
+        "python_type": "blendCOMP",
+        "slug": "Blend_COMP",
+        "url": "https://docs.derivative.ca/Blend_COMP"
+      },
+      {
+        "name": "Bone",
+        "family": "COMP",
+        "python_type": "boneCOMP",
+        "slug": "Bone_COMP",
+        "url": "https://docs.derivative.ca/Bone_COMP"
+      },
+      {
+        "name": "Bullet Solver",
+        "family": "COMP",
+        "python_type": "bulletsolverCOMP",
+        "slug": "Bullet_Solver_COMP",
+        "url": "https://docs.derivative.ca/Bullet_Solver_COMP"
+      },
+      {
+        "name": "Button",
+        "family": "COMP",
+        "python_type": "buttonCOMP",
+        "slug": "Button_COMP",
+        "url": "https://docs.derivative.ca/Button_COMP"
+      },
+      {
+        "name": "Camera Blend",
+        "family": "COMP",
+        "python_type": "camerablendCOMP",
+        "slug": "Camera_Blend_COMP",
+        "url": "https://docs.derivative.ca/Camera_Blend_COMP"
+      },
+      {
+        "name": "Camera",
+        "family": "COMP",
+        "python_type": "cameraCOMP",
+        "slug": "Camera_COMP",
+        "url": "https://docs.derivative.ca/Camera_COMP"
+      },
+      {
+        "name": "Constraint",
+        "family": "COMP",
+        "python_type": "constraintCOMP",
+        "slug": "Constraint_COMP",
+        "url": "https://docs.derivative.ca/Constraint_COMP"
+      },
+      {
+        "name": "Container",
+        "family": "COMP",
+        "python_type": "containerCOMP",
+        "slug": "Container_COMP",
+        "url": "https://docs.derivative.ca/Container_COMP"
+      },
+      {
+        "name": "Engine",
+        "family": "COMP",
+        "python_type": "engineCOMP",
+        "slug": "Engine_COMP",
+        "url": "https://docs.derivative.ca/Engine_COMP"
+      },
+      {
+        "name": "Environment Light",
+        "family": "COMP",
+        "python_type": "environmentlightCOMP",
+        "slug": "Environment_Light_COMP",
+        "url": "https://docs.derivative.ca/Environment_Light_COMP"
+      },
+      {
+        "name": "FBX",
+        "family": "COMP",
+        "python_type": "fbxCOMP",
+        "slug": "FBX_COMP",
+        "url": "https://docs.derivative.ca/FBX_COMP"
+      },
+      {
+        "name": "Field",
+        "family": "COMP",
+        "python_type": "fieldCOMP",
+        "slug": "Field_COMP",
+        "url": "https://docs.derivative.ca/Field_COMP"
+      },
+      {
+        "name": "Force",
+        "family": "COMP",
+        "python_type": "forceCOMP",
+        "slug": "Force_COMP",
+        "url": "https://docs.derivative.ca/Force_COMP"
+      },
+      {
+        "name": "GLSL",
+        "family": "COMP",
+        "python_type": "glslCOMP",
+        "slug": "GLSL_COMP",
+        "url": "https://docs.derivative.ca/GLSL_COMP"
+      },
+      {
+        "name": "Geo Text",
+        "family": "COMP",
+        "python_type": "geotextCOMP",
+        "slug": "Geo_Text_COMP",
+        "url": "https://docs.derivative.ca/Geo_Text_COMP"
+      },
+      {
+        "name": "Geometry",
+        "family": "COMP",
+        "python_type": "geometryCOMP",
+        "slug": "Geometry_COMP",
+        "url": "https://docs.derivative.ca/Geometry_COMP"
+      },
+      {
+        "name": "Handle",
+        "family": "COMP",
+        "python_type": "handleCOMP",
+        "slug": "Handle_COMP",
+        "url": "https://docs.derivative.ca/Handle_COMP"
+      },
+      {
+        "name": "Impulse Force",
+        "family": "COMP",
+        "python_type": "impulseforceCOMP",
+        "slug": "Impulse_Force_COMP",
+        "url": "https://docs.derivative.ca/Impulse_Force_COMP"
+      },
+      {
+        "name": "Light",
+        "family": "COMP",
+        "python_type": "lightCOMP",
+        "slug": "Light_COMP",
+        "url": "https://docs.derivative.ca/Light_COMP"
+      },
+      {
+        "name": "List",
+        "family": "COMP",
+        "python_type": "listCOMP",
+        "slug": "List_COMP",
+        "url": "https://docs.derivative.ca/List_COMP"
+      },
+      {
+        "name": "NVIDIA Flex Solver",
+        "family": "COMP",
+        "python_type": "nvidiaflexsolverCOMP",
+        "slug": "NVIDIA_Flex_Solver_COMP",
+        "url": "https://docs.derivative.ca/NVIDIA_Flex_Solver_COMP"
+      },
+      {
+        "name": "NVIDIA Flow Emitter",
+        "family": "COMP",
+        "python_type": "nvidiaflowemitterCOMP",
+        "slug": "NVIDIA_Flow_Emitter_COMP",
+        "url": "https://docs.derivative.ca/NVIDIA_Flow_Emitter_COMP"
+      },
+      {
+        "name": "Null",
+        "family": "COMP",
+        "python_type": "nullCOMP",
+        "slug": "Null_COMP",
+        "url": "https://docs.derivative.ca/Null_COMP"
+      },
+      {
+        "name": "OP Viewer",
+        "family": "COMP",
+        "python_type": "opviewerCOMP",
+        "slug": "OP_Viewer_COMP",
+        "url": "https://docs.derivative.ca/OP_Viewer_COMP"
+      },
+      {
+        "name": "Parameter",
+        "family": "COMP",
+        "python_type": "parameterCOMP",
+        "slug": "Parameter_COMP",
+        "url": "https://docs.derivative.ca/Parameter_COMP"
+      },
+      {
+        "name": "Replicator",
+        "family": "COMP",
+        "python_type": "replicatorCOMP",
+        "slug": "Replicator_COMP",
+        "url": "https://docs.derivative.ca/Replicator_COMP"
+      },
+      {
+        "name": "Select",
+        "family": "COMP",
+        "python_type": "selectCOMP",
+        "slug": "Select_COMP",
+        "url": "https://docs.derivative.ca/Select_COMP"
+      },
+      {
+        "name": "Shared Mem In",
+        "family": "COMP",
+        "python_type": "sharedmeminCOMP",
+        "slug": "Shared_Mem_In_COMP",
+        "url": "https://docs.derivative.ca/Shared_Mem_In_COMP"
+      },
+      {
+        "name": "Shared Mem Out",
+        "family": "COMP",
+        "python_type": "sharedmemoutCOMP",
+        "slug": "Shared_Mem_Out_COMP",
+        "url": "https://docs.derivative.ca/Shared_Mem_Out_COMP"
+      },
+      {
+        "name": "Slider",
+        "family": "COMP",
+        "python_type": "sliderCOMP",
+        "slug": "Slider_COMP",
+        "url": "https://docs.derivative.ca/Slider_COMP"
+      },
+      {
+        "name": "Table",
+        "family": "COMP",
+        "python_type": "tableCOMP",
+        "slug": "Table_COMP",
+        "url": "https://docs.derivative.ca/Table_COMP"
+      },
+      {
+        "name": "Text",
+        "family": "COMP",
+        "python_type": "textCOMP",
+        "slug": "Text_COMP",
+        "url": "https://docs.derivative.ca/Text_COMP"
+      },
+      {
+        "name": "Time",
+        "family": "COMP",
+        "python_type": "timeCOMP",
+        "slug": "Time_COMP",
+        "url": "https://docs.derivative.ca/Time_COMP"
+      },
+      {
+        "name": "USD",
+        "family": "COMP",
+        "python_type": "usdCOMP",
+        "slug": "USD_COMP",
+        "url": "https://docs.derivative.ca/USD_COMP"
+      },
+      {
+        "name": "Widget",
+        "family": "COMP",
+        "python_type": "widgetCOMP",
+        "slug": "Widget_COMP",
+        "url": "https://docs.derivative.ca/Widget_COMP"
+      },
+      {
+        "name": "Window",
+        "family": "COMP",
+        "python_type": "windowCOMP",
+        "slug": "Window_COMP",
+        "url": "https://docs.derivative.ca/Window_COMP"
+      }
+    ],
+    "MAT": [
+      {
+        "name": "Constant",
+        "family": "MAT",
+        "python_type": "constantMAT",
+        "slug": "Constant_MAT",
+        "url": "https://docs.derivative.ca/Constant_MAT"
+      },
+      {
+        "name": "Depth",
+        "family": "MAT",
+        "python_type": "depthMAT",
+        "slug": "Depth_MAT",
+        "url": "https://docs.derivative.ca/Depth_MAT"
+      },
+      {
+        "name": "GLSL",
+        "family": "MAT",
+        "python_type": "glslMAT",
+        "slug": "GLSL_MAT",
+        "url": "https://docs.derivative.ca/GLSL_MAT"
+      },
+      {
+        "name": "In",
+        "family": "MAT",
+        "python_type": "inMAT",
+        "slug": "In_MAT",
+        "url": "https://docs.derivative.ca/In_MAT"
+      },
+      {
+        "name": "Line",
+        "family": "MAT",
+        "python_type": "lineMAT",
+        "slug": "Line_MAT",
+        "url": "https://docs.derivative.ca/Line_MAT"
+      },
+      {
+        "name": "Null",
+        "family": "MAT",
+        "python_type": "nullMAT",
+        "slug": "Null_MAT",
+        "url": "https://docs.derivative.ca/Null_MAT"
+      },
+      {
+        "name": "Out",
+        "family": "MAT",
+        "python_type": "outMAT",
+        "slug": "Out_MAT",
+        "url": "https://docs.derivative.ca/Out_MAT"
+      },
+      {
+        "name": "PBR",
+        "family": "MAT",
+        "python_type": "pbrMAT",
+        "slug": "PBR_MAT",
+        "url": "https://docs.derivative.ca/PBR_MAT"
+      },
+      {
+        "name": "Phong",
+        "family": "MAT",
+        "python_type": "phongMAT",
+        "slug": "Phong_MAT",
+        "url": "https://docs.derivative.ca/Phong_MAT"
+      },
+      {
+        "name": "Point Sprite",
+        "family": "MAT",
+        "python_type": "pointspriteMAT",
+        "slug": "Point_Sprite_MAT",
+        "url": "https://docs.derivative.ca/Point_Sprite_MAT"
+      },
+      {
+        "name": "Select",
+        "family": "MAT",
+        "python_type": "selectMAT",
+        "slug": "Select_MAT",
+        "url": "https://docs.derivative.ca/Select_MAT"
+      },
+      {
+        "name": "Switch",
+        "family": "MAT",
+        "python_type": "switchMAT",
+        "slug": "Switch_MAT",
+        "url": "https://docs.derivative.ca/Switch_MAT"
+      },
+      {
+        "name": "Wireframe",
+        "family": "MAT",
+        "python_type": "wireframeMAT",
+        "slug": "Wireframe_MAT",
+        "url": "https://docs.derivative.ca/Wireframe_MAT"
+      }
+    ]
+  }
+}

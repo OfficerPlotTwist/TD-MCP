@@ -184,7 +184,7 @@ def _handle_screenshot(request, response):
     params = parse_qs(parsed.query)
 
     op_path = unquote(params.get('path', ['/project1/out1'])[0])
-    save_dir = unquote(params.get('save_dir', ['C:/Users/nik/Documents/AI/TD MCP/screenshots'])[0])
+    save_dir = unquote(params.get('save_dir', ['C:/Users/nik/Documents/AI/MCP/TD MCP/screenshots'])[0])
 
     target = op(op_path)
     if target is None:

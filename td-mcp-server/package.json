@@ -5,9 +5,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:a2a": "node a2a-server.js",
+    "client": "node a2a-client.js"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
     "@modelcontextprotocol/sdk": "^1.12.1",
     "zod": "^3.24.4"
   }

@@ -27,3 +27,8 @@ dist/
 *.lock
 npm-debug.log*
 yarn-debug.log*
+*.blend
+*.blend1
+
+# render output (kept on disk, not version-controlled)
+renders/

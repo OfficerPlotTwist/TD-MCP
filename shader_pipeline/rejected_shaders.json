@@ -1,0 +1,157 @@
+{
+  "rejected": [
+    {
+      "sid": "032",
+      "src_id": "Wt33Wf",
+      "src_name": "Wt33Wf",
+      "composite_score": 0.84644,
+      "source_grid_id": "sgr_0002",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:34:27.432Z"
+    },
+    {
+      "sid": "237",
+      "src_id": "mtyGWy",
+      "src_name": "mtyGWy",
+      "composite_score": 0.84355,
+      "source_grid_id": "sgr_0002",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:34:27.432Z"
+    },
+    {
+      "sid": "203",
+      "src_id": "XsBfRW",
+      "src_name": "XsBfRW",
+      "composite_score": 0.81798,
+      "source_grid_id": "sgr_0002",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:34:27.432Z"
+    },
+    {
+      "sid": "075",
+      "src_id": "MsfXRf",
+      "src_name": "MsfXRf",
+      "composite_score": 0.80885,
+      "source_grid_id": "sgr_0002",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:34:27.432Z"
+    },
+    {
+      "sid": "217",
+      "src_id": "4dsXzM",
+      "src_name": "4dsXzM",
+      "composite_score": 0.80619,
+      "source_grid_id": "sgr_0002",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:34:27.432Z"
+    },
+    {
+      "sid": "064",
+      "src_id": "tt3XDn",
+      "src_name": "tt3XDn",
+      "composite_score": 0.79532,
+      "source_grid_id": "sgr_0003",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:35:59.142Z"
+    },
+    {
+      "sid": "264",
+      "src_id": "XlfGRj",
+      "src_name": "XlfGRj",
+      "composite_score": 0.76891,
+      "source_grid_id": "sgr_0003",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:35:59.142Z"
+    },
+    {
+      "sid": "327",
+      "src_id": "ttKGDt",
+      "src_name": "ttKGDt",
+      "composite_score": 0.71201,
+      "source_grid_id": "sgr_0003",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:35:59.142Z"
+    },
+    {
+      "sid": "280",
+      "src_id": "WdXBW4",
+      "src_name": "WdXBW4",
+      "composite_score": 0.60362,
+      "source_grid_id": "sgr_0004",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:47:13.729Z"
+    },
+    {
+      "sid": "177",
+      "src_id": "4tjSDt",
+      "src_name": "4tjSDt",
+      "composite_score": 0.59811,
+      "source_grid_id": "sgr_0004",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:47:13.729Z"
+    },
+    {
+      "sid": "025",
+      "src_id": "4t2SRh",
+      "src_name": "4t2SRh",
+      "composite_score": 0.45334,
+      "source_grid_id": "sgr_0004",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:47:13.729Z"
+    },
+    {
+      "sid": "182",
+      "src_id": "ll3SWl",
+      "src_name": "ll3SWl",
+      "composite_score": 0.44684,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    },
+    {
+      "sid": "201",
+      "src_id": "wdsfDH",
+      "src_name": "wdsfDH",
+      "composite_score": 0.44684,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    },
+    {
+      "sid": "218",
+      "src_id": "wtdSR8",
+      "src_name": "Repeated Boxes",
+      "composite_score": 0.42324,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    },
+    {
+      "sid": "340",
+      "src_id": "WslGWl",
+      "src_name": "WslGWl",
+      "composite_score": 0.40918,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    },
+    {
+      "sid": "073",
+      "src_id": "lt33z7",
+      "src_name": "lt33z7",
+      "composite_score": 0.38688,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    },
+    {
+      "sid": "171",
+      "src_id": "Xtd3z7",
+      "src_name": "Tutorial Cube (SDF)",
+      "composite_score": 0.33562,
+      "source_grid_id": "sgr_0005",
+      "reason": "not_selected",
+      "rejected_at": "2026-05-27T19:49:16.662Z"
+    }
+  ]
+}

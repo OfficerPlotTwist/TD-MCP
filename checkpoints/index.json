@@ -1,0 +1,25 @@
+{
+  "checkpoints": [
+    {
+      "name": "pre_cam_orbit_rebuild",
+      "op_path": "/project1",
+      "tox_path": "c:/Users/nik/Documents/AI/MCP/TD MCP/checkpoints/pre_cam_orbit_rebuild_1778818210335.tox",
+      "description": "Before re-creating cam_orbit baseCOMP after TD freeze/restart wiped previous attempt.",
+      "created_at": "2026-05-15T04:10:10.453Z"
+    },
+    {
+      "name": "pre_mandelbulb",
+      "op_path": "/project1",
+      "tox_path": "c:/Users/nik/Documents/AI/MCP/TD MCP/checkpoints/pre_mandelbulb_1779901458163.tox",
+      "description": "Project root before building the audio-reactive Mandelbulb network (only TD_MCP bridge present).",
+      "created_at": "2026-05-27T17:04:18.200Z"
+    },
+    {
+      "name": "pre_server_controls",
+      "op_path": "/project1/TD_MCP",
+      "tox_path": "c:/Users/nik/Documents/AI/MCP/TD MCP/checkpoints/pre_server_controls_1779912104521.tox",
+      "description": "TD_MCP container before adding Start/Restart pulse par, Callbackspath file par, and parexec_server callback DAT. Restore point in case the live bridge wiring is disturbed.",
+      "created_at": "2026-05-27T20:01:44.558Z"
+    }
+  ]
+}
