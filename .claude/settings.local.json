@@ -19,7 +19,17 @@
       "mcp__touchdesigner__analyze_image_tone",
       "mcp__touchdesigner__list_tone_rules",
       "mcp__touchdesigner__set_tone_rule",
-      "mcp__touchdesigner__validate_script"
+      "mcp__touchdesigner__validate_script",
+      "PowerShell(git *)",
+      "PowerShell(npm *)",
+      "PowerShell(node *)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(git:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "touchdesigner"
+  ]
 }
