@@ -164,6 +164,36 @@ export class Session {
     delete this.values[slot];
     delete this.grid[slot];
   }
+
+  _releaseMaster(now) {
+    if (!this.master) return undefined;
+    const connId = this.master.connId;
+    const prev = this.clients.get(connId);
+    this.slots[0] = null;
+    this.master = null;
+    if (prev) {
+      const g = this._freeGuestSlot();
+      if (g !== null) { this.slots[g] = connId; prev.slot = g; prev.role = 'guest'; this._stickySlots.set(prev.clientId, g); }
+      else { prev.slot = null; prev.role = 'spectator'; }
+    }
+    this._rotateCode(now);
+    return connId;
+  }
+
+  tick(now) {
+    let releasedMasterConnId;
+    let codeRotated = false;
+    if (this.master) {
+      const idle = now - this.master.lastActivity >= this.opts.idleReleaseMs;
+      const capped = now - this.master.since >= this.opts.hardCapMs;
+      if (idle || capped) releasedMasterConnId = this._releaseMaster(now);
+    }
+    if (!this.master && now - this.lastCodeRotate >= this.opts.codeRotateIdleMs) {
+      this._rotateCode(now);
+      codeRotated = true;
+    }
+    return { releasedMasterConnId, codeRotated };
+  }
 }
 
 export function randomCode() {

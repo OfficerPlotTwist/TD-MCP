@@ -157,3 +157,40 @@ test('unknown control id is rejected', () => {
   assert.equal(r.ok, false);
   assert.equal(r.error.code, 'badcontrol');
 });
+
+test('tick releases master after 2 min inactivity', () => {
+  const s = mk2();
+  s.connect('c1', 'u1', 0);
+  s.pair('c1', s.currentCode, 1000);
+  const r = s.tick(1000 + 120000);
+  assert.equal(r.releasedMasterConnId, 'c1');
+  assert.equal(s.master, null);
+  assert.equal(s.roleOf('c1'), 'guest');
+});
+
+test('tick keeps an active master below the inactivity threshold', () => {
+  const s = mk2();
+  s.connect('c1', 'u1', 0);
+  s.pair('c1', s.currentCode, 1000);
+  s.applyControl('c1', 'speed', 0.5, 100000); // activity
+  const r = s.tick(100000 + 119999);
+  assert.equal(r.releasedMasterConnId, undefined);
+  assert.equal(s.master?.connId, 'c1');
+});
+
+test('tick releases master at the 30 min hard cap even if active', () => {
+  const s = mk2();
+  s.connect('c1', 'u1', 0);
+  s.pair('c1', s.currentCode, 0);
+  s.applyControl('c1', 'speed', 0.5, 1800000 - 1); // recent activity
+  const r = s.tick(1800000);
+  assert.equal(r.releasedMasterConnId, 'c1');
+});
+
+test('tick rotates the code after idle timeout when no master', () => {
+  const s = new Session(cfg2, { codeGen: (() => { let i = 0; const codes = ['ABC', 'DEF']; return () => codes[i++] || 'ZZZ'; })() });
+  const before = s.currentCode;
+  const r = s.tick(60000);
+  assert.equal(r.codeRotated, true);
+  assert.notEqual(s.currentCode, before);
+});
