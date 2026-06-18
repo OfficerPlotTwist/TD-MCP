@@ -1,1 +1,31 @@
-<!doctype html><meta charset="utf-8"><title>crowd-control</title><p>placeholder</p>
+<!-- crowd-control/public/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <title>Crowd Control</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header>
+    <span id="status">connecting…</span>
+    <span id="role-badge">guest</span>
+  </header>
+  <main>
+    <section id="controls"></section>
+    <canvas id="grid" hidden></canvas>
+    <section id="signals"></section>
+  </main>
+  <footer>
+    <button id="seize">Seize Master</button>
+    <form id="pair-form" hidden>
+      <input id="code" inputmode="latin" autocapitalize="characters" maxlength="3" placeholder="ABC" />
+      <button type="submit">Enter</button>
+      <span id="pair-msg"></span>
+    </form>
+  </footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "Crowd Control",
+  "short_name": "Control",
+  "display": "standalone",
+  "background_color": "#0b0b10",
+  "theme_color": "#0b0b10",
+  "start_url": "/",
+  "icons": []
+}
