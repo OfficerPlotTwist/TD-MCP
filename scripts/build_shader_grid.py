@@ -25,7 +25,8 @@ from _db import (CANDIDATES_DB, GRID_IMG_DIR, REVIEW_GRIDS_DB, fwd, load_db,  # 
 CELL = 360            # thumbnail cell size (px)
 GAP = 10              # gap between cells
 MARGIN = 16           # outer margin
-CAPTION_H = 132       # bottom caption bar height
+HEADER_H = 104        # top band: source-summary line + grid id/timestamp bar
+CAPTION_H = 148       # bottom caption bar height
 BG = (18, 18, 22)
 CELL_BG = (30, 30, 36)
 CAPTION_BG = (12, 12, 15)
@@ -37,8 +38,11 @@ BADGE_FG = (20, 20, 20)
 DESTINATIONS = [
     "Approved → Human-Selected-Good-Shaders DB",
     "Approved → TouchDesigner queue  /project1/shader_queue",
+    "Refine   → refinement_pool.json  (r<digits>)",
 ]
-LEGEND = "/looksgood <numbers> <id>   •   dup digit = favorite + front of queue   •   00 = reject all"
+LEGEND = ("/looksgood <numbers> [r<digits>] <id>   •   r = back to refinement pool"
+          "   •   dup = favorite + front of queue   •   00 = reject all")
+HEADER = "Shadertoy shader thumbnails   •   pool candidates (ranked by composite score)"
 
 
 def _font(size: int, bold: bool = False):
@@ -91,7 +95,7 @@ def build_one(grids_db: dict, candidates_db: dict) -> dict | None:
     grid_id = f"sgr{n:02d}"
 
     grid_w = MARGIN * 2 + CELL * 3 + GAP * 2
-    grid_h = MARGIN * 2 + CELL * 3 + GAP * 2 + CAPTION_H
+    grid_h = HEADER_H + MARGIN * 2 + CELL * 3 + GAP * 2 + CAPTION_H
     canvas = Image.new("RGB", (grid_w, grid_h), BG)
     draw = ImageDraw.Draw(canvas)
     badge_font = _font(34, bold=True)
@@ -103,7 +107,7 @@ def build_one(grids_db: dict, candidates_db: dict) -> dict | None:
     for i in range(9):
         r, col = divmod(i, 3)
         x = MARGIN + col * (CELL + GAP)
-        y = MARGIN + r * (CELL + GAP)
+        y = HEADER_H + MARGIN + r * (CELL + GAP)
         draw.rectangle([x, y, x + CELL, y + CELL], fill=CELL_BG)
         label = str(i + 1)
         if i < len(tiles):
@@ -123,15 +127,21 @@ def build_one(grids_db: dict, candidates_db: dict) -> dict | None:
         else:
             draw.text((x + CELL // 2 - 8, y + CELL // 2 - 12), "—", font=badge_font, fill=DIM)
 
-    # Caption bar.
+    # Top band: source-summary line, then a grid bar with id + timestamp.
+    tx = MARGIN
+    draw.text((tx, 14), HEADER, font=cap_line, fill=FG)
+    bar_y = 50
+    draw.rectangle([0, bar_y, grid_w, HEADER_H], fill=CAPTION_BG)
+    draw.text((tx, bar_y + 9), f"GRID  {grid_id}", font=cap_title, fill=BADGE_BG)
+    draw.text((tx + 280, bar_y + 18), now_iso(), font=cap_small, fill=DIM)
+
+    # Bottom caption: destinations, an empty-line spacer, then the legend.
     cy0 = grid_h - CAPTION_H
     draw.rectangle([0, cy0, grid_w, grid_h], fill=CAPTION_BG)
-    tx = MARGIN
-    draw.text((tx, cy0 + 10), f"GRID  {grid_id}", font=cap_title, fill=BADGE_BG)
-    draw.text((tx + 280, cy0 + 17), now_iso(), font=cap_small, fill=DIM)
-    draw.text((tx, cy0 + 48), DESTINATIONS[0], font=cap_line, fill=FG)
-    draw.text((tx, cy0 + 74), DESTINATIONS[1], font=cap_line, fill=FG)
-    draw.text((tx, cy0 + 102), LEGEND, font=cap_small, fill=DIM)
+    for di, dest in enumerate(DESTINATIONS):
+        draw.text((tx, cy0 + 12 + di * 28), dest, font=cap_line, fill=FG)
+    legend_y = cy0 + 12 + len(DESTINATIONS) * 28 + 16   # +16 = empty-line spacer
+    draw.text((tx, legend_y), LEGEND, font=cap_small, fill=DIM)
 
     GRID_IMG_DIR.mkdir(parents=True, exist_ok=True)
     png_path = GRID_IMG_DIR / f"{grid_id}.png"

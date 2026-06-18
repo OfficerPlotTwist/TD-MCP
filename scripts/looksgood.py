@@ -1,10 +1,13 @@
 """Resolve a shader review grid from a terse approval command.
 
-Schema (order enforced):   looksgood.py <numbers> <id>
+Schema (order enforced):   looksgood.py <numbers> [r<digits>] <id>
   <numbers>  approval digits 1-9 (contiguous "13357" or spaced "1 3 3 5 7").
              A digit present once  -> that tile is approved.
              A digit present twice -> approved + favorite + pushed to front of queue.
              The token "00"        -> disapprove ALL (grid rejected); takes precedence.
+  r<digits>  optional refine token (e.g. "r78"): those tiles are sent back to the
+             secondary refinement pool (refinement_pool.json) for fine-tuning instead
+             of being discarded. Approve wins if a digit is in both.
   <id>       grid id, last token. Accepts "sgr_0007", "0007", or "7"
              (the 4-digit counter that increments per grid).
 
@@ -24,8 +27,8 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "shader_pipeline"))
-from _db import (CANDIDATES_DB, GOOD_SHADERS_DB, QUEUE_DB, REJECTED_DB,  # noqa: E402
-                 REVIEW_GRIDS_DB, load_db, now_iso, pipeline_lock, save_db)
+from _db import (CANDIDATES_DB, GOOD_SHADERS_DB, QUEUE_DB, REFINE_POOL_DB,  # noqa: E402
+                 REJECTED_DB, REVIEW_GRIDS_DB, load_db, now_iso, pipeline_lock, save_db)
 
 
 def log_rejection(rejected_db, seen, tile, grid_id, reason):
@@ -37,6 +40,22 @@ def log_rejection(rejected_db, seen, tile, grid_id, reason):
         "sid": sid, "src_id": tile["src_id"], "src_name": tile["src_name"],
         "composite_score": tile.get("composite_score"),
         "source_grid_id": grid_id, "reason": reason, "rejected_at": now_iso(),
+    })
+    seen.add(sid)
+
+
+def log_refine(refine_db, seen, tile, grid_id, cand_by_sid):
+    """Append a shader to the secondary refinement pool (dedup by sid). Carries
+    full provenance so a future refinement-build step can re-grid it."""
+    sid = tile["sid"]
+    if sid in seen:
+        return
+    cand = cand_by_sid.get(sid, {})
+    refine_db["refinement"].append({
+        "sid": sid, "src_id": tile["src_id"], "src_name": tile["src_name"],
+        "frag_path": cand.get("frag_path"), "thumb_path": tile.get("thumb_path"),
+        "composite_score": tile.get("composite_score"),
+        "source_grid_id": grid_id, "refined_at": now_iso(),
     })
     seen.add(sid)
 
@@ -70,11 +89,14 @@ def reindex_queue(queue: list) -> None:
 
 def _resolve(args: list) -> int:
     id_arg = args[-1]
-    number_tokens = args[:-1]
+    rest = args[:-1]
+    refine_tokens = [t for t in rest if t[:1] in "rR"]
+    number_tokens = [t for t in rest if t[:1] not in "rR"]
     reject_all = "00" in number_tokens or "".join(number_tokens) == "00"
 
     digits = [ch for tok in number_tokens for ch in tok if ch in "123456789"]
     counts = Counter(digits)
+    refine_labels = {ch for tok in refine_tokens for ch in tok[1:] if ch in "123456789"}
 
     grids_db = load_db(REVIEW_GRIDS_DB, "grids")
     grid = find_grid(grids_db["grids"], id_arg)
@@ -91,10 +113,12 @@ def _resolve(args: list) -> int:
     cand_by_sid = {c["sid"]: c for c in cand_db["candidates"]}
     rejected_db = load_db(REJECTED_DB, "rejected")
     rej_seen = {r["sid"] for r in rejected_db["rejected"]}
+    refine_db = load_db(REFINE_POOL_DB, "refinement")
+    refine_seen = {r["sid"] for r in refine_db["refinement"]}
 
     summary = {"ok": True, "grid": grid["id"], "approved": [], "favorited": [],
-               "rejected_all": reject_all, "rejected": [], "png_deleted": False,
-               "ignored_digits": []}
+               "rejected_all": reject_all, "rejected": [], "refined": [],
+               "png_deleted": False, "ignored_digits": []}
 
     if reject_all:
         grid["status"] = "rejected"
@@ -154,10 +178,17 @@ def _resolve(args: list) -> int:
         reindex_queue(queue_db["queue"])
         grid["status"] = "resolved"
 
-        # Audit trail: tiles the human did not approve are rejected ("not_selected").
+        # Unapproved tiles: refine-flagged go to the refinement pool; the rest are
+        # rejected ("not_selected"). Approve wins over refine on a shared digit.
         approved_set = set(summary["approved"])
+        refine_labels -= set(counts)
         for label, tile in grid["tiles"].items():
-            if tile["sid"] not in approved_set:
+            if tile["sid"] in approved_set:
+                continue
+            if label in refine_labels:
+                log_refine(refine_db, refine_seen, tile, grid["id"], cand_by_sid)
+                summary["refined"].append(tile["sid"])
+            else:
                 log_rejection(rejected_db, rej_seen, tile, grid["id"], "not_selected")
                 summary["rejected"].append(tile["sid"])
 
@@ -171,6 +202,7 @@ def _resolve(args: list) -> int:
     save_db(QUEUE_DB, queue_db)
     save_db(REVIEW_GRIDS_DB, grids_db)
     save_db(REJECTED_DB, rejected_db)
+    save_db(REFINE_POOL_DB, refine_db)
 
     # Auto-replenish: when no grids remain pending, build the next batch (<=10,
     # capped by the remaining pool) so there's always more to review.
@@ -193,6 +225,8 @@ def _resolve(args: list) -> int:
     if not reject_all:
         print(f"  approved: {summary['approved']}")
         print(f"  favorited (front of queue): {summary['favorited']}")
+        if summary["refined"]:
+            print(f"  refined -> refinement_pool: {summary['refined']}")
         if summary["ignored_digits"]:
             print(f"  ignored (no such tile): {summary['ignored_digits']}")
     reason = "grid_rejected_00" if reject_all else "not_selected"

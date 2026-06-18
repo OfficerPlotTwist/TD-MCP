@@ -1,0 +1,163 @@
+{
+  "grids": [
+    {
+      "id": "uib01",
+      "blur": "blur1",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/uiborder_blur/uib01.png",
+      "status": "pending",
+      "tiles": {
+        "1": {
+          "size": 2,
+          "frame": "blur1__0__2.png",
+          "is_default": false
+        },
+        "2": {
+          "size": 3,
+          "frame": "blur1__1__3.png",
+          "is_default": false
+        },
+        "3": {
+          "size": 4,
+          "frame": "blur1__2__4.png",
+          "is_default": false
+        },
+        "4": {
+          "size": 6,
+          "frame": "blur1__3__6.png",
+          "is_default": false
+        },
+        "5": {
+          "size": 7,
+          "frame": "blur1__4__7.png",
+          "is_default": true
+        },
+        "6": {
+          "size": 10,
+          "frame": "blur1__5__10.png",
+          "is_default": false
+        },
+        "7": {
+          "size": 14,
+          "frame": "blur1__6__14.png",
+          "is_default": false
+        },
+        "8": {
+          "size": 21,
+          "frame": "blur1__7__21.png",
+          "is_default": false
+        },
+        "9": {
+          "size": 28,
+          "frame": "blur1__8__28.png",
+          "is_default": false
+        }
+      }
+    },
+    {
+      "id": "uib02",
+      "blur": "blur2",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/uiborder_blur/uib02.png",
+      "status": "pending",
+      "tiles": {
+        "1": {
+          "size": 4,
+          "frame": "blur2__0__4.png",
+          "is_default": false
+        },
+        "2": {
+          "size": 7,
+          "frame": "blur2__1__7.png",
+          "is_default": false
+        },
+        "3": {
+          "size": 10,
+          "frame": "blur2__2__10.png",
+          "is_default": false
+        },
+        "4": {
+          "size": 14,
+          "frame": "blur2__3__14.png",
+          "is_default": false
+        },
+        "5": {
+          "size": 17,
+          "frame": "blur2__4__17.png",
+          "is_default": true
+        },
+        "6": {
+          "size": 24,
+          "frame": "blur2__5__24.png",
+          "is_default": false
+        },
+        "7": {
+          "size": 34,
+          "frame": "blur2__6__34.png",
+          "is_default": false
+        },
+        "8": {
+          "size": 51,
+          "frame": "blur2__7__51.png",
+          "is_default": false
+        },
+        "9": {
+          "size": 68,
+          "frame": "blur2__8__68.png",
+          "is_default": false
+        }
+      }
+    },
+    {
+      "id": "uib03",
+      "blur": "blur3",
+      "png_path": "C:/Users/nik/Documents/AI/Busdriver/review_grids/uiborder_blur/uib03.png",
+      "status": "pending",
+      "tiles": {
+        "1": {
+          "size": 3,
+          "frame": "blur3__0__3.png",
+          "is_default": false
+        },
+        "2": {
+          "size": 4,
+          "frame": "blur3__1__4.png",
+          "is_default": false
+        },
+        "3": {
+          "size": 7,
+          "frame": "blur3__2__7.png",
+          "is_default": false
+        },
+        "4": {
+          "size": 9,
+          "frame": "blur3__3__9.png",
+          "is_default": false
+        },
+        "5": {
+          "size": 11,
+          "frame": "blur3__4__11.png",
+          "is_default": true
+        },
+        "6": {
+          "size": 15,
+          "frame": "blur3__5__15.png",
+          "is_default": false
+        },
+        "7": {
+          "size": 22,
+          "frame": "blur3__6__22.png",
+          "is_default": false
+        },
+        "8": {
+          "size": 33,
+          "frame": "blur3__7__33.png",
+          "is_default": false
+        },
+        "9": {
+          "size": 44,
+          "frame": "blur3__8__44.png",
+          "is_default": false
+        }
+      }
+    }
+  ]
+}

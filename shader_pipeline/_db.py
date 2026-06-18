@@ -25,6 +25,10 @@ REVIEW_GRIDS_DB = PIPELINE_DIR / "review_grids.json"
 GOOD_SHADERS_DB = PIPELINE_DIR / "human_selected_good_shaders.json"
 QUEUE_DB = PIPELINE_DIR / "implementation_queue.json"
 REJECTED_DB = PIPELINE_DIR / "rejected_shaders.json"
+# Secondary pool: shaders the human flagged for fine-tuning (r<digits> in
+# /looksgood) instead of discarding. A future refinement-build step drains this;
+# for now it's a holding pool with full provenance.
+REFINE_POOL_DB = PIPELINE_DIR / "refinement_pool.json"
 
 
 def now_iso() -> str:
