@@ -12,7 +12,7 @@ A live installation/show where strangers' phones participate in driving a TouchD
 
 - **Public crowd handoff.** Anyone can scan a QR code and open the control site on their own phone over cellular data.
 - **Two control tiers:**
-  - **Master** — one device holds the *full* control surface (all sliders, toggles, the grid). Seized by entering a 3-letter code displayed live on the projection. **Always seizable, last-entry-wins.** Auto-released on **2 minutes of inactivity** or a **30-minute hard cap**.
+  - **Master** — one device holds the *full* control surface (all sliders, toggles, the grid). Claimed via a **"Seize Master" button** that reveals a 3-letter code entry; the code is displayed live on the projection. **Last-entry-wins**, but each seizure starts a **15-second lock-out** during which no one else can seize (anti-thrash). Auto-released on **2 minutes of inactivity** or a **30-minute hard cap**.
   - **Guest** — every other connected phone (no pairing required) can concurrently send a *defined subset* of public controls plus ephemeral signals. Guests are participants, not spectators.
 - **Per-guest channels.** Each connected phone is assigned a slot index; its input lands in per-slot channels TD reads directly (e.g. each guest becomes one live point on the grid). Slots are capped and recycled.
 
@@ -131,16 +131,18 @@ JSON messages over **one WebSocket per client**. Two client classes: phones (unt
 - Disconnect → slot freed → recycled (LRU) for the next/overflowed connection.
 
 ### Master state machine
-States: **NoMaster** and **MasterHeld(slot=0, since, lastActivity)**.
+States: **NoMaster** and **MasterHeld(slot=0, since, lastActivity, seizeLockUntil)**.
 
 - **Code:** `currentCode` is a 3-letter code. It **rotates on every seizure** and on a **60-second idle timer**, so a code captured in a photo goes stale.
-- **Seizure (`pair{code}`):** if `code == currentCode` →
+- **Seize affordance:** the phone shows a **"Seize Master" button**; tapping it reveals the 3-letter code entry (read off the projection) and sends `pair{code}`.
+- **Seize lock-out:** each grant sets `seizeLockUntil = now + 15 s`. While `now < seizeLockUntil`, all `pair` attempts are rejected with `error{code:"locked", retryInMs}` (the UI shows a brief "Master locked — Ns" state and disables the button). This prevents rapid back-and-forth takeover thrashing.
+- **Seizure (`pair{code}`):** if not locked **and** `code == currentCode` →
   1. grant master to this connection (moves it to slot 0);
   2. if a master already existed, demote it to a guest slot and send it `bumped`;
   3. generate a new `currentCode`;
-  4. reset `since` + `lastActivity`;
+  4. reset `since` + `lastActivity`; set `seizeLockUntil = now + 15 s`;
   5. push the new code to TD (→ projection).
-  Because seizing rotates the code, the next taker needs the freshly-displayed one.
+  Because seizing rotates the code, the next taker needs the freshly-displayed one — and must wait out the 15 s lock.
 - **Activity:** any master `control` / `grid` / `signal` updates `lastActivity`.
 - **Release** (→ NoMaster, rotate code, keep displaying a now-claimable code):
   - `now - lastActivity > 2 min` (inactivity), **or**
@@ -203,7 +205,7 @@ A single JSON document, served by Node and read by TD. **Fixed per show**; loade
 
 ## 9. Testing strategy
 
-- **Session state machine (headless unit tests):** seizure, last-wins demotion + `bumped`, 2-min inactivity release, 30-min cap release, disconnect release, code rotation (per-seizure + 60 s idle), slot assignment/recycling, overflow→spectator, role gating accept/reject.
+- **Session state machine (headless unit tests):** seizure, last-wins demotion + `bumped`, 15-second seize lock-out (reject during, accept after), 2-min inactivity release, 30-min cap release, disconnect release, code rotation (per-seizure + 60 s idle), slot assignment/recycling, overflow→spectator, role gating accept/reject.
 - **Load / protocol:** a fake-phone script opening N WebSocket connections and driving control/grid/signal traffic to exercise coalescing and the slot cap.
 - **TD format lock:** a mock `engine` client to pin the snapshot/signal message format before wiring the real WebSocket DAT.
 - **Manual:** projection code render + smoothness check on the real TD network.
@@ -214,6 +216,7 @@ A single JSON document, served by Node and read by TD. **Fixed per show**; loade
 
 - `slotCap` = **24**.
 - Code rotation = **on every seizure + every 60 s idle**.
+- Seize lock-out after each grant = **15 s**.
 - Master inactivity release = **2 min**; hard cap = **30 min**.
 - Snapshot tick to TD = **~60 Hz**, coalesced latest-per-slot.
 - Grid coordinates normalized **0..1**, origin per TD convention handled in the binding map.
