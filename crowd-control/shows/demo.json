@@ -1,0 +1,11 @@
+{
+  "show": "demo",
+  "slotCap": 24,
+  "controls": [
+    { "id": "speed", "type": "slider", "label": "Speed", "min": 0, "max": 1, "role": "master" },
+    { "id": "glow",  "type": "toggle", "label": "Glow", "role": "master" },
+    { "id": "hue",   "type": "slider", "label": "Color", "min": 0, "max": 1, "role": "public" }
+  ],
+  "grid": { "id": "xy", "perGuest": true, "role": "public" },
+  "signals": [ { "id": "burst", "label": "✦", "role": "public" } ]
+}

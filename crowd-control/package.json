@@ -1,0 +1,16 @@
+{
+  "name": "crowd-control",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test",
+    "mock-engine": "node tools/mock-engine.js",
+    "fake-phones": "node tools/fake-phones.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
