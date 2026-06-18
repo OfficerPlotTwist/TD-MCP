@@ -2,7 +2,24 @@
   "permissions": {
     "allow": [
       "mcp__touchdesigner__execute_script",
-      "mcp__touchdesigner__get_errors"
+      "mcp__touchdesigner__get_errors",
+      "mcp__touchdesigner__get_operator_info",
+      "mcp__touchdesigner__get_par_value",
+      "mcp__touchdesigner__set_par_value",
+      "mcp__touchdesigner__create_operator",
+      "mcp__touchdesigner__connect_operators",
+      "mcp__touchdesigner__disconnect_operators",
+      "mcp__touchdesigner__delete_operator",
+      "mcp__touchdesigner__list_operators",
+      "mcp__touchdesigner__save_checkpoint",
+      "mcp__touchdesigner__restore_checkpoint",
+      "mcp__touchdesigner__delete_checkpoint",
+      "mcp__touchdesigner__list_checkpoints",
+      "mcp__touchdesigner__take_screenshot",
+      "mcp__touchdesigner__analyze_image_tone",
+      "mcp__touchdesigner__list_tone_rules",
+      "mcp__touchdesigner__set_tone_rule",
+      "mcp__touchdesigner__validate_script"
     ]
   }
 }

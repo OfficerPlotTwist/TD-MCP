@@ -48,9 +48,6 @@ td_mcp_logs/
 # Session data
 onlyprompts.json
 
-# Personal Claude settings
-.claude/settings.local.json
-
 # Checkpoint binaries (index kept)
 checkpoints/*.tox
 
