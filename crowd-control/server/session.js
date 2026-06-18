@@ -82,7 +82,7 @@ export class Session {
     }
 
     // free this client's old guest slot, move to master slot 0
-    if (client.slot != null && this.slots[client.slot] === connId) this.slots[client.slot] = null;
+    if (client.slot != null && this.slots[client.slot] === connId) { this._clearSlotData(client.slot); this.slots[client.slot] = null; }
     this.slots[0] = connId;
     client.slot = 0;
     client.role = 'master';
