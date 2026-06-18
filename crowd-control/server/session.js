@@ -13,7 +13,7 @@ export class Session {
     this.clients = new Map();            // connId -> { connId, clientId, slot, role }
     this.slots = new Array(config.slotCap + 1).fill(null); // [0]=master slot, 1..slotCap guests
     this.master = null;                  // set in Task 5: { connId, since, lastActivity, seizeLockUntil }
-    this.currentCode = null;             // set in Task 6
+    this.currentCode = this.codeGen();
     this.lastCodeRotate = 0;
     // clientId -> slot remembered briefly so reconnects keep their slot until reused
     this._stickySlots = new Map();
@@ -44,12 +44,61 @@ export class Session {
     return { role: 'guest', slot, masterPresent: !!this.master };
   }
 
+  roleOf(connId) {
+    const c = this.clients.get(connId);
+    return c ? c.role : null;
+  }
+
+  _rotateCode(now) {
+    this.currentCode = this.codeGen();
+    this.lastCodeRotate = now;
+  }
+
+  pair(connId, code, now) {
+    const client = this.clients.get(connId);
+    if (!client) return { granted: false, error: { code: 'noclient', message: 'not connected' } };
+
+    if (this.master && now < this.master.seizeLockUntil) {
+      return { granted: false, error: { code: 'locked', message: 'master locked', retryInMs: this.master.seizeLockUntil - now } };
+    }
+    if (code !== this.currentCode) {
+      return { granted: false, error: { code: 'badcode', message: 'wrong code' } };
+    }
+
+    let bumpedConnId;
+    if (this.master && this.master.connId !== connId) {
+      bumpedConnId = this.master.connId;
+      const prev = this.clients.get(bumpedConnId);
+      this.slots[0] = null;
+      if (prev) {
+        const g = this._freeGuestSlot();
+        if (g !== null) { this.slots[g] = bumpedConnId; prev.slot = g; prev.role = 'guest'; this._stickySlots.set(prev.clientId, g); }
+        else { prev.slot = null; prev.role = 'spectator'; }
+      }
+    }
+
+    // free this client's old guest slot, move to master slot 0
+    if (client.slot != null && this.slots[client.slot] === connId) this.slots[client.slot] = null;
+    this.slots[0] = connId;
+    client.slot = 0;
+    client.role = 'master';
+    this.master = { connId, since: now, lastActivity: now, seizeLockUntil: now + this.opts.seizeLockMs };
+    this._rotateCode(now);
+    return { granted: true, code: this.currentCode, bumpedConnId };
+  }
+
   disconnect(connId, now) {
     const client = this.clients.get(connId);
     if (!client) return { wasMaster: false };
     let wasMaster = false;
-    if (client.slot != null && this.slots[client.slot] === connId) this.slots[client.slot] = null;
-    // master release handled in Task 5 override of this method
+    if (this.master && this.master.connId === connId) {
+      wasMaster = true;
+      this.master = null;
+      this.slots[0] = null;
+      this._rotateCode(now);
+    } else if (client.slot != null && this.slots[client.slot] === connId) {
+      this.slots[client.slot] = null;
+    }
     this.clients.delete(connId);
     return { wasMaster };
   }
