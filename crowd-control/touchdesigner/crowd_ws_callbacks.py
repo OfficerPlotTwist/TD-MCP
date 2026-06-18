@@ -18,7 +18,10 @@ BASE_COLS = ['slot', 'role', 'active', 'x', 'y']
 
 
 def onConnect(webSocketDAT):
-    op('crowd_code')[0, 0] = '...'
+    code_dat = op('crowd_code')
+    if code_dat is not None:
+        code_dat.clear()
+        code_dat.text = '...'
     return
 
 

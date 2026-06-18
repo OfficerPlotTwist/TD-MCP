@@ -9,6 +9,6 @@ const engineSecret = process.env.ENGINE_SECRET || 'dev-secret';
 
 const config = loadConfig(resolve(process.cwd(), showPath));
 const srv = createServer({ config, port, publicDir: 'public', engineSecret });
-console.log(`crowd-control "${config.show}" listening on http://0.0.0.0:${port}  (engine secret: ${engineSecret})`);
+console.log(`crowd-control "${config.show}" listening on http://0.0.0.0:${port}`);
 
 process.on('SIGINT', async () => { await srv.stop(); process.exit(0); });
