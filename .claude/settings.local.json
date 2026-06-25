@@ -25,7 +25,9 @@
       "PowerShell(node *)",
       "Bash(npm:*)",
       "Bash(node:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(grep -vE '\\\\.md$')",
+      "Bash(xargs grep -lE 'crowd[-_]|Crowd')"
     ]
   },
   "enableAllProjectMcpServers": true,
