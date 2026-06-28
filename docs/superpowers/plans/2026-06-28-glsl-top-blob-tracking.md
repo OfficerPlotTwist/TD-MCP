@@ -134,8 +134,8 @@ src.par.resolutionw.expr = "parent().par.Procres"
 src.par.resolutionh.expr = "parent().par.Procres"
 src.par.format = 'rgba32float'
 # uTime uniform
-src.par.value0name = 'uTime'
-src.par.value0x.expr = "absTime.seconds"
+src.par.vec0name = 'uTime'
+src.par.vec0valuex.expr = "absTime.seconds"
 # wire dev source -> in1 for development
 intop.inputConnectors[0].connect(src)
 print('built', c.path)
@@ -199,10 +199,12 @@ t = c.create(textDAT, 'text_mask'); t.nodeX=-560; t.nodeY=-130
 t.text = open(r'C:\Users\NICKESCHEN\Dev\TD-MCP\touchdesigner\blobtrack\mask.frag').read()
 g.par.pixeldat = t.name
 g.par.format = 'rgba32float'
+g.par.outputresolution = 'custom'   # required so resolutionw/h are honored
+g.par.resmult = False               # else 'useinput'/mult doubles to 2x
 g.par.resolutionw.expr = "parent().par.Procres"
 g.par.resolutionh.expr = "parent().par.Procres"
-g.par.value0name = 'uThreshold'
-g.par.value0x.expr = "parent().par.Threshold"
+g.par.vec0name = 'uThreshold'
+g.par.vec0valuex.expr = "parent().par.Threshold"
 g.inputConnectors[0].connect(c.op('in1'))
 print('ok')
 ```
@@ -265,7 +267,7 @@ t = c.create(textDAT, 'text_seed'); t.nodeX=-320; t.nodeY=-130
 t.text = open(r'C:\Users\NICKESCHEN\Dev\TD-MCP\touchdesigner\blobtrack\seed.frag').read()
 g.par.pixeldat = t.name
 g.par.format = 'rgba32float'
-g.par.value0name = 'uSentinel'; g.par.value0x = 1e8
+g.par.vec0name = 'uSentinel'; g.par.vec0valuex = 1e8
 g.inputConnectors[0].connect(c.op('glsl_mask'))
 print('ok')
 ```
@@ -347,7 +349,7 @@ for i, s in enumerate(steps):
     g.nodeX = x; g.nodeY = 0; x += 160
     g.par.pixeldat = 'text_jfa'
     g.par.format = 'rgba32float'
-    g.par.value0name = 'uStep'; g.par.value0x = s
+    g.par.vec0name = 'uStep'; g.par.vec0valuex = s
     g.inputConnectors[0].connect(prev)
     prev = g
 nl = c.create(nullTOP, 'null_label'); nl.nodeX=x; nl.nodeY=0
@@ -469,7 +471,7 @@ mat.par.pixeldat  = pix.name
 # bind null_label as sampler 'sLabels' (use Samplers page names found in Step 5)
 mat.par.sampler1name = 'sLabels'
 mat.par.top1 = '../null_label'
-mat.par.value0name = 'uRes'; mat.par.value0x.expr = "parent().par.Procres"
+mat.par.vec0name = 'uRes'; mat.par.vec0valuex.expr = "parent().par.Procres"
 
 geo = c.create(geometryCOMP, 'geo_scatter'); geo.nodeX=0; geo.nodeY=240
 # move grid+convert inside geo, or reference SOP; simplest: recreate SOP path inside geo.
@@ -490,7 +492,7 @@ ct = c.create(textDAT, 'text_centroid'); ct.nodeX=320; ct.nodeY=120
 ct.text = open(os.path.join(base,'centroid.frag')).read()
 cg.par.pixeldat = ct.name
 cg.par.format = 'rgba32float'
-cg.par.value0name='uMinArea'; cg.par.value0x.expr="parent().par.Minarea"
+cg.par.vec0name='uMinArea'; cg.par.vec0valuex.expr="parent().par.Minarea"
 cg.inputConnectors[0].connect(rend)
 print('scatter graph built')
 ```
@@ -565,8 +567,8 @@ t = c.create(textDAT, 'text_idtrack'); t.nodeX=480; t.nodeY=120
 t.text = open(r'C:\Users\NICKESCHEN\Dev\TD-MCP\touchdesigner\blobtrack\idtrack.frag').read()
 g.par.pixeldat = t.name
 g.par.format = 'rgba32float'
-g.par.value0name='uMatchRadius'; g.par.value0x.expr="parent().par.Matchradius"
-g.par.value1name='uFrameSalt';  g.par.value1x.expr="absTime.frame*1000.0"
+g.par.vec0name='uMatchRadius'; g.par.vec0valuex.expr="parent().par.Matchradius"
+g.par.vec1name='uFrameSalt';  g.par.vec1valuex.expr="absTime.frame*1000.0"
 fb = c.create(feedbackTOP, 'feedback_id'); fb.nodeX=480; fb.nodeY=360
 fb.par.top = g.name                       # feedback target = glsl_idtrack
 g.inputConnectors[0].connect(c.op('glsl_centroid'))  # input 0 = current
@@ -657,7 +659,7 @@ ov = c.create(glslTOP, 'glsl_overlay'); ov.nodeX=480; ov.nodeY=-200
 ovt= c.create(textDAT, 'text_overlay'); ovt.nodeX=480; ovt.nodeY=-330
 ovt.text = open(os.path.join(base,'overlay.frag')).read()
 ov.par.pixeldat=ovt.name; ov.par.format='rgba32float'
-ov.par.value0name='uShow'; ov.par.value0x.expr="parent().par.Showoverlay"
+ov.par.vec0name='uShow'; ov.par.vec0valuex.expr="parent().par.Showoverlay"
 ov.inputConnectors[0].connect(c.op('in1'))
 ov.inputConnectors[1].connect(lv)
 
@@ -756,4 +758,4 @@ Leave `glsl_synth`/`text_synth` in place but disconnected (handy for regression 
 
 **2. Placeholder scan:** All shader steps contain complete GLSL; all build steps contain complete `execute_script` Python. The one deliberate recon step (Task 5 Step 5) is a real action (read exact TD par names) with a concrete reconciliation target, not a deferred TODO. ✓
 
-**3. Type consistency:** Texel layouts are consistent across stages — `glsl_seed`/`null_label` = `(rootx, rooty, fgflag, 1)`; `glsl_centroid` = `(cx_norm, cy_norm, area, valid)`; `glsl_idtrack`/`feedback_id` = `(id, cx, cy, valid)`. `idtrack.frag` reads prev centroid from `.gb` and cur from `.rg`, matching those layouts. Uniform names match between shader (`uThreshold/uSentinel/uStep/uRes/uMinArea/uMatchRadius/uFrameSalt/uShow`) and the `value0name/value1name` assignments. ✓
+**3. Type consistency:** Texel layouts are consistent across stages — `glsl_seed`/`null_label` = `(rootx, rooty, fgflag, 1)`; `glsl_centroid` = `(cx_norm, cy_norm, area, valid)`; `glsl_idtrack`/`feedback_id` = `(id, cx, cy, valid)`. `idtrack.frag` reads prev centroid from `.gb` and cur from `.rg`, matching those layouts. Uniform names match between shader (`uThreshold/uSentinel/uStep/uRes/uMinArea/uMatchRadius/uFrameSalt/uShow`) and the `vec0name/vec1name` assignments. ✓
