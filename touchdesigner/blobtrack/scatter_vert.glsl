@@ -14,5 +14,6 @@ void main(){
     ivec2 slot = ivec2(root % W, root / W);
     vec2 ndc = (vec2(slot) + 0.5) / uRes * 2.0 - 1.0;   // slot center -> clip space
     gl_Position = vec4(ndc, 0.0, 1.0);
+    gl_PointSize = 1.0;  // explicit size; wirewidth also set on GLSL MAT
     vScatterColor = vec4(float(px.x), float(px.y), 1.0, 0.0);  // (x, y, count, -)
 }
