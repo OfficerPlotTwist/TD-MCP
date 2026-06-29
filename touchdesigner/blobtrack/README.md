@@ -31,12 +31,14 @@ The live feed is `/project1/null_optitrack_cam` (128 × 128, connected to the co
 
 ## Outputs
 
+These are **Out operators**, so they appear as wireable connectors on the container's right edge (3 TOP outputs, 1 CHOP output) and are also addressable internally by name (`op('.../out_mask')`). Connector order: `out_mask`, `out_labels`, `out_viz` (TOP), `out_blobs` (CHOP).
+
 | Output | Operator | Type | Description |
 |--------|----------|------|-------------|
-| `out_mask` | nullTOP | TOP 128² RGBA32F | Binary foreground mask after thresholding. R channel = 1.0 for foreground, 0.0 for background. Alpha channel is always 1.0. |
-| `out_labels` | nullTOP | TOP 128² RGBA32F | **Colorized connected components** (`null_label` → `glsl_labelviz`). Each blob is rendered in a distinct hash-derived RGB color; background is black. This is a visualization, not raw label data — the underlying root coordinates live in the internal `null_label` TOP (pixel coords in `.rg`, fg flag in `.b`, sentinel `1e8` background), not here. |
-| `out_viz` | nullTOP | TOP (in1 resolution) RGBA32F | Input frame tinted with the per-blob label colors (60% blend over labeled regions) when `Showoverlay` is on; exact pass-through when off. No ID numbers / centroid markers are drawn. |
-| `out_blobs` | nullCHOP (follows `script_blobs` scriptCHOP) | CHOP 6 ch × 16384 samples | Per-blob centroid data (see channel contract below). |
+| `out_mask` | outTOP ← `glsl_mask` | TOP 128² RGBA32F | Binary foreground mask after thresholding. R channel = 1.0 for foreground, 0.0 for background. Alpha channel is always 1.0. |
+| `out_labels` | outTOP ← `glsl_labelviz` | TOP 128² RGBA32F | **Colorized connected components**. Each blob is rendered in a distinct hash-derived RGB color; background is black. This is a visualization, not raw label data — the underlying root coordinates live in the internal `null_label` TOP (pixel coords in `.rg`, fg flag in `.b`, sentinel `1e8` background), not here. |
+| `out_viz` | outTOP ← `glsl_overlay` | TOP (in1 resolution) RGBA32F | Input frame tinted with the per-blob label colors (60% blend over labeled regions) when `Showoverlay` is on; exact pass-through when off. No ID numbers / centroid markers are drawn. |
+| `out_blobs` | outCHOP ← `script_blobs` | CHOP 6 ch × 16384 samples | Per-blob centroid data (see channel contract below). |
 
 ---
 
@@ -96,8 +98,8 @@ Fix: raise the step-1 pass count, or re-enable a JFA step schedule (`[64, 32, 16
 ### Feedback IDs require an active cook path
 `glsl_idtrack`/`feedback_id` feedback requires the container (or a downstream consumer) to be in an active display/cook path. If nothing downstream forces a cook, the feedback goes stale and IDs reset. Open the container viewer or wire an output into a displayed network to keep the feedback alive.
 
-### cook-loop log entry (benign)
-TD logs a "Cook dependency loop" warning for `glsl_idtrack ↔ feedback_id`. This is intentional — the feedback TOP creates a one-frame-delayed self-loop. TD handles it via its delayed-feedback mechanism; the log entry is informational, not an error.
+### Feedback wiring (Feedback TOP must use its Target param)
+The ID feedback loop is `glsl_idtrack` → `feedback_id` (input 1 of `glsl_idtrack`). `feedback_id` reads the **previous** frame of `glsl_idtrack` via its **Target TOP parameter** (`top = glsl_idtrack`) — a frame-delayed edge that breaks the cook cycle. Its wired **input 0** is `glsl_centroid`, used only for first-frame init / resolution (it is *not* in the cycle). Do **not** wire `glsl_idtrack` into `feedback_id`'s input — that makes a same-frame cycle and TD raises a real "Cook dependency loop" warning (and the feedback stops delivering correct previous-frame data). This was a build-time misconfiguration that has been corrected.
 
 ### ID generation wraparound
 New-blob IDs = `(frame mod 1024) * 16384 + slotIndex`. The generation counter wraps every 1024 frames (~17 s at 60 fps). IDs stay below 2²⁴ (16 777 216) for exact float32 representation.
