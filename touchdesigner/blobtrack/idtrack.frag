@@ -18,7 +18,10 @@ void main(){
             if (dd < best) { best = dd; bestId = prev.r; found = true; }
         }
     }
+    // uFrameSalt is mod(frame,1024)*16384 (computed float64 in TD par expr to stay exact in float32);
+    // id = generation*16384 + slotLinearIndex, max < 2^24.
+    // Bounded so float32 never loses slot precision; generation cycles every 1024 frames.
     float id = found ? bestId : (float(p.y) * res.x + float(p.x) + uFrameSalt);
-    fragColor = TDOutputSwizzle(vec4(id, cur.r, cur.g, cur.b > 0.0 ? 1.0 : 1.0));
+    fragColor = TDOutputSwizzle(vec4(id, cur.r, cur.g, 1.0));
     // store: (id, cx, cy, valid=1); area carried separately via glsl_centroid for out_blobs
 }
