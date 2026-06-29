@@ -1,6 +1,6 @@
 # cont_blobtrack_glsl — GLSL Blob Tracker
 
-A pure-GPU blob-tracking container for TouchDesigner. Thresholds a single TOP input, labels connected regions via Jump-Flood Algorithm (JFA), gathers per-blob centroids and areas in a GLSL scatter pass, and assigns persistent integer IDs across frames via GPU feedback. The only CPU crossing is the final `script_blobs` scriptCHOP that reads the centroid texture back to CHOP channels.
+A pure-GPU blob-tracking container for TouchDesigner. Thresholds a single TOP input, labels connected regions via an iterative Jump-Flood-style pass (JFA), computes per-blob centroids and areas in a GLSL **gather** pass, and assigns persistent integer IDs across frames via GPU feedback. The only CPU crossing is the final `script_blobs` scriptCHOP that reads the ID + centroid textures back to CHOP channels.
 
 Cross-reference: [GLSL TOP Blob Tracking Design Spec](../../docs/superpowers/specs/2026-06-28-glsl-top-blob-tracking-design.md)
 
@@ -24,8 +24,8 @@ The live feed is `/project1/null_optitrack_cam` (128 × 128, connected to the co
 | Min Area | `Minarea` | 8 | Minimum blob area in pixels (at processing resolution `Procres`). Blobs smaller than this are discarded in the centroid gather pass. Increase to suppress noise specks; decrease to catch small markers. |
 | Proc Res | `Procres` | 128 | Side length (pixels) of the square processing texture. All GPU stages run at this resolution. Changing this also affects the area units reported in `out_blobs`. |
 | Match Radius | `Matchradius` | 0.08 | Fraction of processing resolution used as the search radius for ID-association in `glsl_idtrack`. A new blob within this radius (in normalized 0–1 coords) of a previous-frame blob inherits its ID. |
-| Max Blobs | `Maxblobs` | 64 | Upper bound on the number of blobs tracked. The JFA label space and centroid scatter buffer are dimensioned to `Maxblobs`. |
-| Show Overlay | `Showoverlay` | On | When enabled, `out_viz` composites blob-ID labels and centroid markers over the input frame. Set off for a clean pass-through. |
+| Max Blobs | `Maxblobs` | 64 | **Currently inert** — reserved for a future bounded track table. The live build dimensions every buffer to `Procres²`, not `Maxblobs`, so changing this has no effect today. |
+| Show Overlay | `Showoverlay` | On | When enabled, `out_viz` tints the input frame with the per-blob label colors (60% over labeled regions). Set off for a clean pass-through. (No ID numbers or centroid markers are drawn — see Known Limitations.) |
 
 ---
 
@@ -34,8 +34,8 @@ The live feed is `/project1/null_optitrack_cam` (128 × 128, connected to the co
 | Output | Operator | Type | Description |
 |--------|----------|------|-------------|
 | `out_mask` | nullTOP | TOP 128² RGBA32F | Binary foreground mask after thresholding. R channel = 1.0 for foreground, 0.0 for background. Alpha channel is always 1.0. |
-| `out_labels` | nullTOP | TOP 128² RGBA32F | JFA label texture. Each foreground pixel holds `(root_x_norm, root_y_norm, fg_flag, 1.0)` — the normalized position of its blob's seed/root pixel. Background pixels hold `(sentinel, sentinel, 0, 1)`. |
-| `out_viz` | nullTOP | TOP 128² RGBA32F | Debug visualization. Input frame with blob ID overlays (colored per-blob regions + centroid markers) when `Showoverlay` is on. |
+| `out_labels` | nullTOP | TOP 128² RGBA32F | **Colorized connected components** (`null_label` → `glsl_labelviz`). Each blob is rendered in a distinct hash-derived RGB color; background is black. This is a visualization, not raw label data — the underlying root coordinates live in the internal `null_label` TOP (pixel coords in `.rg`, fg flag in `.b`, sentinel `1e8` background), not here. |
+| `out_viz` | nullTOP | TOP (in1 resolution) RGBA32F | Input frame tinted with the per-blob label colors (60% blend over labeled regions) when `Showoverlay` is on; exact pass-through when off. No ID numbers / centroid markers are drawn. |
 | `out_blobs` | nullCHOP (follows `script_blobs` scriptCHOP) | CHOP 6 ch × 16384 samples | Per-blob centroid data (see channel contract below). |
 
 ---
@@ -50,8 +50,8 @@ Six channels, `Procres²` samples (16384 at the default 128² setting). Most sam
 | `tx` | 0.0 – 1.0 | Normalized horizontal centroid. Origin is **bottom-left** (row 0 of `numpyArray` = bottom of frame). |
 | `ty` | 0.0 – 1.0 | Normalized vertical centroid. Origin is **bottom-left**. |
 | `area` | ≥ 0 | Blob area in pixels at `Procres` resolution. Zero means the slot is unused — filter on `area > 0`. |
-| `w` | ≥ 0 | Approximate blob width. **Derived from area** as `sqrt(area / pi) * 2` (circular-equivalent diameter). Not a true bounding box. |
-| `h` | ≥ 0 | Approximate blob height. Same formula as `w` — equal to `w` (circular equivalence assumption). |
+| `w` | 0.0 – 1.0 | Approximate blob width, **normalized** like `tx`/`ty`. **Derived from area** as `2 * sqrt(area / pi) / Procres` (circular-equivalent diameter ÷ processing resolution). Not a true bounding box. |
+| `h` | 0.0 – 1.0 | Approximate blob height, normalized. Same formula as `w` — equal to `w` (circular equivalence assumption). |
 
 Minimal consumer pattern:
 ```python
@@ -72,11 +72,12 @@ All stages run at `Procres × Procres` (default 128²) in 32-bit float RGBA text
 | Stage | Operators | Description |
 |-------|-----------|-------------|
 | 1 — Threshold mask | `glsl_mask` → `out_mask` | GLSL TOP. Samples `in1` luminance (R channel); writes 1.0 where R > `uThreshold`, else 0.0. |
-| 2 — JFA seed | `glsl_seed` | GLSL TOP. Each foreground pixel seeds itself as the root `(x_norm, y_norm, 1, 1)`. Background pixels get sentinel `(2,2,0,1)`. |
-| 3 — JFA labeling | `glsl_jfa1` … `glsl_jfa18` → `null_label` → `out_labels` | 18 step-1 JFA passes propagate seeds to neighboring foreground pixels. Each pass samples ±1-pixel offsets and adopts the nearest valid root. |
-| 4 — Centroid scatter/gather | `glsl_centroid` | GLSL TOP reading `null_label`. For each foreground pixel, atomically accumulates `(cx_sum, cy_sum, area, valid)` per unique root into a `Maxblobs`-wide 1D texture. |
+| 2 — JFA seed | `glsl_seed` | GLSL TOP. Each foreground pixel seeds itself as the root `(px_x, px_y, 1, 1)` in **integer pixel coords**. Background pixels get sentinel `(1e8, 1e8, 0, 1)`. |
+| 3 — JFA labeling | `glsl_jfa1` … `glsl_jfa18` → `null_label` | 18 step-1 JFA passes propagate seeds to neighboring foreground pixels. Each pass samples ±1-pixel offsets and adopts the minimum-key valid root. `null_label` holds the final per-pixel root. |
+| 3b — Label viz | `null_label` → `glsl_labelviz` → `out_labels` | GLSL TOP. Hashes each pixel's root coordinate to a distinct RGB color (black where background). |
+| 4 — Centroid gather | `glsl_centroid` | GLSL TOP reading `null_label`. **Gather** (no scatter, no atomics): each output texel is a candidate root slot; it early-outs unless it is itself a root pixel, then scans all `Procres²` pixels summing those whose root matches, and writes `(cx_norm, cy_norm, area_px, 1)` at that root slot. Output is a `Procres²` RGBA32F texture, not a `Maxblobs`-wide buffer. |
 | 5 — ID association + feedback | `glsl_idtrack` ↔ `feedback_id` | GLSL TOP. Compares current centroid texture against previous-frame ID texture (via a feedback TOP). Each new blob inherits the nearest old blob's ID within `uMatchRadius`; new blobs get a fresh generation-stamped ID. |
-| 6 — Visualization + CHOP readback | `glsl_overlay`, `out_viz`, `script_blobs`, `out_blobs` | Overlay composites ID labels onto the input frame. `script_blobs` (scriptCHOP) reads back the centroid/ID texture via `numpyArray` and emits the six CHOP channels. |
+| 6 — Visualization + CHOP readback | `glsl_overlay` → `out_viz`; `script_blobs` → `out_blobs` | `glsl_overlay` tints the input frame with `glsl_labelviz` colors (gated by `Showoverlay`). `script_blobs` (scriptCHOP) reads back the `glsl_idtrack` (id/cx/cy) and `glsl_centroid` (area) textures via `numpyArray` and emits the six CHOP channels. |
 
 The GPU→CPU boundary is only at Stage 6's `script_blobs`. Stages 1–5 are fully GPU-resident.
 
@@ -105,7 +106,10 @@ New-blob IDs = `(frame mod 1024) * 16384 + slotIndex`. The generation counter wr
 `script_blobs` uses `numpyArray` readback because `toptoCHOP` would not emit per-pixel samples on this TD build (suspected `singleset`/`crop` parameter issue). To remove the Python hop, investigate those parameters on a `toptoCHOP` referencing `glsl_centroid`.
 
 ### `w`/`h` are area-derived approximations
-Width and height channels assume a circular blob: `diameter = 2 * sqrt(area / pi)`. They are not true axis-aligned bounding boxes.
+Width and height channels assume a circular blob: `diameter = 2 * sqrt(area / pi)` (then normalized by `Procres`). They are not true axis-aligned bounding boxes.
+
+### Cost scales with `Procres²`
+`glsl_centroid` and `glsl_idtrack` are gather/scan shaders: each active blob slot scans the whole `Procres²` field. At the default 128² with a handful of markers this is cheap (centroid early-outs to root slots only, idtrack early-outs to active slots only). Raising `Procres` increases per-active-slot cost quadratically — profile before going above 256.
 
 ---
 

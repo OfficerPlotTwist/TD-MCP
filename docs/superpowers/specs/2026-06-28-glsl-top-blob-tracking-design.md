@@ -5,6 +5,15 @@
 **Target:** A self-contained TouchDesigner container `cont_blobtrack_glsl` implementing
 pure-GPU blob detection + tracking, built live via the TD_MCP bridge.
 
+> **⚠️ Superseded in places by the as-built component.** During implementation several
+> approaches in this design changed for TD-build reasons. The authoritative description of
+> what was actually built is [`touchdesigner/blobtrack/README.md`](../../../touchdesigner/blobtrack/README.md).
+> Key deviations: §3 Stage 4 GPU **scatter** (GLSL MAT → Render TOP additive) became a GLSL
+> **gather** (TD's convertSOP couldn't emit GL_POINTS); the §6 **TOP-to-CHOP** output became a
+> **scriptCHOP** (`numpyArray` readback); `out_viz` draws **no ID numbers / markers** (tinted label
+> colors only); and `Maxblobs` is currently **inert** (buffers are `Procres²`). This document is kept
+> as the original design record.
+
 ---
 
 ## 1. Goal
