@@ -15,6 +15,10 @@ Edits made through MCP mutate the running TouchDesigner project immediately. The
 - Build or verify server controls structurally only. A real restart is the user's action at the keyboard.
 - Place new disconnected or top-level COMPs away from the existing node cluster with `nodeX` and `nodeY` so the network stays readable.
 
+## Network Hygiene
+
+- Pull a Null operator (`nullCHOP`, `nullTOP`, `nullDAT`, etc.) off the end of each logical subsection of the network, and reference that Null downstream instead of reaching into the subsection's internals. This gives a stable tap/pull point: you can rewire or rebuild the subsection behind the Null without touching every consumer, and the Null is the obvious place to probe values during debugging. Do this often — after control buses, after a generator stage, after any cluster whose output other parts depend on. Example in this project: `key_vals` (Constant CHOP, editable) → `key_vals_null` (the shared pull point that the ramp key tables reference).
+
 ## UI In TouchDesigner
 
 - Use Basic Widgets palette components for UI, not bare `sliderCOMP` or `buttonCOMP`.
