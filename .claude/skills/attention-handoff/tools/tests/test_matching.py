@@ -116,21 +116,25 @@ class TestBuildGraph(unittest.TestCase):
     def test_missing_or_unrecognized_reading_conflicts(self):
         captures = [cap("c1", 10),
                     cap("c2", 20),
-                    cap("c3", 30, "pair", "p9", "op")]
+                    cap("c3", 30, "pair", "p9", "op"),
+                    cap("c4", 40)]
         readings = {
             # c1: no reading at all
             "c2": {"kind": "bogus"},
             "c3": {"kind": "opnode", "label": "x"},
             # c3's pair p9 is incomplete (no param reading to complete it)
+            "c4": {"kind": "opnode", "label": "x"},
+            # c4 is an opnode with no pairId
         }
         g = build_graph(captures, readings)
         self.assertEqual(g["stats"]["opCount"], 0)
         kinds = [c["kind"] for c in g["conflicts"]]
-        self.assertEqual(kinds.count("missing-reading"), 3)
+        self.assertEqual(kinds.count("missing-reading"), 4)
         details = [c["detail"] for c in g["conflicts"] if c["kind"] == "missing-reading"]
         self.assertTrue(any("c1 has no reading" in d for d in details))
         self.assertTrue(any("unrecognized reading kind" in d for d in details))
         self.assertTrue(any("pair p9 incomplete" in d for d in details))
+        self.assertTrue(any("no pairId" in d for d in details))
 
 
 if __name__ == "__main__":

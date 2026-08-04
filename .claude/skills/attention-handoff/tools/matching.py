@@ -172,10 +172,16 @@ def build_graph(captures, readings):
                 conflicts.append({"kind": "missing-reading",
                                   "detail": "capture %s has unrecognized reading kind '%s'" % (cap_id, kind),
                                   "captureIds": [cap_id]})
-            elif kind == "opnode" and c.get("pairId") and c.get("pairId") not in successful_pairs:
-                conflicts.append({"kind": "missing-reading",
-                                  "detail": "capture %s: pair %s incomplete" % (cap_id, c.get("pairId")),
-                                  "captureIds": [cap_id]})
+            elif kind == "opnode":
+                pid = c.get("pairId")
+                if not pid:
+                    conflicts.append({"kind": "missing-reading",
+                                      "detail": "capture %s is an opnode with no pairId" % cap_id,
+                                      "captureIds": [cap_id]})
+                elif pid not in successful_pairs:
+                    conflicts.append({"kind": "missing-reading",
+                                      "detail": "capture %s: pair %s incomplete" % (cap_id, pid),
+                                      "captureIds": [cap_id]})
 
     op_list = list(ops.values())
     wire_list = list(wires.values())
