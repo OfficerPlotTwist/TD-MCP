@@ -55,7 +55,8 @@ function esc(s) {
 }
 
 function hasConflict(opId) {
-  return graph.conflicts.some(c => (c.detail || '').includes(opId));
+  const pat = new RegExp('\\b' + opId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b');
+  return graph.conflicts.some(c => pat.test(c.detail || ''));
 }
 
 function banner(msg) { document.getElementById('banner').textContent = msg; }
@@ -120,6 +121,9 @@ function clickNode(id) {
     return;
   }
   if (wireMode && wireMode.from) {
+    if (!graph.ops.some(o => o.id === wireMode.from)) {
+      wireMode = null; banner('source op no longer exists'); render(); return;
+    }
     const inlet = parseInt(prompt('Target inlet index?', '0') || '0', 10);
     graph.wires.push({from: wireMode.from, to: id, toInlet: inlet,
                       sources: ['manual']});
@@ -142,7 +146,11 @@ function renderInspector() {
     '"><br><button id="i-del">delete op</button>';
   document.getElementById('i-name').onchange = e => {
     const old = op.id, next = e.target.value.trim();
-    if (!next) return;
+    if (!next) { e.target.value = op.id; return; }
+    if (graph.ops.some(o => o !== op && o.id === next)) {
+      alert('An op named "' + next + '" already exists.');
+      e.target.value = op.id; return;
+    }
     op.id = next;
     for (const w of graph.wires) {
       if (w.from === old) w.from = next;
@@ -159,6 +167,7 @@ function renderInspector() {
     graph.ops = graph.ops.filter(o => o !== op);
     graph.wires = graph.wires.filter(w => w.from !== op.id && w.to !== op.id);
     selected = null;
+    wireMode = null;
     render();
   };
 }
