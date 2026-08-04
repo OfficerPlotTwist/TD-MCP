@@ -45,3 +45,141 @@ def resolve_label(label, known_names):
                       "detail": "label '%s' matches %s" % (label, sorted(prefixed)),
                       "captureIds": []}
     return label, None
+
+
+def build_graph(captures, readings):
+    conflicts = []
+
+    # 1. Pair overrides: normalized node label -> full op name
+    pair_label_to_name = {}
+    by_pair = {}
+    for c in captures:
+        if c.get("pairId"):
+            by_pair.setdefault(c["pairId"], []).append(c)
+    for group in by_pair.values():
+        label, name = None, None
+        for c in group:
+            r = readings.get(c["id"]) or {}
+            if r.get("kind") == "opnode":
+                label = r.get("label")
+            elif r.get("kind") == "param":
+                name = r.get("opName")
+        if label and name:
+            pair_label_to_name[normalize(label)] = name
+
+    # 2. Ops from param readings, ordered by video time (latest wins)
+    ops = {}  # normalized name -> op dict
+
+    def ensure_op(name, op_type=None, cap_id=None):
+        key = normalize(name)
+        if key not in ops:
+            ops[key] = {"id": name, "opType": op_type or "",
+                        "confidence": 1.0, "params": {}, "sources": []}
+        op = ops[key]
+        if op_type and not op["opType"]:
+            op["opType"] = op_type
+        if cap_id and cap_id not in op["sources"]:
+            op["sources"].append(cap_id)
+        return op
+
+    param_reads = []
+    for c in captures:
+        r = readings.get(c["id"]) or {}
+        if r.get("kind") == "param":
+            param_reads.append((c, r))
+        elif r.get("kind") == "unreadable":
+            conflicts.append({"kind": "unreadable",
+                              "detail": "capture %s could not be read" % c["id"],
+                              "captureIds": [c["id"]]})
+    param_reads.sort(key=lambda cr: cr[0]["t"])
+    for c, r in param_reads:
+        op = ensure_op(r["opName"], r.get("opType"), c["id"])
+        for pname, value in (r.get("params") or {}).items():
+            slot = op["params"].get(pname)
+            if slot is None:
+                op["params"][pname] = {"value": value, "t": c["t"],
+                                       "history": []}
+            elif slot["value"] != value:
+                slot["history"].append({"value": slot["value"], "t": slot["t"]})
+                slot["value"], slot["t"] = value, c["t"]
+                conflicts.append({
+                    "kind": "param-changed",
+                    "detail": "%s.%s changed to %r at t=%.1f"
+                              % (op["id"], pname, value, c["t"]),
+                    "captureIds": [c["id"]]})
+
+    # 3. Network readings: resolve labels, add unmatched ops, union wires
+    known = [o["id"] for o in ops.values()]
+
+    def resolve(label, cap_id):
+        key = normalize(label)
+        if key in pair_label_to_name:
+            return pair_label_to_name[key]
+        name, conflict = resolve_label(label, known)
+        if conflict:
+            conflict["captureIds"] = [cap_id]
+            conflicts.append(conflict)
+            return None
+        return name
+
+    wires = {}
+    for c in captures:
+        r = readings.get(c["id"]) or {}
+        if r.get("kind") != "network":
+            continue
+        for node in r.get("nodes") or []:
+            name = resolve(node["label"], c["id"])
+            if name:
+                ensure_op(name, node.get("opType"), c["id"])
+                if name not in known:
+                    known.append(name)
+        for w in r.get("wires") or []:
+            src = resolve(w["from"], c["id"])
+            dst = resolve(w["to"], c["id"])
+            if not src or not dst:
+                continue
+            for endpoint in (src, dst):
+                ensure_op(endpoint, None, c["id"])
+                if endpoint not in known:
+                    known.append(endpoint)
+            key = (normalize(src), normalize(dst), w.get("toInlet", 0))
+            if key not in wires:
+                wires[key] = {"from": src, "to": dst,
+                              "toInlet": w.get("toInlet", 0), "sources": []}
+            if c["id"] not in wires[key]["sources"]:
+                wires[key]["sources"].append(c["id"])
+
+    for op in ops.values():
+        if not op["opType"]:
+            conflicts.append({"kind": "unknown-optype",
+                              "detail": "op '%s' has no op type" % op["id"],
+                              "captureIds": list(op["sources"])})
+
+    op_list = list(ops.values())
+    wire_list = list(wires.values())
+    return {"ops": op_list, "wires": wire_list, "conflicts": conflicts,
+            "stats": {"opCount": len(op_list), "wireCount": len(wire_list)}}
+
+
+def main(session_dir):
+    def load(name, default):
+        path = os.path.join(session_dir, name)
+        if os.path.exists(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        return default
+
+    captures = load("captures.json", [])
+    readings = load("readings.json", {})
+    graph = build_graph(captures, readings)
+    graph["opTypes"] = load("optypes.json", [])
+    out = os.path.join(session_dir, "graph.json")
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(graph, f, indent=2)
+    print("wrote %s: %d ops, %d wires, %d conflicts" % (
+        out, graph["stats"]["opCount"], graph["stats"]["wireCount"],
+        len(graph["conflicts"])))
+
+
+if __name__ == "__main__":
+    main(sys.argv[1])
