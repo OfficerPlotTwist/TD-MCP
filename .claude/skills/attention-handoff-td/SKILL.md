@@ -13,9 +13,12 @@ and container suffix).
 ## Stage 1 — Download
 
 ```
-yt-dlp -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b" \
+yt-dlp -f "bv*+ba/b" \
   --merge-output-format mp4 -o "tutorials/<video-id>/video.mp4" <url>
 ```
+
+(`bv*+ba/b` = highest available resolution, no cap — param text legibility
+scales with source res, and the file is deleted after the rebuild anyway.)
 
 If yt-dlp is missing or fails: STOP and give the user this exact command to
 run themselves. Do not scrape the streaming page.
@@ -106,6 +109,12 @@ show the plan and stop. Otherwise:
 9. `get_errors` on the container. Report: ops created/failed, channels
    added, params set/rejected (with reasons), wires made. Failures are
    reported, never silently skipped.
+10. Cleanup — only AFTER the user confirms the rebuilt network is complete
+    and correct: stop the capture server (kill its process), then delete
+    `tutorials/<video-id>/video.mp4` to reclaim disk. Keep everything else
+    (meta.json, crops/, captures.json, readings.json, graph.json,
+    approved.json) — those are the committable audit trail. Never delete
+    the video before the user has confirmed.
 
 ## Notes
 
