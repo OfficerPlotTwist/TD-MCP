@@ -94,9 +94,14 @@ def build_plan(graph, video_id):
                     "op": o["id"], "par": pname, "value": value,
                     "note": "non-numeric; set directly "
                             "(CHOP channels are numbers)"})
+    blockers = [{"kind": "empty-optype", "op": o["id"]}
+                for o in ops if not o.get("opType")]
+    blockers.extend({"kind": "unresolved-conflict", "detail": c.get("detail")}
+                     for c in (graph.get("conflicts") or []))
     return {"container": "tutorial_%s" % sanitize(video_id),
             "bus": BUS,
             "opTypes": sorted({o["opType"] for o in ops if o["opType"]}),
+            "blockers": blockers,
             "channels": channels,
             "creates": creates,
             "channelParams": chan_params,

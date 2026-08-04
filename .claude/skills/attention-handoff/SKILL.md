@@ -66,7 +66,9 @@ show the plan and stop. Otherwise:
 
 1. `save_checkpoint` on `/project1`. NEVER `project.save()` (untitled
    projects pop a modal that freezes the bridge).
-2. Validate `plan.opTypes` via `execute_script`
+2. Check `plan.blockers` FIRST — if non-empty, STOP and send the user back
+   to `/approve` (empty op types or unresolved conflicts must be fixed and
+   re-approved). Then validate `plan.opTypes` via `execute_script`
    (`hasattr(td, t) for each`). Unknown types → STOP, report, ask the user
    to fix at `/approve` and re-approve.
 3. Create the container: `create_operator` `containerCOMP` named

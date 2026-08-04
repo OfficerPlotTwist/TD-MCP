@@ -215,6 +215,9 @@ document.getElementById('addwire').onclick = () => {
 };
 
 document.getElementById('approve').onclick = async () => {
+  if (graph.conflicts.length &&
+      !confirm('There are ' + graph.conflicts.length +
+               ' unresolved conflicts. Approve anyway?')) return;
   graph.stats = {opCount: graph.ops.length, wireCount: graph.wires.length};
   await fetch('/approved', {method: 'POST', body: JSON.stringify(graph)});
   banner('Approved — agent is rebuilding.');

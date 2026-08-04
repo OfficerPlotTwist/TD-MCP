@@ -57,6 +57,7 @@ class TestBuildPlan(unittest.TestCase):
                          "['tut_abc123_noise1_period']")
         self.assertEqual(len(plan["directParams"]), 1)
         self.assertEqual(plan["directParams"][0]["value"], "sparse")
+        self.assertEqual(plan["blockers"], [])
 
     def test_layout_follows_wire_depth(self):
         graph = {"ops": [{"id": "b", "opType": "levelTOP", "params": {}},
@@ -68,6 +69,18 @@ class TestBuildPlan(unittest.TestCase):
         self.assertEqual(plan["wires"],
                          [{"from": "a", "to": "b", "toInlet": 0}])
         self.assertEqual(plan["opTypes"], ["levelTOP", "noiseTOP"])
+
+    def test_blockers_for_empty_optype_and_conflicts(self):
+        graph = {"ops": [{"id": "noise1", "opType": "noiseTOP", "params": {}},
+                         {"id": "bad1", "opType": "", "params": {}}],
+                 "wires": [],
+                 "conflicts": [{"kind": "duplicate", "detail": "op bad1 dup"}]}
+        plan = build_plan(graph, "abc")
+        self.assertEqual(plan["blockers"],
+                         [{"kind": "empty-optype", "op": "bad1"},
+                          {"kind": "unresolved-conflict",
+                           "detail": "op bad1 dup"}])
+        self.assertEqual(plan["opTypes"], ["noiseTOP"])
 
 
 if __name__ == "__main__":
