@@ -52,11 +52,12 @@ def build_graph(captures, readings):
 
     # 1. Pair overrides: normalized node label -> full op name
     pair_label_to_name = {}
+    successful_pairs = set()  # track pairIds that produced an override
     by_pair = {}
     for c in captures:
         if c.get("pairId"):
             by_pair.setdefault(c["pairId"], []).append(c)
-    for group in by_pair.values():
+    for pair_id, group in by_pair.items():
         label, name = None, None
         for c in group:
             r = readings.get(c["id"]) or {}
@@ -66,6 +67,7 @@ def build_graph(captures, readings):
                 name = r.get("opName")
         if label and name:
             pair_label_to_name[normalize(label)] = name
+            successful_pairs.add(pair_id)
 
     # 2. Ops from param readings, ordered by video time (latest wins)
     ops = {}  # normalized name -> op dict
@@ -154,6 +156,26 @@ def build_graph(captures, readings):
             conflicts.append({"kind": "unknown-optype",
                               "detail": "op '%s' has no op type" % op["id"],
                               "captureIds": list(op["sources"])})
+
+    # 4. Final pass: validate all captures have recognized readings
+    valid_kinds = {"param", "network", "unreadable", "opnode"}
+    for c in captures:
+        cap_id = c["id"]
+        r = readings.get(cap_id)
+        if r is None:
+            conflicts.append({"kind": "missing-reading",
+                              "detail": "capture %s has no reading" % cap_id,
+                              "captureIds": [cap_id]})
+        else:
+            kind = r.get("kind")
+            if kind not in valid_kinds:
+                conflicts.append({"kind": "missing-reading",
+                                  "detail": "capture %s has unrecognized reading kind '%s'" % (cap_id, kind),
+                                  "captureIds": [cap_id]})
+            elif kind == "opnode" and c.get("pairId") and c.get("pairId") not in successful_pairs:
+                conflicts.append({"kind": "missing-reading",
+                                  "detail": "capture %s: pair %s incomplete" % (cap_id, c.get("pairId")),
+                                  "captureIds": [cap_id]})
 
     op_list = list(ops.values())
     wire_list = list(wires.values())
