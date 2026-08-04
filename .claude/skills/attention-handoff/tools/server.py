@@ -92,6 +92,49 @@ class Handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def send_video(self):
+        video_path = None
+        for ext in ("mp4", "webm"):
+            candidate = SESSION.path("video." + ext)
+            if os.path.exists(candidate):
+                video_path = candidate
+                break
+        if not video_path:
+            return self.send_json({"error": "no video in session dir"}, 404)
+        size = os.path.getsize(video_path)
+        ctype = "video/mp4" if video_path.endswith(".mp4") else "video/webm"
+        start, end, code = 0, size - 1, 200
+        m = re.match(r"bytes=(\d*)-(\d*)", self.headers.get("Range") or "")
+        if m and (m.group(1) or m.group(2)):
+            if m.group(1):
+                start = int(m.group(1))
+                if m.group(2):
+                    end = int(m.group(2))
+            else:                                # suffix range: last N bytes
+                start = max(0, size - int(m.group(2)))
+            end = min(end, size - 1)
+            code = 206
+        self.send_response(code)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Accept-Ranges", "bytes")
+        self.send_header("Content-Length", str(end - start + 1))
+        if code == 206:
+            self.send_header("Content-Range",
+                             "bytes %d-%d/%d" % (start, end, size))
+        self.end_headers()
+        with open(video_path, "rb") as f:
+            f.seek(start)
+            remaining = end - start + 1
+            while remaining > 0:
+                chunk = f.read(min(65536, remaining))
+                if not chunk:
+                    break
+                try:
+                    self.wfile.write(chunk)
+                except (ConnectionAbortedError, BrokenPipeError):
+                    return
+                remaining -= len(chunk)
+
     def do_GET(self):
         path = urlparse(self.path).path
         if path == "/":
@@ -119,6 +162,8 @@ class Handler(BaseHTTPRequestHandler):
             self.send_json(SESSION.load_json("readings.json", {}))
         elif path == "/status":
             self.send_json({"state": SESSION.state()})
+        elif path == "/video":
+            self.send_video()
         else:
             self.send_json({"error": "not found"}, 404)
 

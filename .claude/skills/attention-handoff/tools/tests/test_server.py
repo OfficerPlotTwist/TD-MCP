@@ -108,6 +108,27 @@ class ServerTest(unittest.TestCase):
         resp, data = self.req("GET", "/readings")
         self.assertEqual(json.loads(data)["c001"]["opName"], "noise1")
 
+    def test_5_video_full(self):
+        resp, data = self.req("GET", "/video")
+        self.assertEqual(resp.status, 200)
+        self.assertEqual(len(data), 10240)
+        self.assertEqual(resp.getheader("Accept-Ranges"), "bytes")
+
+    def test_6_video_range(self):
+        resp, data = self.req("GET", "/video",
+                              headers={"Range": "bytes=100-199"})
+        self.assertEqual(resp.status, 206)
+        self.assertEqual(len(data), 100)
+        self.assertEqual(resp.getheader("Content-Range"),
+                         "bytes 100-199/10240")
+        self.assertEqual(data[0], 100)
+
+    def test_7_video_open_ended_range(self):
+        resp, data = self.req("GET", "/video",
+                              headers={"Range": "bytes=10200-"})
+        self.assertEqual(resp.status, 206)
+        self.assertEqual(len(data), 40)
+
 
 if __name__ == "__main__":
     unittest.main()
