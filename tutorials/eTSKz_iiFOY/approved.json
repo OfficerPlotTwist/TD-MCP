@@ -649,14 +649,6 @@
    ]
   },
   {
-   "from": "transform2",
-   "to": "pos",
-   "toInlet": 0,
-   "sources": [
-    "c033"
-   ]
-  },
-  {
    "from": "ramp1",
    "to": "comp1",
    "toInlet": 0,
@@ -715,6 +707,22 @@
    "sources": [
     "c055"
    ]
+  },
+  {
+   "from": "transform2",
+   "to": "ramp1",
+   "toInlet": 0,
+   "sources": [
+    "video-f355"
+   ]
+  },
+  {
+   "from": "ramp1",
+   "to": "pos",
+   "toInlet": 0,
+   "sources": [
+    "video-f355"
+   ]
   }
  ],
  "paramRefs": [
@@ -761,7 +769,7 @@
  "conflicts": [],
  "stats": {
   "opCount": 21,
-  "wireCount": 15
+  "wireCount": 16
  },
  "opTypes": [
   "abletonlinkCHOP",
