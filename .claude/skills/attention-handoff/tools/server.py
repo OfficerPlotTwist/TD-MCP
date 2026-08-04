@@ -55,6 +55,19 @@ class Session:
             return "captured"
         return "capturing"
 
+    def load_seq(self):
+        try:
+            with open(self.path("capture.seq"), "r", encoding="utf-8") as f:
+                return int(f.read().strip())
+        except (FileNotFoundError, ValueError):
+            return 0
+
+    def save_seq(self, num):
+        tmp = self.path("capture.seq.tmp")
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(str(num))
+        os.replace(tmp, self.path("capture.seq"))
+
 
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *args):
@@ -123,7 +136,10 @@ class Handler(BaseHTTPRequestHandler):
                 caps = SESSION.load_json("captures.json", [])
                 nums = [int(c["id"][1:]) for c in caps
                         if re.fullmatch(r"c\d+", c.get("id", ""))]
-                cid = "c%03d" % (max(nums) + 1 if nums else 1)
+                seq = SESSION.load_seq()
+                next_num = max(seq, max(nums) if nums else 0) + 1
+                cid = "c%03d" % next_num
+                SESSION.save_seq(next_num)
                 image = data.get("image") or ""
                 b64 = image.split(",", 1)[1] if "," in image else image
                 with open(SESSION.path("crops", cid + ".png"), "wb") as f:

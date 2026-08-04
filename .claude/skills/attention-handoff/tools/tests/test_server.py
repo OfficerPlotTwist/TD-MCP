@@ -68,6 +68,23 @@ class ServerTest(unittest.TestCase):
         self.assertFalse(os.path.exists(
             os.path.join(self.dir, "crops", cid + ".png")))
 
+    def test_2b_ids_not_reused_after_delete(self):
+        img = "data:image/png;base64," + base64.b64encode(PNG_1PX).decode()
+        resp, data = self.req("POST", "/capture", json.dumps(
+            {"t": 2.0, "type": "param", "bbox": [0, 0, 1, 1],
+             "pairId": None, "role": None, "image": img}))
+        id1 = json.loads(data)["id"]
+        resp, data = self.req("POST", "/capture", json.dumps(
+            {"t": 3.0, "type": "param", "bbox": [0, 0, 1, 1],
+             "pairId": None, "role": None, "image": img}))
+        id2 = json.loads(data)["id"]
+        self.req("POST", "/delete", json.dumps({"id": id2}))
+        resp, data = self.req("POST", "/capture", json.dumps(
+            {"t": 4.0, "type": "param", "bbox": [0, 0, 1, 1],
+             "pairId": None, "role": None, "image": img}))
+        id3 = json.loads(data)["id"]
+        self.assertGreater(int(id3[1:]), int(id2[1:]))
+
     def test_3_status_flow(self):
         resp, data = self.req("GET", "/status")
         self.assertEqual(json.loads(data)["state"], "capturing")
