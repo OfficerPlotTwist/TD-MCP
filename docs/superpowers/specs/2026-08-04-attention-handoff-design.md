@@ -124,10 +124,14 @@ Same local server, `/approve` page reading `graph.json`:
 2. Validate every `opType` in `approved.json` against the live TD build
    **before creating anything** — invalid types abort pre-flight, not halfway.
 3. Create `/project1/tutorial_<video-id>` container; create ops inside it.
-4. Set params **directly on ops** (hardcoded values — the master_controls
-   convention is intentionally exempted for tutorial rebuilds; promote params
-   to the bus later only if the network is kept). Verify each set with
-   `get_par_value`.
+4. Every parameter set to a **non-default value** goes through the
+   master-controls bus per repo convention: add a channel to
+   `/project1/master_controls` carrying the value (channel named
+   `tut_<videoid>_<opname>_<parname>`, truncated sanely if needed) and make
+   the op's parameter reference it
+   (`op('/project1/master_controls')['<chan>']`) — never hardcode the
+   constant on the op. Default-valued params are left untouched. Verify each
+   with `get_par_value`.
 5. Wire per `approved.json`; lay out newly created ops left→right inside the
    container. User-placed operators are never moved.
 6. `get_errors` on the container; report created/failed counts and every
@@ -158,6 +162,6 @@ Same local server, `/approve` page reading `graph.json`:
 | Capture tool shape | Local web app on downloaded video (not a Chrome extension) |
 | Wiring reconstruction | Agent infers from network grabs; human edits at approval |
 | Repeated param sets | Latest wins; history kept and flagged |
-| Param routing | Hardcode in `tutorial_<name>` container; master_controls exempt |
+| Param routing | All non-default values via `/project1/master_controls` channel references (`tut_<videoid>_<opname>_<parname>`) |
 | Value reading | Claude vision on crops; no OCR dependency |
 | Diagram rendering | Hand-rolled SVG; no external JS libs |
