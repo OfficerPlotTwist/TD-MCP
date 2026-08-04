@@ -11,6 +11,9 @@ Inputs (session dir):
       {"kind":"network","nodes":[{"label":"noi","opType":"noiseTOP"}],
        "wires":[{"from":"noi","to":"lev","toInlet":0}]}
       {"kind":"opnode","label":"noise1"}      (pair op-node crops)
+      {"kind":"network-whole","opCount":14,"wireCount":13}
+          (zoomed-out grabs: names unreadable, counts cross-checked
+           against the built graph -> opcount/wirecount-mismatch conflicts)
       {"kind":"unreadable"}
   optypes.json   - optional list of valid TD op types (from live TD)
 
@@ -157,8 +160,29 @@ def build_graph(captures, readings):
                               "detail": "op '%s' has no op type" % op["id"],
                               "captureIds": list(op["sources"])})
 
+    # 3b. Whole-network readings: structure/count evidence only (names
+    # unreadable at that zoom) — cross-check counts against the built graph.
+    for c in captures:
+        r = readings.get(c["id"]) or {}
+        if r.get("kind") != "network-whole":
+            continue
+        expected_ops = r.get("opCount")
+        if isinstance(expected_ops, int) and expected_ops != len(ops):
+            conflicts.append({
+                "kind": "opcount-mismatch",
+                "detail": "whole-network capture %s shows ~%d ops; graph has %d"
+                          % (c["id"], expected_ops, len(ops)),
+                "captureIds": [c["id"]]})
+        expected_wires = r.get("wireCount")
+        if isinstance(expected_wires, int) and expected_wires != len(wires):
+            conflicts.append({
+                "kind": "wirecount-mismatch",
+                "detail": "whole-network capture %s shows ~%d wires; graph has %d"
+                          % (c["id"], expected_wires, len(wires)),
+                "captureIds": [c["id"]]})
+
     # 4. Final pass: validate all captures have recognized readings
-    valid_kinds = {"param", "network", "unreadable", "opnode"}
+    valid_kinds = {"param", "network", "network-whole", "unreadable", "opnode"}
     for c in captures:
         cap_id = c["id"]
         r = readings.get(cap_id)

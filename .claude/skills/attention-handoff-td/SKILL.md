@@ -36,7 +36,10 @@ IG/Patreon/website links in the description).
 ## Stage 2 — Capture (human)
 
 Start the server in the background and tell the user the capture flow
-(modes 1/2/3, frame-step keys, Done button):
+(modes 1/2/3/4, frame-step keys, Done button). Mode 2 = PARTIAL network
+(close-up, op names readable — used for name/type/wire extraction); mode
+4 = WHOLE network (zoomed out, names NOT expected to be readable — used
+for structure and op/wire-count cross-checks only):
 
 ```
 python .claude/skills/attention-handoff-td/tools/server.py tutorials/<video-id> --open
@@ -64,6 +67,12 @@ Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
      text, possibly truncated>","opType":"<type if visually identifiable>"}],
      "wires":[{"from":"<label>","to":"<label>","toInlet":0}]}`
    - pair op-node crop → `{"kind":"opnode","label":"<node label>"}`
+   - whole-network crop (type `network-whole`) →
+     `{"kind":"network-whole","opCount":<n>,"wireCount":<n>}` — count the
+     op nodes and wires you can distinguish; do NOT attempt to read names
+     at this zoom. Matching cross-checks these counts against the built
+     graph and raises `opcount-mismatch`/`wirecount-mismatch` conflicts at
+     approval when the graph is missing ops the tutorial shows.
    - anything illegible → `{"kind":"unreadable"}` — never guess.
 3. Run `python .claude/skills/attention-handoff-td/tools/matching.py
    tutorials/<video-id>` → writes `graph.json`.

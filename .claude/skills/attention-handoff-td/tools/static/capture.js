@@ -42,6 +42,7 @@ document.addEventListener('keydown', e => {
   else if (e.key === '1') setMode('param');
   else if (e.key === '2') setMode('network');
   else if (e.key === '3') setMode('pair');
+  else if (e.key === '4') setMode('network-whole');
   else if (e.key === 'Escape') cancelPair();
 });
 

@@ -139,3 +139,35 @@ class TestBuildGraph(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestNetworkWhole(unittest.TestCase):
+    def _base(self):
+        captures = [cap("c1", 10), cap("c2", 20), cap("c3", 30, "network-whole")]
+        readings = {
+            "c1": {"kind": "param", "opName": "noise1", "opType": "noiseTOP",
+                   "params": {}},
+            "c2": {"kind": "param", "opName": "level1", "opType": "levelTOP",
+                   "params": {}},
+        }
+        return captures, readings
+
+    def test_matching_counts_no_conflict(self):
+        captures, readings = self._base()
+        readings["c3"] = {"kind": "network-whole", "opCount": 2, "wireCount": 0}
+        g = build_graph(captures, readings)
+        kinds = [c["kind"] for c in g["conflicts"]]
+        self.assertNotIn("opcount-mismatch", kinds)
+        self.assertNotIn("wirecount-mismatch", kinds)
+        self.assertNotIn("missing-reading", kinds)
+
+    def test_mismatched_counts_conflict(self):
+        captures, readings = self._base()
+        readings["c3"] = {"kind": "network-whole", "opCount": 5, "wireCount": 3}
+        g = build_graph(captures, readings)
+        kinds = [c["kind"] for c in g["conflicts"]]
+        self.assertIn("opcount-mismatch", kinds)
+        self.assertIn("wirecount-mismatch", kinds)
+        details = " ".join(c["detail"] for c in g["conflicts"])
+        self.assertIn("~5 ops", details)
+        self.assertIn("graph has 2", details)
