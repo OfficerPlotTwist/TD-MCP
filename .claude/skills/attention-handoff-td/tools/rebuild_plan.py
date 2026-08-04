@@ -107,7 +107,9 @@ def build_plan(graph, video_id):
             "channelParams": chan_params,
             "directParams": direct_params,
             "wires": [{"from": w["from"], "to": w["to"],
-                       "toInlet": w.get("toInlet", 0)} for w in wires]}
+                       "toInlet": w.get("toInlet", 0)} for w in wires],
+            "paramRefs": [{"from": r["from"], "to": r["to"]}
+                          for r in graph.get("paramRefs") or []]}
 
 
 def main():

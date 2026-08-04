@@ -8,6 +8,7 @@ async function load() {
   graph = await (await fetch('/graph')).json();
   graph.ops = graph.ops || [];
   graph.wires = graph.wires || [];
+  graph.paramRefs = graph.paramRefs || [];
   graph.conflicts = graph.conflicts || [];
   const dl = document.getElementById('optypes');
   for (const t of graph.opTypes || []) {
@@ -63,7 +64,8 @@ function banner(msg) { document.getElementById('banner').textContent = msg; }
 
 function render() {
   document.getElementById('counts').textContent =
-    graph.ops.length + ' ops · ' + graph.wires.length + ' wires';
+    graph.ops.length + ' ops · ' + graph.wires.length + ' wires' +
+    (graph.paramRefs.length ? ' · ' + graph.paramRefs.length + ' refs' : '');
   renderSvg();
   renderInspector();
   renderConflicts();
@@ -78,6 +80,15 @@ function renderSvg() {
   const h = (ys.length ? Math.max(...ys) : 0) + NH + 40;
   let s = '<svg width="' + w + '" height="' + h +
           '" xmlns="http://www.w3.org/2000/svg">';
+  for (const ref of graph.paramRefs) {
+    const a = pos[ref.from], b = pos[ref.to];
+    if (!a || !b) continue;
+    const x1 = a.x + NW / 2, y1 = a.y + NH, x2 = b.x + NW / 2, y2 = b.y + NH;
+    s += '<path class="ref" d="M' + x1 + ',' + y1 +
+         ' C' + x1 + ',' + (y1 + 40) + ' ' + x2 + ',' + (y2 + 40) +
+         ' ' + x2 + ',' + y2 + '"><title>parameter reference ' +
+         esc(ref.from) + ' → ' + esc(ref.to) + '</title></path>';
+  }
   graph.wires.forEach((wire, i) => {
     const a = pos[wire.from], b = pos[wire.to];
     if (!a || !b) return;

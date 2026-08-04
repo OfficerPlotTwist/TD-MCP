@@ -171,3 +171,25 @@ class TestNetworkWhole(unittest.TestCase):
         details = " ".join(c["detail"] for c in g["conflicts"])
         self.assertIn("~5 ops", details)
         self.assertIn("graph has 2", details)
+
+
+class TestParamRefs(unittest.TestCase):
+    def test_refs_become_param_refs_not_wires(self):
+        captures = [cap("c1", 10), cap("c2", 20),
+                    cap("c3", 30, "network"), cap("c4", 40, "network")]
+        readings = {
+            "c1": {"kind": "param", "opName": "lfo1", "opType": "lfoCHOP",
+                   "params": {}},
+            "c2": {"kind": "param", "opName": "noise1", "opType": "noiseTOP",
+                   "params": {}},
+            "c3": {"kind": "network", "nodes": [], "wires": [],
+                   "refs": [{"from": "lfo1", "to": "noi"}]},
+            "c4": {"kind": "network", "nodes": [], "wires": [],
+                   "refs": [{"from": "lfo1", "to": "noise1"}]},
+        }
+        g = build_graph(captures, readings)
+        self.assertEqual(g["stats"]["wireCount"], 0)
+        self.assertEqual(len(g["paramRefs"]), 1)
+        self.assertEqual(sorted(g["paramRefs"][0]["sources"]), ["c3", "c4"])
+        self.assertEqual(g["paramRefs"][0]["from"], "lfo1")
+        self.assertEqual(g["paramRefs"][0]["to"], "noise1")

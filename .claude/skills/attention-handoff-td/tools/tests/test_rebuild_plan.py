@@ -85,3 +85,14 @@ class TestBuildPlan(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestParamRefsPassthrough(unittest.TestCase):
+    def test_param_refs_copied_into_plan(self):
+        graph = {"ops": [{"id": "a", "opType": "lfoCHOP", "params": {}},
+                         {"id": "b", "opType": "noiseTOP", "params": {}}],
+                 "wires": [],
+                 "paramRefs": [{"from": "a", "to": "b", "sources": ["c1"]}]}
+        plan = build_plan(graph, "v")
+        self.assertEqual(plan["paramRefs"], [{"from": "a", "to": "b"}])
+        self.assertEqual(plan["wires"], [])

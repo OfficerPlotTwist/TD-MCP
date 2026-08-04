@@ -65,12 +65,19 @@ Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
      page renders these as masks so the human can audit every read.
    - network crop → `{"kind":"network","nodes":[{"label":"<bottom title
      text, possibly truncated>","opType":"<type if visually identifiable>"}],
-     "wires":[{"from":"<label>","to":"<label>","toInlet":0}]}`
+     "wires":[{"from":"<label>","to":"<label>","toInlet":0}],
+     "refs":[{"from":"<label>","to":"<label>"}]}`
+     CRITICAL wire-vs-reference distinction: `wires` = ONLY solid
+     connector-to-connector lines (TD draws real op data connections as
+     solid family-colored wires between the side connectors). Purple
+     animated-dashed lines (CHOP exports) and thin gray dotted curves
+     (parameter references/expressions) are NOT wires — record those under
+     `refs` instead, never under `wires`.
    - pair op-node crop → `{"kind":"opnode","label":"<node label>"}`
    - whole-network crop (type `network-whole`) →
      `{"kind":"network-whole","opCount":<n>,"wireCount":<n>}` — count the
-     op nodes and wires you can distinguish; do NOT attempt to read names
-     at this zoom. Matching cross-checks these counts against the built
+     op nodes and SOLID wires you can distinguish (dashed/dotted reference
+     lines don't count); do NOT attempt to read names at this zoom. Matching cross-checks these counts against the built
      graph and raises `opcount-mismatch`/`wirecount-mismatch` conflicts at
      approval when the graph is missing ops the tutorial shows.
    - anything illegible → `{"kind":"unreadable"}` — never guess.
@@ -115,6 +122,10 @@ show the plan and stop. Otherwise:
    EXPRESSION. Verify each with `get_par_value`.
 7. `plan.directParams`: set values directly (menu tokens/strings). Verify.
 8. Wire per `plan.wires` with `connect_operators` (respect `toInlet`).
+   `plan.paramRefs` (dashed reference lines seen in the tutorial) are NOT
+   auto-created — report them in the final summary so the human can decide;
+   the actual referenced values usually arrive via the master_controls
+   channels or a param capture's expression text anyway.
 9. `get_errors` on the container. Report: ops created/failed, channels
    added, params set/rejected (with reasons), wires made. Failures are
    reported, never silently skipped.

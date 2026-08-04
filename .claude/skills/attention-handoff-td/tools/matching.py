@@ -9,7 +9,10 @@ Inputs (session dir):
       {"kind":"param","opName":"noise1","opType":"noiseTOP",
        "params":{"period":"4"}}
       {"kind":"network","nodes":[{"label":"noi","opType":"noiseTOP"}],
-       "wires":[{"from":"noi","to":"lev","toInlet":0}]}
+       "wires":[{"from":"noi","to":"lev","toInlet":0}],
+       "refs":[{"from":"lfo1","to":"noi"}]}
+          (wires = solid data connections only; refs = dashed/dotted
+           export/parameter-reference lines -> graph.paramRefs, not wires)
       {"kind":"opnode","label":"noise1"}      (pair op-node crops)
       {"kind":"network-whole","opCount":14,"wireCount":13}
           (zoomed-out grabs: names unreadable, counts cross-checked
@@ -128,6 +131,7 @@ def build_graph(captures, readings):
         return name
 
     wires = {}
+    param_refs = {}
     for c in captures:
         r = readings.get(c["id"]) or {}
         if r.get("kind") != "network":
@@ -153,6 +157,22 @@ def build_graph(captures, readings):
                               "toInlet": w.get("toInlet", 0), "sources": []}
             if c["id"] not in wires[key]["sources"]:
                 wires[key]["sources"].append(c["id"])
+        # Dashed/dotted reference lines (CHOP exports, parameter
+        # references) are structural hints, never data wires.
+        for ref in r.get("refs") or []:
+            src = resolve(ref["from"], c["id"])
+            dst = resolve(ref["to"], c["id"])
+            if not src or not dst:
+                continue
+            for endpoint in (src, dst):
+                ensure_op(endpoint, None, c["id"])
+                if endpoint not in known:
+                    known.append(endpoint)
+            key = (normalize(src), normalize(dst))
+            if key not in param_refs:
+                param_refs[key] = {"from": src, "to": dst, "sources": []}
+            if c["id"] not in param_refs[key]["sources"]:
+                param_refs[key]["sources"].append(c["id"])
 
     for op in ops.values():
         if not op["opType"]:
@@ -209,7 +229,8 @@ def build_graph(captures, readings):
 
     op_list = list(ops.values())
     wire_list = list(wires.values())
-    return {"ops": op_list, "wires": wire_list, "conflicts": conflicts,
+    return {"ops": op_list, "wires": wire_list,
+            "paramRefs": list(param_refs.values()), "conflicts": conflicts,
             "stats": {"opCount": len(op_list), "wireCount": len(wire_list)}}
 
 
