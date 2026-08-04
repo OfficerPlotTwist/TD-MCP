@@ -68,16 +68,28 @@ overlay.addEventListener('mousedown', e => {
   vid.pause();
   drag = {x: e.offsetX, y: e.offsetY};
 });
-overlay.addEventListener('mousemove', e => {
+
+function overlayPoint(e) {
+  const r = overlay.getBoundingClientRect();
+  return {
+    x: Math.min(Math.max(e.clientX - r.left, 0), overlay.width),
+    y: Math.min(Math.max(e.clientY - r.top, 0), overlay.height)
+  };
+}
+
+document.addEventListener('mousemove', e => {
   if (!drag) return;
+  const p = overlayPoint(e);
   ctx.clearRect(0, 0, overlay.width, overlay.height);
   ctx.strokeStyle = '#0f0';
   ctx.lineWidth = 2;
-  ctx.strokeRect(drag.x, drag.y, e.offsetX - drag.x, e.offsetY - drag.y);
+  ctx.strokeRect(drag.x, drag.y, p.x - drag.x, p.y - drag.y);
 });
-overlay.addEventListener('mouseup', async e => {
+
+document.addEventListener('mouseup', async e => {
   if (!drag) return;
-  const box = normBox(drag.x, drag.y, e.offsetX, e.offsetY);
+  const p = overlayPoint(e);
+  const box = normBox(drag.x, drag.y, p.x, p.y);
   drag = null;
   ctx.clearRect(0, 0, overlay.width, overlay.height);
   if (box.w < 8 || box.h < 8) return;
