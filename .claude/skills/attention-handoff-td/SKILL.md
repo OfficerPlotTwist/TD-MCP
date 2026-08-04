@@ -1,5 +1,5 @@
 ---
-name: attention-handoff
+name: attention-handoff-td
 description: HITL TouchDesigner tutorial scraping — given a tutorial video URL, the human box-selects param windows and network grabs in a local browser app; the agent vision-reads the crops, builds a network graph for browser approval, then rebuilds the network in TD via the MCP bridge with all non-default params routed through /project1/master_controls.
 ---
 
@@ -20,13 +20,23 @@ yt-dlp -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b" \
 If yt-dlp is missing or fails: STOP and give the user this exact command to
 run themselves. Do not scrape the streaming page.
 
+Also save the video's metadata for the attribution DAT (Stage 4):
+
+```
+yt-dlp -J --skip-download <url> > tutorials/<video-id>/meta.json
+```
+
+The fields that matter: `uploader` / `channel`, `channel_url`, `uploader_url`,
+`webpage_url`, `title`, and `description` (tutorial authors put their
+IG/Patreon/website links in the description).
+
 ## Stage 2 — Capture (human)
 
 Start the server in the background and tell the user the capture flow
 (modes 1/2/3, frame-step keys, Done button):
 
 ```
-python .claude/skills/attention-handoff/tools/server.py tutorials/<video-id> --open
+python .claude/skills/attention-handoff-td/tools/server.py tutorials/<video-id> --open
 ```
 
 Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
@@ -52,7 +62,7 @@ Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
      "wires":[{"from":"<label>","to":"<label>","toInlet":0}]}`
    - pair op-node crop → `{"kind":"opnode","label":"<node label>"}`
    - anything illegible → `{"kind":"unreadable"}` — never guess.
-3. Run `python .claude/skills/attention-handoff/tools/matching.py
+3. Run `python .claude/skills/attention-handoff-td/tools/matching.py
    tutorials/<video-id>` → writes `graph.json`.
 4. Tell the user to open `http://127.0.0.1:8765/approve` (network diagram +
    op count; the `param evidence` link shows every param crop with masks and
@@ -60,7 +70,7 @@ Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
 
 ## Stage 4 — Rebuild (agent, TD MCP bridge)
 
-Run `python .claude/skills/attention-handoff/tools/rebuild_plan.py
+Run `python .claude/skills/attention-handoff-td/tools/rebuild_plan.py
 tutorials/<video-id>` to get the plan. If the user asked for a dry run,
 show the plan and stop. Otherwise:
 
@@ -72,7 +82,13 @@ show the plan and stop. Otherwise:
    (`hasattr(td, t) for each`). Unknown types → STOP, report, ask the user
    to fix at `/approve` and re-approve.
 3. Create the container: `create_operator` `containerCOMP` named
-   `plan.container` in `/project1`.
+   `plan.container` in `/project1`. Then create a Text DAT named
+   `attribution` INSIDE the container (place it above the op grid, e.g.
+   nodeX 0 / nodeY 200) whose text credits the original author, built from
+   `meta.json`: author name, video title + URL, channel URL, and every
+   social/support link (YouTube/Instagram/Patreon/website/etc.) found in the
+   video description — copy the URLs exactly, do not invent any. If
+   `meta.json` is missing, build it from the Stage 1 command first.
 4. Bus channels: inspect `/project1/master_controls` FIRST and follow its
    existing structure (per AGENTS.md). Constant CHOPs cap at 40 channels —
    if adding `plan.channels` would overflow, create a new Constant CHOP
