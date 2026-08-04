@@ -1,0 +1,98 @@
+---
+name: attention-handoff
+description: HITL TouchDesigner tutorial scraping — given a tutorial video URL, the human box-selects param windows and network grabs in a local browser app; the agent vision-reads the crops, builds a network graph for browser approval, then rebuilds the network in TD via the MCP bridge with all non-default params routed through /project1/master_controls.
+---
+
+# Attention Handoff
+
+Spec: `docs/superpowers/specs/2026-08-04-attention-handoff-design.md`.
+Session dir: `tutorials/<video-id>/` (video-id = YouTube ID, or a slug you
+pick for non-YouTube URLs; the dir basename becomes the channel-name prefix
+and container suffix).
+
+## Stage 1 — Download
+
+```
+yt-dlp -f "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/b[ext=mp4]/b" \
+  --merge-output-format mp4 -o "tutorials/<video-id>/video.mp4" <url>
+```
+
+If yt-dlp is missing or fails: STOP and give the user this exact command to
+run themselves. Do not scrape the streaming page.
+
+## Stage 2 — Capture (human)
+
+Start the server in the background and tell the user the capture flow
+(modes 1/2/3, frame-step keys, Done button):
+
+```
+python .claude/skills/attention-handoff/tools/server.py tutorials/<video-id> --open
+```
+
+Poll `GET http://127.0.0.1:8765/status` (curl or urllib via Bash) every
+~30 s until `state` is `captured`. Do not proceed before then.
+
+## Stage 3 — Extract (agent)
+
+1. If the TD bridge is up, query valid op types and write
+   `tutorials/<video-id>/optypes.json`:
+   `execute_script`: `import td; print(sorted(n for n in dir(td) if not n.startswith('_') and n[0].islower() and n.endswith(('TOP','CHOP','SOP','DAT','COMP','MAT','POP'))))`
+   If the bridge is down, copy `tools/static/optypes.json` there instead.
+2. Read `captures.json`, then Read every crop PNG under `crops/` and build
+   `readings.json` — `{captureId: reading}` with these reading kinds:
+   - param-window crop → `{"kind":"param","opName":"<title-bar op name>",
+     "opType":"<type from dialog>","params":{"<par>":"<value>"},
+     "boxes":{"<par>":[x,y,w,h]}}`
+     Record ONLY params visibly set to non-default values (bold/edited in
+     the dialog). Values as strings exactly as displayed. `boxes` gives the
+     crop-pixel bounding box of each param row you read — the `/evidence`
+     page renders these as masks so the human can audit every read.
+   - network crop → `{"kind":"network","nodes":[{"label":"<bottom title
+     text, possibly truncated>","opType":"<type if visually identifiable>"}],
+     "wires":[{"from":"<label>","to":"<label>","toInlet":0}]}`
+   - pair op-node crop → `{"kind":"opnode","label":"<node label>"}`
+   - anything illegible → `{"kind":"unreadable"}` — never guess.
+3. Run `python .claude/skills/attention-handoff/tools/matching.py
+   tutorials/<video-id>` → writes `graph.json`.
+4. Tell the user to open `http://127.0.0.1:8765/approve` (network diagram +
+   op count; the `param evidence` link shows every param crop with masks and
+   the extracted values for auditing), then poll `/status` until `approved`.
+
+## Stage 4 — Rebuild (agent, TD MCP bridge)
+
+Run `python .claude/skills/attention-handoff/tools/rebuild_plan.py
+tutorials/<video-id>` to get the plan. If the user asked for a dry run,
+show the plan and stop. Otherwise:
+
+1. `save_checkpoint` on `/project1`. NEVER `project.save()` (untitled
+   projects pop a modal that freezes the bridge).
+2. Validate `plan.opTypes` via `execute_script`
+   (`hasattr(td, t) for each`). Unknown types → STOP, report, ask the user
+   to fix at `/approve` and re-approve.
+3. Create the container: `create_operator` `containerCOMP` named
+   `plan.container` in `/project1`.
+4. Bus channels: inspect `/project1/master_controls` FIRST and follow its
+   existing structure (per AGENTS.md). Constant CHOPs cap at 40 channels —
+   if adding `plan.channels` would overflow, create a new Constant CHOP
+   inside master_controls (named `tut_<video-id>`) and merge it into the
+   bus output the same way existing sources are merged. Set each channel
+   to its plan value.
+5. Create ops per `plan.creates` inside the container with the given
+   `nodeX`/`nodeY` (these are network coords for MY new ops only — never
+   move user ops; layout.json pinning does not apply inside the new
+   container).
+6. `plan.channelParams`: set each `par.expr` to the plan expr and mode to
+   EXPRESSION. Verify each with `get_par_value`.
+7. `plan.directParams`: set values directly (menu tokens/strings). Verify.
+8. Wire per `plan.wires` with `connect_operators` (respect `toInlet`).
+9. `get_errors` on the container. Report: ops created/failed, channels
+   added, params set/rejected (with reasons), wires made. Failures are
+   reported, never silently skipped.
+
+## Notes
+
+- Server is 127.0.0.1-only; default port 8765 (`--port` to change).
+- All non-numeric param values bypass the bus (CHOP channels are numbers);
+  they are listed in `plan.directParams` with a note.
+- Session artifacts except the video are committable; `tutorials/.gitignore`
+  excludes video files.
