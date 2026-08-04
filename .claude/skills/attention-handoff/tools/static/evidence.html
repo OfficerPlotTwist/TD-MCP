@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Attention Handoff — Param Evidence</title>
+<style>
+  body { margin: 0; font: 13px system-ui; background: #16161a; color: #ddd; }
+  header { padding: 10px; background: #222; display: flex; gap: 16px;
+           align-items: center; }
+  header a { color: #6cf; }
+  #items { padding: 10px; }
+  .item { border: 1px solid #333; margin-bottom: 16px; padding: 8px; }
+  .item h4 { margin: 0 0 6px 0; }
+  .item small { color: #888; }
+  .shot { position: relative; display: inline-block; max-width: 100%; }
+  .shot img { max-width: 100%; display: block; image-rendering: pixelated; }
+  .mask { position: absolute; border: 2px solid #f6c;
+          background: rgba(255, 102, 204, 0.15); }
+  table { border-collapse: collapse; margin-top: 6px; }
+  td, th { border: 1px solid #333; padding: 3px 8px; }
+</style>
+</head>
+<body>
+<header>
+  <a href="/approve">&larr; back to approve</a>
+  <b>Param evidence</b>
+  <span>every param-window crop, masked where a value was read</span>
+</header>
+<div id="items"></div>
+<script src="/static/evidence.js"></script>
+</body>
+</html>

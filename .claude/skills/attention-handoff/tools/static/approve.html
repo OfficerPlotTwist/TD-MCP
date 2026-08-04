@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Attention Handoff — Approve</title>
+<style>
+  body { margin: 0; font: 13px system-ui; background: #16161a; color: #ddd; }
+  header { padding: 10px; background: #222; display: flex; gap: 16px;
+           align-items: center; }
+  #counts { font-weight: bold; }
+  #banner { color: #fc6; }
+  #approve { margin-left: auto; background: #2a6; color: #fff; border: 0;
+             padding: 8px 18px; cursor: pointer; }
+  #wrap { display: flex; }
+  #diagram { flex: 1; overflow: auto; background: #101014; min-height: 60vh; }
+  #panel { width: 360px; padding: 10px; overflow-y: auto; max-height: 90vh; }
+  svg rect { fill: #26262e; stroke: #555; }
+  svg .sel rect { stroke: #6cf; stroke-width: 2; }
+  svg .conflict rect { stroke: #f80; stroke-width: 2; }
+  svg text { fill: #ddd; font: 12px monospace; pointer-events: none; }
+  svg .typ { fill: #888; font-size: 10px; }
+  svg .wire { fill: none; stroke: #6a6; stroke-width: 2; cursor: pointer; }
+  svg g.node { cursor: pointer; }
+  table { border-collapse: collapse; width: 100%; }
+  td, th { border: 1px solid #333; padding: 3px; }
+  tr.changed { background: #3a2f1a; }
+  .cf { border: 1px solid #f80; padding: 4px; margin: 4px 0; }
+  input, button { background: #333; color: #ddd; border: 1px solid #555; }
+</style>
+</head>
+<body>
+<header>
+  <span id="counts"></span>
+  <button id="addwire">add wire</button>
+  <a href="/evidence" style="color:#6cf">param evidence</a>
+  <span id="banner"></span>
+  <button id="approve">Approve — rebuild in TD</button>
+</header>
+<div id="wrap">
+  <div id="diagram"></div>
+  <div id="panel">
+    <h3>Inspector</h3><div id="inspector"><em>click a node</em></div>
+    <h3>Conflicts</h3><div id="conflicts"></div>
+    <h3>Parameters</h3><div id="params"></div>
+  </div>
+</div>
+<datalist id="optypes"></datalist>
+<script src="/static/approve.js"></script>
+</body>
+</html>
