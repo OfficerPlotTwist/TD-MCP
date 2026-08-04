@@ -58,7 +58,10 @@ UI:
 ## Stage 3 — Extract (agent vision)
 
 The agent Reads each crop PNG and produces `graph.json`. No OCR dependency —
-Claude vision reads the crops directly.
+Claude vision reads the crops directly. Per-crop readings are persisted to
+`readings.json`; param-window readings include a crop-pixel bounding box per
+extracted param row (`boxes`), so the approval stage can show masked evidence
+for every value read.
 
 ### Data model
 
@@ -116,6 +119,10 @@ Same local server, `/approve` page reading `graph.json`:
   otherwise a bundled static list),
   delete op, add/remove wire (click two nodes), edit param values inline.
 - **Approve** writes `approved.json`; the polling agent proceeds to rebuild.
+- **Evidence page** (`/evidence`, linked from the approval header): every
+  param-window crop displayed with mask overlays on each param row the agent
+  read, alongside the extracted (OCR) value for every param changed to a
+  non-default value — so a wrong read is visible before it reaches TD.
 
 ## Stage 5 — Rebuild (agent, TD MCP bridge)
 
