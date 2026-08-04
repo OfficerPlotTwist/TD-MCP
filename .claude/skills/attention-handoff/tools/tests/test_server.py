@@ -129,6 +129,13 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(resp.status, 206)
         self.assertEqual(len(data), 40)
 
+    def test_8_video_range_beyond_eof(self):
+        resp, data = self.req("GET", "/video",
+                              headers={"Range": "bytes=20000-"})
+        self.assertEqual(resp.status, 416)
+        self.assertEqual(resp.getheader("Content-Range"), "bytes */10240")
+        self.assertEqual(len(data), 0)
+
 
 if __name__ == "__main__":
     unittest.main()

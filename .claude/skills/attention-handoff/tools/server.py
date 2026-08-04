@@ -114,6 +114,12 @@ class Handler(BaseHTTPRequestHandler):
                 start = max(0, size - int(m.group(2)))
             end = min(end, size - 1)
             code = 206
+        if code == 206 and start > end:
+            self.send_response(416)
+            self.send_header("Content-Range", "bytes */%d" % size)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Accept-Ranges", "bytes")
