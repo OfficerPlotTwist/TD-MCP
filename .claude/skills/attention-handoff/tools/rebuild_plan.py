@@ -10,6 +10,7 @@ bridge; --dry-run is accepted and identical to the default (print only).
 Usage: python rebuild_plan.py <session_dir> [--dry-run]
 """
 import json
+import math
 import os
 import re
 import sys
@@ -26,10 +27,9 @@ def is_numeric(value):
     if isinstance(value, bool):
         return True
     if isinstance(value, (int, float)):
-        return True
+        return math.isfinite(value)
     try:
-        float(str(value).strip())
-        return True
+        return math.isfinite(float(str(value).strip()))
     except ValueError:
         return False
 

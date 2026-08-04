@@ -20,6 +20,12 @@ class TestHelpers(unittest.TestCase):
         self.assertFalse(is_numeric("sparse"))
         self.assertFalse(is_numeric("op('ramp1')"))
 
+    def test_is_numeric_rejects_non_finite(self):
+        self.assertFalse(is_numeric("nan"))
+        self.assertFalse(is_numeric("inf"))
+        self.assertFalse(is_numeric("Infinity"))
+        self.assertFalse(is_numeric(float("nan")))
+
     def test_channel_name_prefix_and_cap(self):
         taken = set()
         name = channel_name("x" * 80, "op", "par", taken)
