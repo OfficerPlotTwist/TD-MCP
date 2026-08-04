@@ -35,8 +35,13 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Space') {
     e.preventDefault();
     if (vid.paused) vid.play(); else vid.pause();
-  } else if (e.key === 'ArrowLeft') vid.currentTime -= 5;
-  else if (e.key === 'ArrowRight') vid.currentTime += 5;
+  } else if (e.key === 'ArrowLeft') {
+    if (e.shiftKey) { vid.pause(); vid.currentTime -= 1 / fps(); }
+    else vid.currentTime -= 5;
+  } else if (e.key === 'ArrowRight') {
+    if (e.shiftKey) { vid.pause(); vid.currentTime += 1 / fps(); }
+    else vid.currentTime += 5;
+  }
   else if (e.key === ',') { vid.pause(); vid.currentTime -= 1 / fps(); }
   else if (e.key === '.') { vid.pause(); vid.currentTime += 1 / fps(); }
   else if (e.key === '1') setMode('param');
