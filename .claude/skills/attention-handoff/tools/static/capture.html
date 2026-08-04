@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Attention Handoff — Capture</title>
+<style>
+  body { margin: 0; font: 13px system-ui; background: #16161a; color: #ddd;
+         display: flex; height: 100vh; }
+  #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #stage { position: relative; flex: 1; background: #000; overflow: hidden; }
+  #vid { width: 100%; height: 100%; object-fit: contain; display: block; }
+  #overlay { position: absolute; cursor: crosshair; }
+  #bar { padding: 8px; display: flex; gap: 14px; align-items: center;
+         background: #222; flex-wrap: wrap; }
+  #bar input { width: 40px; background: #333; color: #ddd;
+               border: 1px solid #555; }
+  #mode { font-weight: bold; color: #8f8; }
+  #hint { color: #888; }
+  #done { margin-left: auto; background: #2a6; color: #fff; border: 0;
+          padding: 6px 14px; cursor: pointer; }
+  #side { width: 230px; overflow-y: auto; background: #1d1d22; padding: 8px; }
+  .cap { margin-bottom: 8px; border: 1px solid #333; padding: 4px; }
+  .cap img { max-width: 100%; image-rendering: pixelated; }
+  .cap button { float: right; background: #a33; color: #fff; border: 0;
+                cursor: pointer; }
+</style>
+</head>
+<body>
+<div id="main">
+  <div id="stage">
+    <video id="vid" src="/video"></video>
+    <canvas id="overlay"></canvas>
+  </div>
+  <div id="bar">
+    <span id="time">0.00s</span>
+    <label>fps <input id="fps" value="30"></label>
+    <span id="mode">mode: param</span>
+    <span id="hint">space play/pause · &larr;/&rarr; &plusmn;5s ·
+      , . frame step · 1 param / 2 network / 3 pair ·
+      drag box to capture · esc cancels a pending pair</span>
+    <button id="done">Done</button>
+  </div>
+</div>
+<div id="side">
+  <h3>Captures (<span id="count">0</span>)</h3>
+  <div id="list"></div>
+</div>
+<script src="/static/capture.js"></script>
+</body>
+</html>
