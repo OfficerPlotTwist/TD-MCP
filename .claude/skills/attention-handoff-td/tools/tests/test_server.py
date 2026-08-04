@@ -85,6 +85,29 @@ class ServerTest(unittest.TestCase):
         id3 = json.loads(data)["id"]
         self.assertGreater(int(id3[1:]), int(id2[1:]))
 
+    def test_2d_retag_capture(self):
+        img = "data:image/png;base64," + base64.b64encode(PNG_1PX).decode()
+        resp, data = self.req("POST", "/capture", json.dumps(
+            {"t": 5.0, "type": "pair", "bbox": [0, 0, 4, 4],
+             "pairId": "p7", "role": "op", "image": img}))
+        cid = json.loads(data)["id"]
+        resp, data = self.req("POST", "/retag", json.dumps(
+            {"id": cid, "type": "network-whole"}))
+        self.assertEqual(resp.status, 200)
+        rec = json.loads(data)
+        self.assertEqual(rec["type"], "network-whole")
+        self.assertIsNone(rec["pairId"])
+        self.assertIsNone(rec["role"])
+        resp, data = self.req("GET", "/captures")
+        stored = [c for c in json.loads(data) if c["id"] == cid][0]
+        self.assertEqual(stored["type"], "network-whole")
+        resp, data = self.req("POST", "/retag", json.dumps(
+            {"id": cid, "type": "pair"}))
+        self.assertEqual(resp.status, 400)
+        resp, data = self.req("POST", "/retag", json.dumps(
+            {"id": "c999", "type": "param"}))
+        self.assertEqual(resp.status, 404)
+
     def test_3_status_flow(self):
         resp, data = self.req("GET", "/status")
         self.assertEqual(json.loads(data)["state"], "capturing")
@@ -150,3 +173,4 @@ class ServerTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

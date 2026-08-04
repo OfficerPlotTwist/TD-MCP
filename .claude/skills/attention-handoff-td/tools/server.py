@@ -214,6 +214,25 @@ class Handler(BaseHTTPRequestHandler):
                 if os.path.exists(crop):
                     os.remove(crop)
             self.send_json({"ok": True})
+        elif path == "/retag":
+            new_type = data.get("type")
+            if new_type not in ("param", "network", "network-whole"):
+                return self.send_json({"error": "invalid type"}, 400)
+            rec = None
+            with SESSION.lock:
+                caps = SESSION.load_json("captures.json", [])
+                for c in caps:
+                    if c["id"] == data.get("id"):
+                        rec = c
+                        break
+                if rec is not None:
+                    rec["type"] = new_type
+                    rec["pairId"] = None
+                    rec["role"] = None
+                    SESSION.save_json("captures.json", caps)
+            if rec is None:
+                return self.send_json({"error": "unknown id"}, 404)
+            self.send_json(rec)
         elif path == "/done":
             with open(SESSION.path("captures.done"), "w") as f:
                 f.write("")

@@ -14,8 +14,15 @@
          background: #222; flex-wrap: wrap; }
   #bar input { width: 40px; background: #333; color: #ddd;
                border: 1px solid #555; }
-  #mode { font-weight: bold; color: #8f8; }
+  #legend { display: flex; gap: 4px; }
+  #legend button { background: #333; color: #aaa; border: 1px solid #555;
+                   padding: 4px 8px; cursor: pointer; }
+  #legend button.active { background: #2a6; color: #fff; border-color: #2a6;
+                          font-weight: bold; }
+  #pairhint { color: #fc6; font-weight: bold; }
   #hint { color: #888; }
+  .cap select { background: #333; color: #ddd; border: 1px solid #555;
+                max-width: 110px; }
   #done { margin-left: auto; background: #2a6; color: #fff; border: 0;
           padding: 6px 14px; cursor: pointer; }
   #side { width: 230px; overflow-y: auto; background: #1d1d22; padding: 8px; }
@@ -34,11 +41,15 @@
   <div id="bar">
     <span id="time">0.00s</span>
     <label>fps <input id="fps" value="30"></label>
-    <span id="mode">mode: param</span>
+    <span id="legend">
+      <button data-mode="param" title="parameter window with changed values">1 param</button>
+      <button data-mode="network" title="close-up network, op names readable">2 network</button>
+      <button data-mode="pair" title="op node first, then its param window">3 pair</button>
+      <button data-mode="network-whole" title="zoomed-out network: structure + op count only">4 whole net</button>
+    </span>
+    <span id="pairhint"></span>
     <span id="hint">space play/pause · &larr;/&rarr; &plusmn;5s ·
-      , . frame step · 1 param / 2 network (close-up, names readable) /
-      3 pair / 4 whole network (structure + op count only) ·
-      drag box to capture · esc cancels a pending pair</span>
+      , . frame step · drag box to capture · esc cancels a pending pair</span>
     <button id="done">Done</button>
   </div>
 </div>

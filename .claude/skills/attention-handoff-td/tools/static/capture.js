@@ -49,10 +49,18 @@ document.addEventListener('keydown', e => {
 function setMode(m) { mode = m; pendingPair = null; updateModeLabel(); }
 
 function updateModeLabel() {
-  document.getElementById('mode').textContent =
-    'mode: ' + mode + (pendingPair ? ' — now box the PARAM window' :
-                       (mode === 'pair' ? ' — box the OP node first' : ''));
+  document.querySelectorAll('#legend button').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  document.getElementById('pairhint').textContent =
+    pendingPair ? 'now box the PARAM window' :
+    (mode === 'pair' ? 'box the OP node first' : '');
 }
+
+document.querySelectorAll('#legend button').forEach(b => {
+  b.onclick = () => setMode(b.dataset.mode);
+});
+updateModeLabel();
 
 async function cancelPair() {
   if (!pendingPair) return;
@@ -137,12 +145,24 @@ async function refresh() {
   document.getElementById('count').textContent = caps.length;
   const list = document.getElementById('list');
   list.innerHTML = '';
+  const TAGS = ['param', 'network', 'network-whole'];
   for (const c of caps.slice().reverse()) {
     const div = document.createElement('div');
     div.className = 'cap';
-    div.innerHTML = '<img src="/crops/' + c.id + '.png"><div>' + c.id + ' ' +
-      c.type + (c.role ? '/' + c.role : '') + ' @' + c.t.toFixed(1) +
-      's <button>x</button></div>';
+    const opts = TAGS.map(t =>
+      '<option value="' + t + '"' + (c.type === t ? ' selected' : '') + '>' +
+      t + '</option>').join('') +
+      (c.type === 'pair'
+        ? '<option value="pair" selected disabled>pair' +
+          (c.role ? '/' + c.role : '') + '</option>' : '');
+    div.innerHTML = '<img src="/crops/' + c.id + '.png"><div>' + c.id +
+      ' @' + c.t.toFixed(1) + 's <select>' + opts +
+      '</select> <button>x</button></div>';
+    div.querySelector('select').onchange = async e => {
+      await fetch('/retag', {method: 'POST',
+                             body: JSON.stringify({id: c.id, type: e.target.value})});
+      refresh();
+    };
     div.querySelector('button').onclick = async () => {
       await fetch('/delete', {method: 'POST',
                               body: JSON.stringify({id: c.id})});
