@@ -175,6 +175,9 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         path = urlparse(self.path).path
+        origin = self.headers.get("Origin")
+        if origin and origin != "http://127.0.0.1:%d" % self.server.server_address[1]:
+            return self.send_json({"error": "forbidden origin"}, 403)
         length = int(self.headers.get("Content-Length") or 0)
         raw = self.rfile.read(length) if length else b"{}"
         try:

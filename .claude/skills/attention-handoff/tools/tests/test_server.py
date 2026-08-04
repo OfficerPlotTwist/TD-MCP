@@ -136,6 +136,17 @@ class ServerTest(unittest.TestCase):
         self.assertEqual(resp.getheader("Content-Range"), "bytes */10240")
         self.assertEqual(len(data), 0)
 
+    def test_9_cross_origin_post_rejected(self):
+        resp, data = self.req("POST", "/approved", json.dumps(
+            {"ops": ["EVIL"]}), headers={"Origin": "http://evil.example"})
+        self.assertEqual(resp.status, 403)
+        with open(os.path.join(self.dir, "approved.json")) as f:
+            self.assertNotIn("EVIL", f.read())
+        resp, data = self.req("POST", "/approved", json.dumps(
+            {"ops": [], "wires": []}),
+            headers={"Origin": "http://127.0.0.1:%d" % self.port})
+        self.assertEqual(resp.status, 200)
+
 
 if __name__ == "__main__":
     unittest.main()
