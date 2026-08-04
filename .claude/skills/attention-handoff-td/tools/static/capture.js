@@ -57,9 +57,12 @@ function updateModeLabel() {
   document.querySelectorAll('#legend button').forEach(b => {
     b.classList.toggle('active', b.dataset.mode === mode);
   });
-  document.getElementById('pairhint').textContent =
-    pendingPair ? 'now box the PARAM window' :
-    (mode === 'pair' ? 'box the OP node first' : '');
+  const hint = document.getElementById('pairhint');
+  if (hint) {
+    hint.textContent =
+      pendingPair ? 'now box the PARAM window' :
+      (mode === 'pair' ? 'box the OP node first' : '');
+  }
 }
 
 document.querySelectorAll('#legend button').forEach(b => {
