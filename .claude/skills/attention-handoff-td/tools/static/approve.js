@@ -151,10 +151,16 @@ function renderInspector() {
   const el = document.getElementById('inspector');
   const op = graph.ops.find(o => o.id === selected);
   if (!op) { el.innerHTML = '<em>click a node</em>'; return; }
+  const srcs = (op.sources || []).map(s =>
+    '<a href="/crops/' + esc(s) + '.png" target="_blank">' +
+    '<img class="srcthumb" src="/crops/' + esc(s) + '.png" title="' +
+    esc(s) + '"></a>').join('');
   el.innerHTML = '<b>' + esc(op.id) + '</b><br>' +
     'name <input id="i-name" value="' + esc(op.id) + '"><br>' +
     'type <input id="i-type" list="optypes" value="' + esc(op.opType) +
-    '"><br><button id="i-del">delete op</button>';
+    '"><br><button id="i-del">delete op</button>' +
+    '<div class="srcs"><small>source captures (click to open):</small><br>' +
+    (srcs || '<em>none</em>') + '</div>';
   document.getElementById('i-name').onchange = e => {
     const old = op.id, next = e.target.value.trim();
     if (!next) { e.target.value = op.id; return; }

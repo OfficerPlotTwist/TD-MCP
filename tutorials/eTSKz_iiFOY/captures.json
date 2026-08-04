@@ -1,0 +1,716 @@
+[
+  {
+    "id": "c003",
+    "t": 47.958441,
+    "type": "network-whole",
+    "bbox": [
+      19,
+      255,
+      1397,
+      346
+    ],
+    "file": "crops/c003.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c004",
+    "t": 113.427678,
+    "type": "param",
+    "bbox": [
+      1418,
+      119,
+      495,
+      503
+    ],
+    "file": "crops/c004.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c005",
+    "t": 128.477456,
+    "type": "param",
+    "bbox": [
+      1419,
+      119,
+      494,
+      306
+    ],
+    "file": "crops/c005.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c006",
+    "t": 132.33472,
+    "type": "param",
+    "bbox": [
+      1421,
+      123,
+      489,
+      297
+    ],
+    "file": "crops/c006.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c007",
+    "t": 139.054997,
+    "type": "network",
+    "bbox": [
+      226,
+      455,
+      1240,
+      304
+    ],
+    "file": "crops/c007.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c008",
+    "t": 161.017648,
+    "type": "param",
+    "bbox": [
+      1418,
+      122,
+      495,
+      375
+    ],
+    "file": "crops/c008.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c009",
+    "t": 164.2283,
+    "type": "pair",
+    "bbox": [
+      578,
+      250,
+      205,
+      150
+    ],
+    "file": "crops/c009.png",
+    "pairId": "p1785881367023",
+    "role": "op"
+  },
+  {
+    "id": "c010",
+    "t": 164.2283,
+    "type": "pair",
+    "bbox": [
+      1418,
+      117,
+      494,
+      369
+    ],
+    "file": "crops/c010.png",
+    "pairId": "p1785881367023",
+    "role": "param"
+  },
+  {
+    "id": "c011",
+    "t": 171.595669,
+    "type": "pair",
+    "bbox": [
+      712,
+      309,
+      209,
+      160
+    ],
+    "file": "crops/c011.png",
+    "pairId": "p1785881389617",
+    "role": "op"
+  },
+  {
+    "id": "c012",
+    "t": 171.595669,
+    "type": "pair",
+    "bbox": [
+      1415,
+      115,
+      502,
+      514
+    ],
+    "file": "crops/c012.png",
+    "pairId": "p1785881389617",
+    "role": "param"
+  },
+  {
+    "id": "c013",
+    "t": 191.04514,
+    "type": "param",
+    "bbox": [
+      1396,
+      119,
+      520,
+      492
+    ],
+    "file": "crops/c013.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c014",
+    "t": 198.694701,
+    "type": "param",
+    "bbox": [
+      1343,
+      117,
+      569,
+      794
+    ],
+    "file": "crops/c014.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c017",
+    "t": 213.55137,
+    "type": "param",
+    "bbox": [
+      1341,
+      115,
+      579,
+      799
+    ],
+    "file": "crops/c017.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c018",
+    "t": 215.312084,
+    "type": "param",
+    "bbox": [
+      1343,
+      115,
+      577,
+      812
+    ],
+    "file": "crops/c018.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c019",
+    "t": 219.829288,
+    "type": "network",
+    "bbox": [
+      221,
+      211,
+      1081,
+      682
+    ],
+    "file": "crops/c019.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c020",
+    "t": 227.255965,
+    "type": "param",
+    "bbox": [
+      1365,
+      123,
+      548,
+      824
+    ],
+    "file": "crops/c020.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c021",
+    "t": 233.262502,
+    "type": "param",
+    "bbox": [
+      1362,
+      120,
+      557,
+      816
+    ],
+    "file": "crops/c021.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c022",
+    "t": 241.412069,
+    "type": "param",
+    "bbox": [
+      1386,
+      115,
+      534,
+      404
+    ],
+    "file": "crops/c022.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c023",
+    "t": 242.104909,
+    "type": "network",
+    "bbox": [
+      269,
+      319,
+      849,
+      431
+    ],
+    "file": "crops/c023.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c024",
+    "t": 243.534677,
+    "type": "param",
+    "bbox": [
+      1417,
+      119,
+      502,
+      382
+    ],
+    "file": "crops/c024.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c025",
+    "t": 243.534677,
+    "type": "network",
+    "bbox": [
+      78,
+      348,
+      1123,
+      365
+    ],
+    "file": "crops/c025.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c026",
+    "t": 248.913993,
+    "type": "param",
+    "bbox": [
+      1340,
+      114,
+      572,
+      800
+    ],
+    "file": "crops/c026.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c027",
+    "t": 267.595438,
+    "type": "network",
+    "bbox": [
+      10,
+      278,
+      1180,
+      190
+    ],
+    "file": "crops/c027.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c028",
+    "t": 269.727694,
+    "type": "param",
+    "bbox": [
+      1419,
+      109,
+      500,
+      411
+    ],
+    "file": "crops/c028.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c029",
+    "t": 281.162482,
+    "type": "param",
+    "bbox": [
+      1404,
+      112,
+      504,
+      400
+    ],
+    "file": "crops/c029.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c030",
+    "t": 288.132507,
+    "type": "param",
+    "bbox": [
+      1336,
+      115,
+      584,
+      806
+    ],
+    "file": "crops/c030.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c031",
+    "t": 302.099526,
+    "type": "param",
+    "bbox": [
+      1410,
+      114,
+      510,
+      384
+    ],
+    "file": "crops/c031.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c032",
+    "t": 313.640276,
+    "type": "param",
+    "bbox": [
+      1414,
+      114,
+      506,
+      388
+    ],
+    "file": "crops/c032.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c033",
+    "t": 319.245318,
+    "type": "network",
+    "bbox": [
+      25,
+      272,
+      1080,
+      185
+    ],
+    "file": "crops/c033.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c034",
+    "t": 321.789308,
+    "type": "param",
+    "bbox": [
+      1384,
+      115,
+      536,
+      432
+    ],
+    "file": "crops/c034.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c035",
+    "t": 327.949227,
+    "type": "param",
+    "bbox": [
+      1386,
+      115,
+      506,
+      364
+    ],
+    "file": "crops/c035.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c038",
+    "t": 368.030869,
+    "type": "param",
+    "bbox": [
+      1408,
+      114,
+      512,
+      595
+    ],
+    "file": "crops/c038.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c039",
+    "t": 383.422246,
+    "type": "param",
+    "bbox": [
+      1386,
+      119,
+      534,
+      391
+    ],
+    "file": "crops/c039.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c040",
+    "t": 407.873897,
+    "type": "param",
+    "bbox": [
+      1350,
+      121,
+      570,
+      870
+    ],
+    "file": "crops/c040.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c041",
+    "t": 423.60486,
+    "type": "network",
+    "bbox": [
+      317,
+      148,
+      1007,
+      598
+    ],
+    "file": "crops/c041.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c042",
+    "t": 424.203574,
+    "type": "param",
+    "bbox": [
+      1401,
+      86,
+      513,
+      443
+    ],
+    "file": "crops/c042.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c043",
+    "t": 427.256587,
+    "type": "param",
+    "bbox": [
+      1412,
+      86,
+      508,
+      446
+    ],
+    "file": "crops/c043.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c044",
+    "t": 435.063073,
+    "type": "param",
+    "bbox": [
+      1410,
+      117,
+      510,
+      420
+    ],
+    "file": "crops/c044.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c045",
+    "t": 438.247837,
+    "type": "param",
+    "bbox": [
+      1405,
+      124,
+      505,
+      412
+    ],
+    "file": "crops/c045.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c046",
+    "t": 446.356306,
+    "type": "param",
+    "bbox": [
+      1416,
+      116,
+      504,
+      409
+    ],
+    "file": "crops/c046.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c047",
+    "t": 451.351594,
+    "type": "network",
+    "bbox": [
+      175,
+      121,
+      1158,
+      688
+    ],
+    "file": "crops/c047.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c048",
+    "t": 457.783647,
+    "type": "param",
+    "bbox": [
+      1415,
+      120,
+      505,
+      406
+    ],
+    "file": "crops/c048.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c049",
+    "t": 473.170322,
+    "type": "param",
+    "bbox": [
+      1418,
+      120,
+      497,
+      401
+    ],
+    "file": "crops/c049.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c050",
+    "t": 481.351833,
+    "type": "network",
+    "bbox": [
+      280,
+      161,
+      878,
+      480
+    ],
+    "file": "crops/c050.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c051",
+    "t": 483.131613,
+    "type": "param",
+    "bbox": [
+      1393,
+      115,
+      524,
+      383
+    ],
+    "file": "crops/c051.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c052",
+    "t": 496.072169,
+    "type": "param",
+    "bbox": [
+      1377,
+      124,
+      543,
+      376
+    ],
+    "file": "crops/c052.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c053",
+    "t": 509.373557,
+    "type": "param",
+    "bbox": [
+      1393,
+      109,
+      527,
+      607
+    ],
+    "file": "crops/c053.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c054",
+    "t": 512.487922,
+    "type": "param",
+    "bbox": [
+      1396,
+      175,
+      517,
+      540
+    ],
+    "file": "crops/c054.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c055",
+    "t": 516.226098,
+    "type": "network",
+    "bbox": [
+      395,
+      339,
+      890,
+      269
+    ],
+    "file": "crops/c055.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c056",
+    "t": 518.710708,
+    "type": "param",
+    "bbox": [
+      1414,
+      116,
+      506,
+      475
+    ],
+    "file": "crops/c056.png",
+    "pairId": null,
+    "role": null
+  },
+  {
+    "id": "c057",
+    "t": 534.673991,
+    "type": "param",
+    "bbox": [
+      1338,
+      119,
+      578,
+      786
+    ],
+    "file": "crops/c057.png",
+    "pairId": null,
+    "role": null
+  }
+]
