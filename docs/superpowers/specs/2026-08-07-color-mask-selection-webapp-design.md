@@ -42,13 +42,14 @@ New container. Its network position is pinned via `touchdesigner/layout.json` pe
 | `in1` | inTOP | User wires any source TOP here (the only way the source is chosen — no picker in the webapp). |
 | `null_src` | nullTOP | Mirror of `in1`; snapshot target for the webapp. |
 | `script_stencil` | scriptTOP | Emits the last-SENT combined wand stencil as a single-channel (R) texture. Reads `fetch('colormask_stencil')` from container storage — never another script op's cooked output (repo cook-loop rule). Emits 1×1 black when nothing has been sent. |
-| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`. Uniform arrays for up to **32 rules**: `uRuleType[i]` (0 = wand, 1 = bycolor), `uRuleColor[i]` (vec3), `uRuleTol[i]` (float), `uRuleCount`. Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
+| `script_rules` | scriptTOP | Emits the rules as an **N×1 RGBA32F data texture** from `fetch('colormask_rules')`: rgb = reference color, `a = tol + 10×type` (type 1 = bycolor); a single texel with `a = -1` means "no rules". Data-driven — the shader never recompiles and no uniform plumbing is needed. |
+| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`, input 2 = `script_rules`. Loops over the rule texture (`textureSize` gives the count, capped at **32 rules** by the webapp/validator). Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
 | `out_mask` | outTOP | The deliverable mask. |
 | `out_viz` | outTOP ← `glsl_viz` | Source tinted magenta where masked, for eyeballing inside TD. |
 
 - **All TOPs nearest-filtered** (`inputfiltertype`/`filtertype = nearest`) — masks must not blur.
 - Stencil is sampled with **normalized coordinates** in the shader, so its resolution need not match the source.
-- Rules and a generation counter are stored on the container (`store`). The SEND script writes stencil bytes + rules first, then bumps the generation and pushes the uniform values — one `/execute` script, so a half-uploaded state never renders.
+- Rules and stencil are stored on the container (`store`). The SEND script writes both, then force-cooks `script_stencil` and `script_rules` as its last act — one `/execute` script, so a half-uploaded state never renders. (Storage changes are not cook dependencies, hence the explicit cook.)
 - Stencil transport format: browser sends raw uint8 grayscale bytes (width × height) → server zlib-compresses → base64 → TD script decodes with `zlib` + `numpy` (no PIL dependency).
 
 ## Webapp: `touchdesigner/colormask/webapp/`
