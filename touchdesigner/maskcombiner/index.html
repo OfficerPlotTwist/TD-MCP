@@ -1,0 +1,291 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Mask Combiner</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #111; color: #ddd;
+               font: 13px system-ui, sans-serif; }
+  #toolbar { display: flex; gap: 6px; align-items: center; padding: 8px;
+             background: #1c1c1c; flex-wrap: wrap; }
+  #toolbar button { background: #2a2a2a; color: #ddd; border: 1px solid #444;
+                    padding: 6px 10px; cursor: pointer; }
+  #toolbar button.active-tool { border-color: #4caf50; color: #4caf50; }
+  #toolbar input { background: #222; color: #ddd; border: 1px solid #444; padding: 6px; }
+  #status { margin-left: auto; opacity: 0.8; }
+  #stage { position: relative; width: 100%; height: calc(100% - 46px); overflow: hidden; }
+  canvas { position: absolute; left: 0; top: 0; image-rendering: pixelated; }
+</style>
+</head>
+<body>
+<div id="toolbar">
+  <button id="tool-select">Select</button>
+  <button id="tool-lasso">Lasso</button>
+  <span style="border-left:1px solid #444; height:20px"></span>
+  <button id="tool-fill">Fill Voids</button>
+  <button id="tool-knife">Knife</button>
+  <button id="tool-addloop">Add Loop</button>
+  <button id="tool-outset">Outset</button>
+  <button id="tool-inset">Inset</button>
+  <span style="border-left:1px solid #444; height:20px"></span>
+  <input id="send-name" placeholder="mask name" size="14">
+  <button id="send-btn">Send Mask</button>
+  <span id="status">loading mask…</span>
+</div>
+<div id="stage">
+  <canvas id="base"></canvas>
+  <canvas id="overlay"></canvas>
+</div>
+<script type="module">
+import {
+  makeBitmap, cloneBitmap, extractPieces, union, subtract, countPixels,
+  fillVoids, dilate, erode, rasterizeLoop, fractionInside, pointNearPiece,
+  makeHistory,
+} from './maskops.mjs';
+
+const state = {
+  w: 0, h: 0,
+  pieces: new Map(),      // id -> Bitmap (editable)
+  selected: [],           // ids in selection order; last = active
+  hoverId: 0,
+  history: makeHistory(50),
+  currentTool: 'select',
+  stroke: null,           // [{x,y}] in image coords while dragging
+  baseDirty: true,
+  pieceCanvases: new Map(),  // id -> offscreen canvas (white where piece)
+  edgeCanvases: new Map(),   // id -> offscreen canvas (green edge pixels)
+  scale: 1,
+};
+
+const baseCv = document.getElementById('base');
+const overlayCv = document.getElementById('overlay');
+const statusEl = document.getElementById('status');
+const setStatus = (m) => { statusEl.textContent = m; };
+
+function activeId() { return state.selected.length ? state.selected[state.selected.length - 1] : 0; }
+
+function pieceAt(ix, iy) {
+  if (ix < 0 || iy < 0 || ix >= state.w || iy >= state.h) return 0;
+  const i = iy * state.w + ix;
+  const act = activeId();
+  if (act && state.pieces.get(act).data[i]) return act;
+  for (const [id, bm] of state.pieces) if (bm.data[i]) return id;
+  return 0;
+}
+
+function markDirty(id) {
+  state.baseDirty = true;
+  state.pieceCanvases.delete(id);
+  state.edgeCanvases.delete(id);
+  const bm = state.pieces.get(id);
+  if (id && bm && countPixels(bm) === 0) {
+    state.pieces.delete(id);
+    state.selected = state.selected.filter((s) => s !== id);
+  }
+}
+
+function pieceCanvas(id) {
+  let cv = state.pieceCanvases.get(id);
+  if (cv) return cv;
+  const bm = state.pieces.get(id);
+  cv = document.createElement('canvas');
+  cv.width = state.w; cv.height = state.h;
+  const ctx = cv.getContext('2d');
+  const img = ctx.createImageData(state.w, state.h);
+  for (let i = 0; i < bm.data.length; i++) {
+    if (bm.data[i]) { const o = i * 4; img.data[o] = img.data[o+1] = img.data[o+2] = 255; img.data[o+3] = 255; }
+  }
+  ctx.putImageData(img, 0, 0);
+  state.pieceCanvases.set(id, cv);
+  return cv;
+}
+
+function edgeCanvas(id) {
+  let cv = state.edgeCanvases.get(id);
+  if (cv) return cv;
+  const bm = state.pieces.get(id);
+  cv = document.createElement('canvas');
+  cv.width = state.w; cv.height = state.h;
+  const ctx = cv.getContext('2d');
+  const img = ctx.createImageData(state.w, state.h);
+  const { w, h, data } = bm;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x;
+    if (!data[i]) continue;
+    const edge = (x === 0 || !data[i-1]) || (x === w-1 || !data[i+1]) ||
+                 (y === 0 || !data[i-w]) || (y === h-1 || !data[i+w]);
+    if (edge) { const o = i * 4; img.data[o] = 40; img.data[o+1] = 255; img.data[o+2] = 90; img.data[o+3] = 255; }
+  }
+  ctx.putImageData(img, 0, 0);
+  state.edgeCanvases.set(id, cv);
+  return cv;
+}
+
+// stripe pattern tile (drawn once)
+const stripeTile = document.createElement('canvas');
+stripeTile.width = stripeTile.height = 16;
+{
+  const ctx = stripeTile.getContext('2d');
+  ctx.strokeStyle = 'rgba(255, 210, 60, 0.85)';
+  ctx.lineWidth = 3;
+  for (let k = -16; k <= 32; k += 8) {
+    ctx.beginPath(); ctx.moveTo(k, 16); ctx.lineTo(k + 16, 0); ctx.stroke();
+  }
+}
+
+function redrawBase() {
+  const ctx = baseCv.getContext('2d');
+  const img = ctx.createImageData(state.w, state.h);
+  for (const [, bm] of state.pieces) {
+    for (let i = 0; i < bm.data.length; i++) {
+      if (bm.data[i]) { const o = i * 4; img.data[o] = img.data[o+1] = img.data[o+2] = 230; }
+    }
+  }
+  for (let i = 0; i < state.w * state.h; i++) img.data[i * 4 + 3] = 255;
+  ctx.putImageData(img, 0, 0);
+  state.baseDirty = false;
+}
+
+const scratch = document.createElement('canvas');
+function drawFrame(t) {
+  if (state.w) {
+    if (state.baseDirty) redrawBase();
+    const ctx = overlayCv.getContext('2d');
+    ctx.clearRect(0, 0, state.w, state.h);
+    // hover
+    if (state.hoverId && !state.selected.includes(state.hoverId)) {
+      ctx.globalAlpha = 0.18;
+      ctx.drawImage(pieceCanvas(state.hoverId), 0, 0);
+      ctx.globalAlpha = 1;
+    }
+    // animated stripes on every selected piece
+    scratch.width = state.w; scratch.height = state.h;
+    const sctx = scratch.getContext('2d');
+    const off = (t / 40) % 16;
+    for (const id of state.selected) {
+      sctx.clearRect(0, 0, state.w, state.h);
+      sctx.drawImage(pieceCanvas(id), 0, 0);
+      sctx.globalCompositeOperation = 'source-in';
+      sctx.save();
+      sctx.translate(off, 0);
+      sctx.fillStyle = sctx.createPattern(stripeTile, 'repeat');
+      sctx.fillRect(-32, -32, state.w + 64, state.h + 64);
+      sctx.restore();
+      sctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 0.55;
+      ctx.drawImage(scratch, 0, 0);
+      ctx.globalAlpha = 1;
+    }
+    // green outline on active piece
+    if (activeId()) ctx.drawImage(edgeCanvas(activeId()), 0, 0);
+    // live stroke preview
+    if (state.stroke && state.stroke.length > 1) {
+      ctx.strokeStyle = state.currentTool === 'knife' ? '#ff5252'
+        : state.currentTool === 'addloop' ? '#4caf50' : '#4fc3f7';
+      ctx.lineWidth = Math.max(1, 1.5 / state.scale);
+      ctx.beginPath();
+      ctx.moveTo(state.stroke[0].x, state.stroke[0].y);
+      for (const p of state.stroke) ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    }
+  }
+  requestAnimationFrame(drawFrame);
+}
+requestAnimationFrame(drawFrame);
+
+function fitCanvases() {
+  const stage = document.getElementById('stage');
+  const sw = stage.clientWidth, sh = stage.clientHeight;
+  state.scale = Math.min(sw / state.w, sh / state.h);
+  for (const cv of [baseCv, overlayCv]) {
+    cv.style.width = `${state.w * state.scale}px`;
+    cv.style.height = `${state.h * state.scale}px`;
+  }
+}
+window.addEventListener('resize', () => state.w && fitCanvases());
+
+function eventToImage(ev) {
+  const r = baseCv.getBoundingClientRect();
+  return {
+    x: Math.floor((ev.clientX - r.left) / r.width * state.w),
+    y: Math.floor((ev.clientY - r.top) / r.height * state.h),
+  };
+}
+
+async function loadMask() {
+  const img = new Image();
+  img.src = '/mask?ts=' + Date.now();
+  await img.decode();
+  state.w = img.naturalWidth; state.h = img.naturalHeight;
+  baseCv.width = overlayCv.width = state.w;
+  baseCv.height = overlayCv.height = state.h;
+  const cv = document.createElement('canvas');
+  cv.width = state.w; cv.height = state.h;
+  const ctx = cv.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(img, 0, 0);
+  const px = ctx.getImageData(0, 0, state.w, state.h).data;
+  const ids = new Uint8Array(state.w * state.h);
+  for (let i = 0; i < ids.length; i++) ids[i] = px[i * 4]; // R channel
+  state.pieces = extractPieces(ids, state.w, state.h);
+  state.baseDirty = true;
+  fitCanvases();
+  setStatus(`${state.pieces.size} pieces — click or lasso to select`);
+}
+loadMask().catch(() => {
+  setStatus('failed to load /mask — is TD running?');
+  const b = document.createElement('button');
+  b.textContent = 'Retry';
+  b.onclick = () => location.reload();
+  statusEl.appendChild(document.createTextNode(' '));
+  statusEl.appendChild(b);
+});
+
+// ---- selection (click) + hover ----
+function toggleSelect(id) {
+  const i = state.selected.indexOf(id);
+  if (i >= 0) state.selected.splice(i, 1);
+  else state.selected.push(id);
+}
+
+overlayCv.addEventListener('pointermove', (ev) => {
+  if (state.stroke) {
+    state.stroke.push(eventToImage(ev));
+    return;
+  }
+  const p = eventToImage(ev);
+  state.hoverId = pieceAt(p.x, p.y);
+});
+
+overlayCv.addEventListener('pointerdown', (ev) => {
+  const p = eventToImage(ev);
+  if (state.currentTool === 'select') {
+    const id = pieceAt(p.x, p.y);
+    if (id) {
+      toggleSelect(id);
+      setStatus(`${state.selected.length} selected` +
+        (activeId() ? ` — active: ${activeId()}` : ''));
+    }
+  } else {
+    state.stroke = [p];
+    overlayCv.setPointerCapture(ev.pointerId);
+  }
+});
+
+// pointerup / tool actions arrive in Task 6; keep a stub that just clears strokes
+overlayCv.addEventListener('pointerup', () => { state.stroke = null; });
+
+// ---- toolbar tool switching ----
+const toolButtons = { select: 'tool-select', lasso: 'tool-lasso', knife: 'tool-knife', addloop: 'tool-addloop' };
+function setTool(name) {
+  state.currentTool = name;
+  for (const [t, idBtn] of Object.entries(toolButtons)) {
+    document.getElementById(idBtn).classList.toggle('active-tool', t === name);
+  }
+}
+for (const [t, idBtn] of Object.entries(toolButtons)) {
+  document.getElementById(idBtn).onclick = () => setTool(t);
+}
+setTool('select');
+</script>
+</body>
+</html>
