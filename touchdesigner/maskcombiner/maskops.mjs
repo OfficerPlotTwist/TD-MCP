@@ -82,6 +82,58 @@ export function dilate(bm) {
   return out;
 }
 
+// Even-odd scanline fill of the polygon formed by closing points end->start.
+export function rasterizeLoop(points, w, h) {
+  const out = makeBitmap(w, h);
+  if (!points || points.length < 3) return out;
+  for (let y = 0; y < h; y++) {
+    const yc = y + 0.5;
+    const xs = [];
+    for (let i = 0; i < points.length; i++) {
+      const a = points[i], b = points[(i + 1) % points.length];
+      if ((a.y <= yc && b.y > yc) || (b.y <= yc && a.y > yc)) {
+        xs.push(a.x + ((yc - a.y) / (b.y - a.y)) * (b.x - a.x));
+      }
+    }
+    xs.sort((p, q) => p - q);
+    for (let k = 0; k + 1 < xs.length; k += 2) {
+      const x0 = Math.max(0, Math.ceil(xs[k] - 0.5));
+      const x1 = Math.min(w - 1, Math.floor(xs[k + 1] - 0.5));
+      for (let x = x0; x <= x1; x++) out.data[y * w + x] = 1;
+    }
+  }
+  return out;
+}
+
+export function fractionInside(piece, region) {
+  let total = 0, inside = 0;
+  for (let i = 0; i < piece.data.length; i++) {
+    if (piece.data[i]) { total++; if (region.data[i]) inside++; }
+  }
+  return total === 0 ? 0 : inside / total;
+}
+
+export function pointNearPiece(bm, x, y, tol) {
+  const x0 = Math.max(0, Math.round(x) - tol), x1 = Math.min(bm.w - 1, Math.round(x) + tol);
+  const y0 = Math.max(0, Math.round(y) - tol), y1 = Math.min(bm.h - 1, Math.round(y) + tol);
+  for (let yy = y0; yy <= y1; yy++)
+    for (let xx = x0; xx <= x1; xx++)
+      if (bm.data[yy * bm.w + xx]) return true;
+  return false;
+}
+
+export function makeHistory(limit = 50) {
+  const stack = [];
+  return {
+    push(pieceId, bitmap) {
+      stack.push({ pieceId, bitmap: cloneBitmap(bitmap) });
+      if (stack.length > limit) stack.shift();
+    },
+    pop() { return stack.pop() || null; },
+    get length() { return stack.length; },
+  };
+}
+
 export function erode(bm) {
   const { w, h, data } = bm;
   const out = makeBitmap(w, h);
