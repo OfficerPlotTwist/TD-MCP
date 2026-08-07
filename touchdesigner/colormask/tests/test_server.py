@@ -86,3 +86,41 @@ def test_frame_bridge_down_503():
 def test_frame_td_error_502():
     code, body, err = server.process_frame(lambda p: (True, {"error": "no such op"}))
     assert code == 502 and body is None
+
+
+def test_send_null_payload_400():
+    """Non-dict JSON (null) should return 400."""
+    code, obj = server.process_send(b"null", lambda p, d: (True, {}))
+    assert code == 400
+
+
+def test_send_array_payload_400():
+    """Non-dict JSON (array) should return 400."""
+    code, obj = server.process_send(b"[]", lambda p, d: (True, {}))
+    assert code == 400
+
+
+def test_send_stencil_string_400():
+    """Stencil must be object or absent, not string."""
+    body = json.dumps({
+        "rules": [],
+        "stencil": "x",
+    }).encode("utf-8")
+    code, obj = server.process_send(body, lambda p, d: (True, {}))
+    assert code == 400
+
+
+def test_frame_bridge_http_error_502():
+    """Bridge HTTP error (4xx/5xx) with JSON body returns 502."""
+    def fake_get(path):
+        return True, {"error": "no such op"}
+    code, body, err = server.process_frame(fake_get)
+    assert code == 502 and body is None and err is not None
+
+
+def test_frame_bridge_connection_error_503():
+    """Bridge connection error (refused/timeout) returns 503."""
+    def fake_get(path):
+        return False, "connection refused"
+    code, body, err = server.process_frame(fake_get)
+    assert code == 503 and body is None and err is not None

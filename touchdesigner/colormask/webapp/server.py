@@ -12,6 +12,7 @@ import base64
 import json
 import os
 import tempfile
+import urllib.error
 import urllib.parse
 import urllib.request
 import webbrowser
@@ -26,22 +27,40 @@ CONTENT_TYPES = {".html": "text/html", ".js": "text/javascript",
 
 
 def bridge_post(path, payload):
-    """POST JSON to the TD bridge. Returns (ok, parsed_json_or_error_str)."""
+    """POST JSON to the TD bridge. Returns (ok, parsed_json_or_error_str).
+
+    - ok=True: 2xx response with JSON body, or 4xx/5xx response from bridge with JSON body
+    - ok=False: connection error (refused, timeout, etc.)
+    """
     try:
         req = urllib.request.Request(
             BRIDGE_URL + path, data=json.dumps(payload).encode("utf-8"),
             headers={"Content-Type": "application/json"})
         with urllib.request.urlopen(req, timeout=30) as resp:
             return True, json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        try:
+            return True, json.loads(e.read().decode("utf-8"))
+        except Exception:
+            return False, str(e)
     except Exception as e:
         return False, str(e)
 
 
 def bridge_get(path):
-    """GET from the TD bridge. Returns (ok, parsed_json_or_error_str)."""
+    """GET from the TD bridge. Returns (ok, parsed_json_or_error_str).
+
+    - ok=True: 2xx response with JSON body, or 4xx/5xx response from bridge with JSON body
+    - ok=False: connection error (refused, timeout, etc.)
+    """
     try:
         with urllib.request.urlopen(BRIDGE_URL + path, timeout=30) as resp:
             return True, json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        try:
+            return True, json.loads(e.read().decode("utf-8"))
+        except Exception:
+            return False, str(e)
     except Exception as e:
         return False, str(e)
 
@@ -50,13 +69,18 @@ def process_send(body, post):
     """Validate a /send body and push it to TD. Returns (status, json_obj)."""
     try:
         payload = json.loads(body.decode("utf-8"))
+        if not isinstance(payload, dict):
+            return 400, {"error": "payload must be a JSON object"}
         rules = protocol.validate_rules(payload.get("rules", []))
-        st = payload.get("stencil") or {}
+        st = payload.get("stencil")
+        if st is not None and not isinstance(st, dict):
+            return 400, {"error": "stencil must be a JSON object or absent"}
+        st = st or {}
         w, h = int(st.get("w", 1)), int(st.get("h", 1))
         raw = base64.b64decode(st["data"]) if st.get("data") else bytes(w * h)
         if len(raw) != w * h:
             return 400, {"error": f"stencil size mismatch: {len(raw)} != {w*h}"}
-    except (ValueError, KeyError, TypeError) as e:
+    except (ValueError, KeyError, TypeError, AttributeError) as e:
         return 400, {"error": str(e)}
     script = protocol.build_send_script(rules, w, h, protocol.encode_stencil(raw))
     ok, result = post("/execute", {"script": script,
@@ -125,7 +149,10 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         if urllib.parse.urlparse(self.path).path != "/send":
             return self._json({"error": "not found"}, 404)
-        length = int(self.headers.get("Content-Length", 0))
+        try:
+            length = int(self.headers.get("Content-Length", 0))
+        except ValueError:
+            return self._json({"error": "invalid Content-Length"}, 400)
         code, obj = process_send(self.rfile.read(length), bridge_post)
         return self._json(obj, code)
 
