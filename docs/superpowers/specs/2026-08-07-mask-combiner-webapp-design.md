@@ -24,25 +24,26 @@ New ops placed left→right along dataflow near existing region-split comps; no 
 ## HTTP endpoints (webserver_mask_callbacks)
 
 - `GET /` → `touchdesigner/maskcombiner/index.html` read from disk each request, `Cache-Control: no-store` (stale-HTML lesson from attention-handoff).
+- `GET /maskops.mjs` → `touchdesigner/maskcombiner/maskops.mjs` from disk, `text/javascript`, no-store (same module the node tests import).
 - `GET /mask` → PNG snapshot of `in1` at native resolution (`top.save` to temp file, return bytes, `image/png`, no-store).
 - `POST /send` → JSON `{ "name": str, "png_base64": str }`.
   - `name` sanitized to a valid TD op name (`[A-Za-z][A-Za-z0-9_]*`); collision with an existing child → suffix `_2`, `_3`, …
-  - PNG decoded, dimensions must equal `in1` resolution; body capped at 32 MB; else 400.
+  - Body capped at 32 MB. Dimension validation without PIL: the PNG is written, loaded into the `moviefilein`, and its cooked width/height compared to `in1`; on mismatch the ops and file are removed and a 400 returned.
   - Written to `touchdesigner/assets/sent_masks/<name>_<unixms>.png` — **never overwrites** any existing file.
   - Creates `mfi_<name>` (nearest filtering) → `<name>` outTOP, wired, positioned left→right below previous outs.
   - Response `{ "ok": true, "out_path": "/project1/cont_mask_combiner/<name>", "file": "<png path>" }`; errors `{ "ok": false, "error": str }`.
 - All handlers wrapped so an exception returns a 500 JSON, never kills the callback DAT.
 
-## Webapp (`touchdesigner/maskcombiner/index.html` + `maskops.js`)
+## Webapp (`touchdesigner/maskcombiner/index.html` + `maskops.mjs`)
 
 Single-page canvas app. On load, fetches `/mask`, reads the R channel into a `Uint8Array` of piece IDs. A **piece** = all pixels sharing one ID (ID equality, matching TD label semantics — not connected components). Each piece gets an editable binary bitmap initialized from its ID.
 
 ### Selection
-- **Click** on a piece toggles its selected state. Selecting (or re-clicking) a piece also makes it the **active** piece.
+- **Click** on a piece toggles its selected state. Selecting a piece makes it the **active** piece; clicking a selected piece deselects it (the previously selected piece, if any, becomes active).
 - **Lasso tool**: freehand polygon; on mouseup it closes and every piece with **≥ 50% of its pixels inside** toggles. Last piece toggled *on* becomes active.
 - **Selected** pieces render with an **animated diagonal stripe** overlay (canvas pattern, offset advanced by `requestAnimationFrame`).
 - **Active** (last-selected) piece renders a **green contour outline**.
-- Unselected pieces render as flat tinted regions (color hashed from ID) so everything stays visible.
+- The mask renders as **one flat composite image exactly as received** — no per-piece tinting, no grid of pieces (the 4×4 ID grid is the old method). Piece boundaries stay invisible until interaction: hovering shows a faint highlight of the piece under the cursor; the stripe/outline overlays are the only persistent per-piece visuals.
 
 ### Toolbar (all modify tools act ONLY on the active piece)
 - **Fill voids** — flood-fill background from the bitmap border; unreached non-piece pixels (interior holes) become piece.
@@ -62,7 +63,7 @@ Single-page canvas app. On load, fetches `/mask`, reads the R channel into a `Ui
 - Callback DAT edits during build follow the compile-then-swap rule (it is a separate server from the bridge, but same hygiene).
 
 ## Testing
-- `maskops.js` holds the pure bitmap ops (polygon rasterize + interior fill, flood fill voids, dilate, erode, union, ≥50% lasso test, undo stack) as plain functions; `touchdesigner/maskcombiner/test_maskops.mjs` runs them under `node` with small synthetic bitmaps.
+- `maskops.mjs` holds the pure bitmap ops (polygon rasterize + interior fill, flood fill voids, dilate, erode, union, ≥50% lasso test, undo stack) as plain functions; `touchdesigner/maskcombiner/test_maskops.mjs` runs them under `node` with small synthetic bitmaps.
 - TD side verified over the bridge: build container, `GET /mask` returns PNG of correct size; `POST /send` with a synthetic mask creates the out TOP; `image_stats`/pixel checks confirm mask content; `get_errors` clean.
 - Bridge save discipline: `save_checkpoint` on `/project1` before first mutation (project may be untitled — `project.save()` risks the modal freeze), verify, checkpoint after.
 
