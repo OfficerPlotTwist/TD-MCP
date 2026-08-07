@@ -271,8 +271,100 @@ overlayCv.addEventListener('pointerdown', (ev) => {
   }
 });
 
-// pointerup / tool actions arrive in Task 6; keep a stub that just clears strokes
-overlayCv.addEventListener('pointerup', () => { state.stroke = null; });
+function pushHistory(id) { state.history.push(id, state.pieces.get(id)); }
+
+function applyToActive(fn, label) {
+  const id = activeId();
+  if (!id) { setStatus(`select a piece first (${label})`); return; }
+  pushHistory(id);
+  state.pieces.set(id, fn(state.pieces.get(id)));
+  markDirty(id);
+  setStatus(label);
+}
+
+overlayCv.addEventListener('pointerup', () => {
+  const stroke = state.stroke;
+  state.stroke = null;
+  if (!stroke || stroke.length < 3) return;
+
+  if (state.currentTool === 'lasso') {
+    const region = rasterizeLoop(stroke, state.w, state.h);
+    let lastOn = 0;
+    for (const [id, bm] of state.pieces) {
+      if (fractionInside(bm, region) >= 0.5) {
+        toggleSelect(id);
+        if (state.selected.includes(id)) lastOn = id;
+      }
+    }
+    if (lastOn) { // toggled-on piece becomes active
+      state.selected.splice(state.selected.indexOf(lastOn), 1);
+      state.selected.push(lastOn);
+    }
+    setStatus(`${state.selected.length} selected`);
+  } else if (state.currentTool === 'knife') {
+    applyToActive((bm) => subtract(bm, rasterizeLoop(stroke, state.w, state.h)),
+      'knife: loop interior removed');
+  } else if (state.currentTool === 'addloop') {
+    const id = activeId();
+    if (!id) { setStatus('select a piece first (add loop)'); return; }
+    const bm = state.pieces.get(id);
+    const a = stroke[0], b = stroke[stroke.length - 1];
+    if (!pointNearPiece(bm, a.x, a.y, 3) || !pointNearPiece(bm, b.x, b.y, 3)) {
+      setStatus('add loop: both ends must touch the active piece');
+      return;
+    }
+    applyToActive((cur) => union(cur, rasterizeLoop(stroke, state.w, state.h)),
+      'add loop: region added');
+  }
+});
+
+document.getElementById('tool-fill').onclick = () => applyToActive(fillVoids, 'voids filled');
+document.getElementById('tool-outset').onclick = () => applyToActive(dilate, 'outset 1px');
+document.getElementById('tool-inset').onclick = () => applyToActive(erode, 'inset 1px');
+
+window.addEventListener('keydown', (ev) => {
+  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z') {
+    ev.preventDefault();
+    const entry = state.history.pop();
+    if (!entry) { setStatus('nothing to undo'); return; }
+    state.pieces.set(entry.pieceId, entry.bitmap);
+    markDirty(entry.pieceId);
+    setStatus(`undid edit on piece ${entry.pieceId}`);
+  }
+});
+
+document.getElementById('send-btn').onclick = async () => {
+  const name = document.getElementById('send-name').value.trim();
+  if (!/^[A-Za-z][A-Za-z0-9_]*$/.test(name)) {
+    setStatus('name must match [A-Za-z][A-Za-z0-9_]*'); return;
+  }
+  if (!state.selected.length) { setStatus('nothing selected'); return; }
+  let combined = makeBitmap(state.w, state.h);
+  for (const id of state.selected) combined = union(combined, state.pieces.get(id));
+  const cv = document.createElement('canvas');
+  cv.width = state.w; cv.height = state.h;
+  const ctx = cv.getContext('2d');
+  const img = ctx.createImageData(state.w, state.h);
+  for (let i = 0; i < combined.data.length; i++) {
+    const v = combined.data[i] ? 255 : 0, o = i * 4;
+    img.data[o] = img.data[o+1] = img.data[o+2] = v;
+    img.data[o+3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const b64 = cv.toDataURL('image/png').split(',')[1];
+  setStatus('sending…');
+  try {
+    const res = await fetch('/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, png_base64: b64 }),
+    });
+    const j = await res.json();
+    setStatus(j.ok ? `sent -> ${j.out_path}` : `send failed: ${j.error}`);
+  } catch (e) {
+    setStatus(`send failed: ${e}`);
+  }
+};
 
 // ---- toolbar tool switching ----
 const toolButtons = { select: 'tool-select', lasso: 'tool-lasso', knife: 'tool-knife', addloop: 'tool-addloop' };
