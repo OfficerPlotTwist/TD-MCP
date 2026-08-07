@@ -9,14 +9,34 @@ export function cloneBitmap(bm) {
   return { w: bm.w, h: bm.h, data: new Uint8Array(bm.data) };
 }
 
+// Connected-component split (8-connectivity): pixels join a piece only when they
+// share the same nonzero id AND touch. Keys are sequential 1..N in scan order.
 export function extractPieces(ids, w, h) {
   const pieces = new Map();
-  for (let i = 0; i < w * h; i++) {
-    const id = ids[i];
-    if (id === 0) continue;
-    let bm = pieces.get(id);
-    if (!bm) { bm = makeBitmap(w, h); pieces.set(id, bm); }
-    bm.data[i] = 1;
+  const seen = new Uint8Array(w * h);
+  let next = 1;
+  for (let start = 0; start < w * h; start++) {
+    if (seen[start] || ids[start] === 0) continue;
+    const id = ids[start];
+    const bm = makeBitmap(w, h);
+    const stack = [start];
+    seen[start] = 1;
+    while (stack.length) {
+      const i = stack.pop();
+      bm.data[i] = 1;
+      const x = i % w, y = (i - x) / w;
+      for (let dy = -1; dy <= 1; dy++) {
+        const ny = y + dy;
+        if (ny < 0 || ny >= h) continue;
+        for (let dx = -1; dx <= 1; dx++) {
+          const nx = x + dx;
+          if (nx < 0 || nx >= w) continue;
+          const ni = ny * w + nx;
+          if (!seen[ni] && ids[ni] === id) { seen[ni] = 1; stack.push(ni); }
+        }
+      }
+    }
+    pieces.set(next++, bm);
   }
   return pieces;
 }

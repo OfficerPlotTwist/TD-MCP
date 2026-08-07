@@ -24,13 +24,38 @@ function rowsFromBm(bm) {
   return out;
 }
 
-// extractPieces: two ids -> two bitmaps, 0 is background
+// extractPieces: connected components — sequential keys in scan order, 0 is background
 {
   const ids = new Uint8Array([0, 3, 3, 0, 7, 0]);
   const pieces = extractPieces(ids, 3, 2);
   assert.equal(pieces.size, 2);
-  assert.deepEqual(Array.from(pieces.get(3).data), [0, 1, 1, 0, 0, 0]);
-  assert.deepEqual(Array.from(pieces.get(7).data), [0, 0, 0, 0, 1, 0]);
+  assert.deepEqual(Array.from(pieces.get(1).data), [0, 1, 1, 0, 0, 0]);
+  assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 0, 1, 0]);
+}
+
+// extractPieces: same id in two non-touching regions -> two separate pieces
+{
+  const ids = new Uint8Array([
+    5, 5, 0, 5,
+    0, 0, 0, 5,
+  ]);
+  const pieces = extractPieces(ids, 4, 2);
+  assert.equal(pieces.size, 2);
+  assert.deepEqual(Array.from(pieces.get(1).data), [1, 1, 0, 0, 0, 0, 0, 0]);
+  assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 1, 0, 0, 0, 1]);
+}
+
+// extractPieces: diagonal touch counts as connected (8-connectivity), different ids never merge
+{
+  const ids = new Uint8Array([
+    5, 0, 0,
+    0, 5, 0,
+    0, 0, 9,
+  ]);
+  const pieces = extractPieces(ids, 3, 3);
+  assert.equal(pieces.size, 2); // the two 5s join diagonally; 9 stays separate despite touching
+  assert.deepEqual(Array.from(pieces.get(1).data), [1, 0, 0, 0, 1, 0, 0, 0, 0]);
+  assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 0, 0, 0, 0, 0, 1]);
 }
 
 // union / subtract / countPixels / clone independence
