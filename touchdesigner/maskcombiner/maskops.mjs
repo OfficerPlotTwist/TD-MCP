@@ -9,21 +9,23 @@ export function cloneBitmap(bm) {
   return { w: bm.w, h: bm.h, data: new Uint8Array(bm.data) };
 }
 
-// Connected-component split (8-connectivity): pixels join a piece only when they
-// share the same nonzero id AND touch. Keys are sequential 1..N in scan order.
-export function extractPieces(ids, w, h) {
+// Connected-component split (8-connectivity) over nonzero pixels: any touching
+// nonzero pixels are one piece, values ignored. Keys are sequential 1..N in scan
+// order. Islands smaller than minSize are dropped (speck noise) and reported —
+// per-component full-res bitmaps make thousands of specks unaffordable.
+export function extractPieces(ids, w, h, minSize = 1) {
   const pieces = new Map();
   const seen = new Uint8Array(w * h);
-  let next = 1;
+  let next = 1, droppedCount = 0, droppedPixels = 0;
+  const component = [];
   for (let start = 0; start < w * h; start++) {
     if (seen[start] || ids[start] === 0) continue;
-    const id = ids[start];
-    const bm = makeBitmap(w, h);
+    component.length = 0;
     const stack = [start];
     seen[start] = 1;
     while (stack.length) {
       const i = stack.pop();
-      bm.data[i] = 1;
+      component.push(i);
       const x = i % w, y = (i - x) / w;
       for (let dy = -1; dy <= 1; dy++) {
         const ny = y + dy;
@@ -32,13 +34,20 @@ export function extractPieces(ids, w, h) {
           const nx = x + dx;
           if (nx < 0 || nx >= w) continue;
           const ni = ny * w + nx;
-          if (!seen[ni] && ids[ni] === id) { seen[ni] = 1; stack.push(ni); }
+          if (!seen[ni] && ids[ni] !== 0) { seen[ni] = 1; stack.push(ni); }
         }
       }
     }
+    if (component.length < minSize) {
+      droppedCount++;
+      droppedPixels += component.length;
+      continue;
+    }
+    const bm = makeBitmap(w, h);
+    for (const i of component) bm.data[i] = 1;
     pieces.set(next++, bm);
   }
-  return pieces;
+  return { pieces, droppedCount, droppedPixels };
 }
 
 export function union(a, b) {

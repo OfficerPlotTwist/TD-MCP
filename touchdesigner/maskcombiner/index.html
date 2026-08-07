@@ -225,11 +225,17 @@ async function loadMask() {
   ctx.drawImage(img, 0, 0);
   const px = ctx.getImageData(0, 0, state.w, state.h).data;
   const ids = new Uint8Array(state.w * state.h);
-  for (let i = 0; i < ids.length; i++) ids[i] = px[i * 4]; // R channel
-  state.pieces = extractPieces(ids, state.w, state.h);
+  // Binarize: R >= 128 is mask. The source PNG has anti-aliased edges, so raw
+  // R values fragment into thousands of one-pixel components without this.
+  for (let i = 0; i < ids.length; i++) ids[i] = px[i * 4] >= 128 ? 1 : 0;
+  const MIN_PIECE_PX = 10;
+  const { pieces, droppedCount, droppedPixels } = extractPieces(ids, state.w, state.h, MIN_PIECE_PX);
+  state.pieces = pieces;
   state.baseDirty = true;
   fitCanvases();
-  setStatus(`${state.pieces.size} pieces — click or lasso to select`);
+  const dropNote = droppedCount
+    ? ` (${droppedCount} specks <${MIN_PIECE_PX}px ignored, ${droppedPixels}px)` : '';
+  setStatus(`${state.pieces.size} pieces${dropNote} — click or lasso to select`);
 }
 loadMask().catch(() => {
   setStatus('failed to load /mask — is TD running?');

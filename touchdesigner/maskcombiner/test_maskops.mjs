@@ -24,38 +24,41 @@ function rowsFromBm(bm) {
   return out;
 }
 
-// extractPieces: connected components — sequential keys in scan order, 0 is background
+// extractPieces: binary connectivity — any nonzero pixels that touch (8-conn) are one
+// piece regardless of value; sequential keys in scan order; returns {pieces, dropped*}
 {
-  const ids = new Uint8Array([0, 3, 3, 0, 7, 0]);
-  const pieces = extractPieces(ids, 3, 2);
-  assert.equal(pieces.size, 2);
-  assert.deepEqual(Array.from(pieces.get(1).data), [0, 1, 1, 0, 0, 0]);
-  assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 0, 1, 0]);
+  const ids = new Uint8Array([0, 3, 3, 0, 7, 0]); // 7 at (1,1) touches 3s diagonally
+  const { pieces, droppedCount, droppedPixels } = extractPieces(ids, 3, 2);
+  assert.equal(pieces.size, 1);
+  assert.deepEqual(Array.from(pieces.get(1).data), [0, 1, 1, 0, 1, 0]);
+  assert.equal(droppedCount, 0);
+  assert.equal(droppedPixels, 0);
 }
 
-// extractPieces: same id in two non-touching regions -> two separate pieces
+// extractPieces: non-touching regions -> separate pieces
 {
   const ids = new Uint8Array([
     5, 5, 0, 5,
     0, 0, 0, 5,
   ]);
-  const pieces = extractPieces(ids, 4, 2);
+  const { pieces } = extractPieces(ids, 4, 2);
   assert.equal(pieces.size, 2);
   assert.deepEqual(Array.from(pieces.get(1).data), [1, 1, 0, 0, 0, 0, 0, 0]);
   assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 1, 0, 0, 0, 1]);
 }
 
-// extractPieces: diagonal touch counts as connected (8-connectivity), different ids never merge
+// extractPieces: minSize drops speck islands and reports them
 {
   const ids = new Uint8Array([
-    5, 0, 0,
-    0, 5, 0,
-    0, 0, 9,
+    1, 1, 1, 0, 1,
+    1, 1, 1, 0, 0,
+    0, 0, 0, 0, 1,
   ]);
-  const pieces = extractPieces(ids, 3, 3);
-  assert.equal(pieces.size, 2); // the two 5s join diagonally; 9 stays separate despite touching
-  assert.deepEqual(Array.from(pieces.get(1).data), [1, 0, 0, 0, 1, 0, 0, 0, 0]);
-  assert.deepEqual(Array.from(pieces.get(2).data), [0, 0, 0, 0, 0, 0, 0, 0, 1]);
+  const { pieces, droppedCount, droppedPixels } = extractPieces(ids, 5, 3, 3);
+  assert.equal(pieces.size, 1); // only the 6-px block survives minSize=3
+  assert.equal(countPixels(pieces.get(1)), 6);
+  assert.equal(droppedCount, 2);
+  assert.equal(droppedPixels, 2);
 }
 
 // union / subtract / countPixels / clone independence
