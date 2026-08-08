@@ -14,7 +14,8 @@ Status: approved (design Q&A in session; knife = subtractive loop, TD-served web
 | Op | Type | Purpose |
 |----|------|---------|
 | `in1` | inTOP | Label field (pixel R = pieceID/255, 0 = background). Wired from `/project1/moviefilein3` (same source as `cont_region_split`). |
-| `webserver_mask` | webserverDAT | Port **9981**, active. Never touches `/project1/MCP_Server`. |
+| `webserver_mask` | webserverDAT | Port **8899** (changed from 9981 on 2026-08-08 to sit far from the bridge's 9980), active. Never touches `/project1/MCP_Server`. |
+| `webbrowser_panel` | containerCOMP (palette webBrowser) | Hosts the webapp on the container's panel (added 2026-08-08); fills the panel, points at http://127.0.0.1:8899/. |
 | `webserver_mask_callbacks` | textDAT | Endpoint handlers (below). Must never raise. |
 | `mfi_<name>` | moviefileinTOP | One per send. Loads the sent PNG. `inputfiltertype=nearest`, `filtertype=nearest`. |
 | `<name>` | outTOP | One per send, named by the user in the webapp. |
@@ -50,7 +51,7 @@ Single-page canvas app. On load, fetches `/mask`, reads the R channel into a `Ui
 - **Knife** (subtractive loop) — freehand stroke, auto-closed end→start on mouseup; interior pixels are removed from the active piece.
 - **Additive loop** — freehand stroke; valid only if **both endpoints lie on the active piece** (≤ 3 px tolerance). Closed end→start; interior pixels are added to the piece. Invalid stroke → toast message, no change.
 - **Outset / Inset** — 8-neighbor morphological dilate / erode by 1 px per click.
-- **Ctrl+Z** — undo stack (≤ 50 entries) of `{pieceId, bitmap copy}` snapshots taken before each modify-tool edit; pop restores. Selection changes are not history entries.
+- **Undo button** (changed from Ctrl+Z on 2026-08-08 — keystrokes don't forward reliably into the panel-embedded browser) — undo stack (≤ 50 entries) of `{pieceId, bitmap copy}` snapshots taken before each modify-tool edit; pop restores. Selection changes are not history entries.
 
 ### Send
 - Name field (required, live-validated to TD op-name rules) + **Send Mask** button.
@@ -70,4 +71,4 @@ Single-page canvas app. On load, fetches `/mask`, reads the R channel into a `Ui
 ## Out of scope
 - Modifying or removing `cont_region_split` / its outs.
 - Live-updating masks after send (a send is a bake).
-- Multi-user simultaneous editing; auth on port 9981 (localhost tool).
+- Multi-user simultaneous editing; auth on port 8899 (localhost tool).

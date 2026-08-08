@@ -1,4 +1,5 @@
-"""Callbacks for cont_mask_combiner/webserver_mask (port 9981).
+"""Callbacks for cont_mask_combiner/webserver_mask (port 8899 — kept far from
+the MCP bridge's 9980 to avoid confusion/collisions).
 
 Serves the mask-combiner webapp and bakes sent masks into named out TOPs.
 Source of truth is this repo file; the in-TD textDAT is loaded from it.

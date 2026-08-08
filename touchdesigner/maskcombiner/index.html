@@ -27,6 +27,7 @@
   <button id="tool-addloop">Add Loop</button>
   <button id="tool-outset">Outset</button>
   <button id="tool-inset">Inset</button>
+  <button id="undo-btn">Undo</button>
   <span style="border-left:1px solid #444; height:20px"></span>
   <input id="send-name" placeholder="mask name" size="14">
   <button id="send-btn">Send Mask</button>
@@ -328,16 +329,15 @@ document.getElementById('tool-fill').onclick = () => applyToActive(fillVoids, 'v
 document.getElementById('tool-outset').onclick = () => applyToActive(dilate, 'outset 1px');
 document.getElementById('tool-inset').onclick = () => applyToActive(erode, 'inset 1px');
 
-window.addEventListener('keydown', (ev) => {
-  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z') {
-    ev.preventDefault();
-    const entry = state.history.pop();
-    if (!entry) { setStatus('nothing to undo'); return; }
-    state.pieces.set(entry.pieceId, entry.bitmap);
-    markDirty(entry.pieceId);
-    setStatus(`undid edit on piece ${entry.pieceId}`);
-  }
-});
+// Button instead of Ctrl+Z: the panel-embedded browser forwards pointer events
+// reliably but not keystrokes.
+document.getElementById('undo-btn').onclick = () => {
+  const entry = state.history.pop();
+  if (!entry) { setStatus('nothing to undo'); return; }
+  state.pieces.set(entry.pieceId, entry.bitmap);
+  markDirty(entry.pieceId);
+  setStatus(`undid edit on piece ${entry.pieceId}`);
+};
 
 document.getElementById('send-btn').onclick = async () => {
   const name = document.getElementById('send-name').value.trim();
