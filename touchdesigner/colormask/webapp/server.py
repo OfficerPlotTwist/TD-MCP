@@ -22,8 +22,12 @@ import protocol
 
 BRIDGE_URL = "http://127.0.0.1:9980"
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+# Trailing separator so a sibling dir sharing STATIC_DIR's prefix (e.g. "static2")
+# can't pass the startswith() containment check below.
+STATIC_DIR_PREFIX = os.path.join(STATIC_DIR, "")
 CONTENT_TYPES = {".html": "text/html", ".js": "text/javascript",
                  ".css": "text/css"}
+MAX_STENCIL_PIXELS = 1_048_576
 
 
 def bridge_post(path, payload):
@@ -77,6 +81,8 @@ def process_send(body, post):
             return 400, {"error": "stencil must be a JSON object or absent"}
         st = st or {}
         w, h = int(st.get("w", 1)), int(st.get("h", 1))
+        if w < 1 or h < 1 or w * h > MAX_STENCIL_PIXELS:
+            return 400, {"error": f"invalid stencil dimensions: {w}x{h}"}
         raw = base64.b64decode(st["data"]) if st.get("data") else bytes(w * h)
         if len(raw) != w * h:
             return 400, {"error": f"stencil size mismatch: {len(raw)} != {w*h}"}
@@ -87,9 +93,16 @@ def process_send(body, post):
                                    "undo_label": "colormask SEND"})
     if not ok:
         return 503, {"error": "TD bridge unreachable", "detail": result}
-    if result.get("errors"):
-        return 502, {"error": "TD execute failed", "detail": result["errors"]}
-    return 200, {"ok": True, "rules": len(rules)}
+    # The bridge's /execute reports every *currently present* Error DAT row,
+    # even ambient ones unrelated to this script — so a successful SEND can
+    # carry stale/unrelated errors. Trust the script's own success marker
+    # (always printed by _SEND_TEMPLATE on completion) over that ambient list.
+    if "OK rules=" in result.get("output", ""):
+        resp = {"ok": True, "rules": len(rules)}
+        if result.get("errors"):
+            resp["warnings"] = result["errors"]
+        return 200, resp
+    return 502, {"error": "TD execute failed", "detail": result.get("errors")}
 
 
 def process_frame(get):
@@ -104,7 +117,16 @@ def process_frame(get):
     if not isinstance(result, dict) or "image_b64" not in result:
         detail = result.get("error") if isinstance(result, dict) else result
         return 502, None, {"error": "screenshot failed", "detail": detail}
-    return 200, base64.b64decode(result["image_b64"]), None
+    png = base64.b64decode(result["image_b64"])
+    # The bridge always writes its own timestamped PNG under save_dir; we've
+    # already decoded the bytes we need, so best-effort delete it here rather
+    # than letting %TEMP%\colormask_frames grow unboundedly (same machine,
+    # so the saved_to path is always local).
+    try:
+        os.remove(result.get("saved_to"))
+    except (OSError, TypeError):
+        pass
+    return 200, png, None
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -139,7 +161,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json(err, code)
         ext = os.path.splitext(path)[1]
         fspath = os.path.normpath(os.path.join(STATIC_DIR, path.lstrip("/")))
-        if not fspath.startswith(STATIC_DIR) or ext not in CONTENT_TYPES:
+        if not (fspath == STATIC_DIR or fspath.startswith(STATIC_DIR_PREFIX)) \
+                or ext not in CONTENT_TYPES:
             return self._json({"error": "not found"}, 404)
         if not os.path.exists(fspath):
             return self._json({"error": "not found"}, 404)

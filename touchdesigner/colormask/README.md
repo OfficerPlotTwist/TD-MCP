@@ -71,13 +71,17 @@ mask(px) = OR over rules r of:
 | `text_rules_cb` | textDAT | Callbacks for `script_rules`. |
 | `script_rules` | scriptTOP | Emits the rules as an N×1 RGBA32F data texture from `fetch('colormask_rules')` on container storage. A single texel with `a = -1` means "no rules". |
 | `text_rules_frag` | textDAT | GLSL source for `glsl_rules` (`shaders/rules.frag`). |
-| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`, input 2 = `script_rules`. Loops over the rule texture (`textureSize` gives the count, capped at 32 rules) and evaluates the mask formula above. Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
+| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`, input 2 = `script_rules`. Loops over the rule texture (`textureSize` gives the count — the shader itself has no cap; `MAX_RULES = 32` is enforced upstream by `protocol.validate_rules` and mirrored client-side in `app.js`) and evaluates the mask formula above. Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
 | `text_viz_frag` | textDAT | GLSL source for `glsl_viz` (`shaders/viz.frag`). |
 | `glsl_viz` | glslTOP | Input 0 = `null_src`, input 1 = `out_mask`. Tints the source magenta (60% blend) where masked, for eyeballing inside TD. |
 | `out_mask` | outTOP ← `glsl_rules` | The deliverable mask. |
 | `out_viz` | outTOP ← `glsl_viz` | Source tinted magenta where masked. |
 
 All TOPs are nearest-filtered (`inputfiltertype`/`filtertype = nearest`) so mask edges never blur. The stencil is sampled with normalized coordinates, so its resolution need not match the source.
+
+`script_rules` and `script_stencil` are set to the `rgba32float` pixel format (not the default `rgba8fixed`) so their `copyNumpyArray` float32 output — including `script_rules`' out-of-`0..1` alpha encoding and `-1` sentinel — isn't clamped/quantized to 8 bits on the way out.
+
+For reviewability, the two Script TOPs' callback DAT texts are checked into the repo verbatim: [`td/text_rules_cb.py`](td/text_rules_cb.py) (`script_rules`' `text_rules_cb`) and [`td/text_stencil_cb.py`](td/text_stencil_cb.py) (`script_stencil`'s `text_stencil_cb`). These are read-only copies for review — the live DATs inside TD remain the source of truth at runtime.
 
 ---
 

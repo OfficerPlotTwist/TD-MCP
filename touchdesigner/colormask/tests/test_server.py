@@ -35,7 +35,7 @@ def test_send_ok_posts_execute():
 
 def test_send_empty_rules_is_reset():
     def fake_post(path, payload):
-        return True, {"output": "", "errors": []}
+        return True, {"output": "OK rules=0 stencil=2x2", "errors": []}
     code, obj = server.process_send(_body([]), fake_post)
     assert code == 200 and obj["rules"] == 0
 
@@ -57,16 +57,69 @@ def test_send_stencil_size_mismatch_400():
     assert code == 400
 
 
+def test_send_negative_dims_400():
+    """Negative w/h with matching-length data must not slip past the size
+    mismatch check (w*h with negative w,h can equal len(raw) by coincidence
+    of Python's modulo-free int math -- e.g. w=-2,h=-2 => w*h=4)."""
+    body = json.dumps({
+        "rules": [],
+        "stencil": {"w": -2, "h": -2,
+                    "data": base64.b64encode(bytes(4)).decode("ascii")},
+    }).encode("utf-8")
+    code, obj = server.process_send(body, lambda p, d: (True, {}))
+    assert code == 400
+
+
+def test_send_huge_dims_400_no_allocation():
+    """Huge w*h with no data must 400 before ever attempting bytes(w*h) --
+    a real allocation at this size would raise MemoryError, which is not
+    caught by process_send's except tuple and would kill the request thread."""
+    body = json.dumps({
+        "rules": [],
+        "stencil": {"w": 100000, "h": 100000},
+    }).encode("utf-8")
+    code, obj = server.process_send(body, lambda p, d: (True, {}))
+    assert code == 400
+
+
 def test_send_bridge_down_503():
     code, obj = server.process_send(_body([]), lambda p, d: (False, "refused"))
     assert code == 503
 
 
 def test_send_td_error_502():
+    """Marker absent (script never completed) + errors present -> 502."""
     def fake_post(path, payload):
         return True, {"output": "", "errors": ["NameError: nope"]}
     code, obj = server.process_send(_body([]), fake_post)
     assert code == 502
+
+
+def test_send_ambient_errors_with_marker_is_200_with_warnings():
+    """The bridge reports every current Error DAT row, even ambient ones
+    unrelated to this script. If the script's own success marker is present
+    in output, the SEND itself succeeded -- surface the ambient errors as
+    non-fatal warnings instead of failing the request."""
+    def fake_post(path, payload):
+        return True, {"output": "OK rules=1 stencil=2x2",
+                       "errors": ["unrelated ambient warning from another op"]}
+    rules = [{"type": "bycolor", "color": [1, 0, 0], "tol": 0.2}]
+    code, obj = server.process_send(_body(rules), fake_post)
+    assert code == 200
+    assert obj["ok"] is True
+    assert obj["rules"] == 1
+    assert obj["warnings"] == ["unrelated ambient warning from another op"]
+
+
+def test_send_marker_absent_with_errors_502():
+    """Explicit marker-absent-with-errors case: no 'OK rules=' anywhere in
+    output means the script didn't finish, regardless of how it failed."""
+    def fake_post(path, payload):
+        return True, {"output": "Traceback...\nRuntimeError: boom",
+                       "errors": ["RuntimeError: boom"]}
+    code, obj = server.process_send(_body([]), fake_post)
+    assert code == 502
+    assert "detail" in obj
 
 
 def test_frame_ok():
