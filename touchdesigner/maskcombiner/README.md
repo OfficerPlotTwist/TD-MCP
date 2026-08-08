@@ -2,9 +2,12 @@
 
 Visual replacement for the `cont_region_split` Submask-ID workflow. The container
 serves a webapp at http://127.0.0.1:8899/ from `index.html` in this directory
-(port kept far from the MCP bridge's 9980), and hosts it on its own panel via
-the palette webBrowser component (`webbrowser_panel`) — open the container's
-viewer to use it inside TD, or use any external browser.
+(port kept far from the MCP bridge's 9980), and hosts it directly on its own
+panel: the container's Background TOP is `webrender1`, with `panelexec1` /
+`keyboardin1` forwarding mouse and keys (flattened from the palette webBrowser
+component — its `parent.WebBrowser` binds were stripped to constants, which is
+required or CEF never starts). Open the container's viewer to use it inside TD,
+or use any external browser.
 
 - `in1` — label field (R = pieceID/255), wired from `/project1/moviefilein3`.
 - Click a piece to toggle select (animated stripes); last selected = active (green outline).
