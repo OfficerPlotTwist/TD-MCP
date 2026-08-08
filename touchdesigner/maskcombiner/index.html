@@ -28,6 +28,7 @@
   <button id="tool-outset">Outset</button>
   <button id="tool-inset">Inset</button>
   <button id="undo-btn">Undo</button>
+  <button id="reload-btn" title="Refetch the mask from TD (discards edits/selection)">Reload</button>
   <span style="border-left:1px solid #444; height:20px"></span>
   <input id="send-name" placeholder="mask name" size="14">
   <button id="send-btn">Send Mask</button>
@@ -338,6 +339,8 @@ document.getElementById('undo-btn').onclick = () => {
   markDirty(entry.pieceId);
   setStatus(`undid edit on piece ${entry.pieceId}`);
 };
+
+document.getElementById('reload-btn').onclick = () => location.reload();
 
 document.getElementById('send-btn').onclick = async () => {
   const name = document.getElementById('send-name').value.trim();
