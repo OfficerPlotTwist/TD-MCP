@@ -20,6 +20,7 @@ Never press or pulse Start, Restart, or other server-control buttons on `/projec
 ## References
 
 - Read `references/touchdesigner-ui.md` before creating UI, controls, panels, or widgets.
+- Read `references/td-container-finish.md` after building or substantially modifying any container COMP, and apply it before the final save. It defines the required finishing pass: a curated custom param tab plus a capped control panel (max 4 buttons/sliders, 1–2 displays).
 - Read `references/live-bridge-safety.md` before destructive edits, checkpointing, save/restore work, or server-control changes.
 - Read `references/expressive-controls.md` before adding controls that should react to tone/image-analysis thresholds.
 - Read `references/shadergrid.md` when the user asks for shader candidate review grids or approval workflow.
