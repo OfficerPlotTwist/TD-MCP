@@ -13,6 +13,9 @@ viewer to use it inside TD, or use any external browser.
   Add Loop (both stroke ends on the piece; enclosed region added), Outset/Inset (±1px).
   The Undo toolbar button undoes the last edit (button, not Ctrl+Z — keystrokes
   don't forward reliably into panel-embedded browsers).
+- Panel-only operation: the Reload toolbar button refetches the mask (discards
+  edits/selection); the container's `Reload App` custom pulse par restarts the
+  embedded browser. No workflow requires entering the container.
 - Send Mask unions all selected pieces into one white-on-black PNG, saved to
   `touchdesigner/assets/sent_masks/<name>_<ts>.png` (never overwritten), and creates
   `mfi_<name>` → `<name>` out TOP on the container.
