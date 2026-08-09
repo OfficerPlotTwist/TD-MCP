@@ -48,6 +48,10 @@ td_mcp_logs/
 # Session data
 onlyprompts.json
 
+# TouchDesigner binaries (kept on disk, not version-controlled)
+*.toe
+*.tox
+
 # Checkpoint binaries (index kept)
 checkpoints/*.tox
 
