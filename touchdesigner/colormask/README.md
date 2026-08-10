@@ -8,17 +8,26 @@ Cross-reference: [Color Mask Selection Webapp — Design Spec](../../docs/superp
 
 ## Running the webapp
 
-```
-python touchdesigner/colormask/webapp/server.py --open
-```
+The app is **hosted inside the TD project itself** (same pattern as
+[`cont_mask_combiner`](../maskcombiner/README.md)): a WebServer DAT inside the
+container serves it at **http://127.0.0.1:8903/** (port kept far from the MCP
+bridge's 9980; 8899 is mask combiner), and the container's own panel displays
+it — `webrender1` (Web Render TOP) is the container's Background TOP, with
+`panelexec1` / `keyboardin1` forwarding mouse and keys (flattened from the
+palette webBrowser component; its `parent.WebBrowser` binds were stripped to
+constants, which is required or CEF never starts). Open the container's viewer
+to use it inside TD, or open the URL in any external browser. The container's
+`Reload App` custom pulse par restarts the embedded browser.
 
-Starts a stdlib-only, `127.0.0.1`-only HTTP server on port **8902** (`--port` to override) and opens the browser tab. The server is the only thing that talks to TD, exclusively through the existing MCP bridge on `:9980` — the browser never calls TD directly.
+Endpoints are handled directly in TD by `text_webserver_cb` (loaded from the
+repo source of truth [`webserver_callbacks.py`](webserver_callbacks.py)) — no
+bridge hop, no external server:
 
 | Endpoint | Behavior |
 |----------|----------|
 | `GET /` | Serves the static app (`static/index.html` + `app.js` + `floodfill.js` + `style.css`). No-store cache headers (lesson from the attention-handoff stale-HTML bug). |
-| `GET /frame` | Snapshots `/project1/cont_colormask/null_src` via the bridge (`take_screenshot`) and returns it as PNG. |
-| `POST /send` | Body `{rules: [{type, color:[r,g,b], tol}], stencil: {w, h, data: base64-raw}}`. Validates, zlib-compresses the stencil, builds one atomic `/execute` script against TD, and posts it to the bridge. |
+| `GET /frame` | Saves `null_src` to a temp PNG and returns the bytes. |
+| `POST /send` | Body `{rules: [{type, color:[r,g,b], tol}], stencil: {w, h, data: base64-raw}}`. Validates, decodes, `np.flipud`s the stencil, stores `colormask_stencil` + `colormask_rules` on the container, then force-cooks `script_stencil` and `script_rules` (atomic apply). |
 
 ---
 
@@ -34,11 +43,11 @@ Starts a stdlib-only, `127.0.0.1`-only HTTP server on port **8902** (`--port` to
 |------|---------|--------|
 | **Wand** | mousedown samples the seed color under the cursor; drag away from the click point grows tolerance live, re-flooding a downscaled buffer so the highlighted connected region visibly grows | Release commits a `wand` rule: reference color + tolerance + the flood-filled region, which is baked into the working **stencil**. |
 | **Select by color** | Same click-and-drag gesture, but the live preview is a frame-wide color test (no flood) | Release commits a `bycolor` rule: reference color + tolerance, no stencil region — it stays live frame-wide, following disconnected regions anywhere. |
-| **Ctrl+Z** (or Cmd+Z) | — | Pops the newest gesture and rebuilds the overlay + working stencil from the remaining gestures. |
+| **Undo** (toolbar button) | — | Pops the newest gesture and rebuilds the overlay + working stencil from the remaining gestures. It's a button, not just Ctrl+Z, because keystrokes don't forward reliably into panel-embedded browsers; Ctrl+Z/Cmd+Z still works in external browsers. |
 | **SEND** (bottom-right) | — | Posts the combined rule list + stencil to TD in one atomic call, then clears the working set on success. The mask is live in TD from that point on. |
 | **R** key / refresh button | — | Re-grabs the frame snapshot (no continuous streaming — snapshot-on-demand keeps the bridge quiet). |
 
-The drag-distance-to-tolerance curve is a tuning constant, `TOL_PER_PIXEL` in `touchdesigner/colormask/webapp/static/app.js` (default `1/300`, capped at `MAX_TOL = 1.2`) — adjust there if the gesture feels too twitchy or too sluggish. The rule cap (`MAX_RULES = 32` in both `app.js` and `protocol.py`) is enforced client-side with a visible message before a 33rd gesture can commit.
+The drag-distance-to-tolerance curve is a tuning constant, `TOL_PER_PIXEL` in `touchdesigner/colormask/webapp/static/app.js` (default `1/300`, capped at `MAX_TOL = 1.2`) — adjust there if the gesture feels too twitchy or too sluggish. The rule cap (`MAX_RULES = 32` in both `app.js` and `webserver_callbacks.py`) is enforced client-side with a visible message before a 33rd gesture can commit, and again server-side on `/send`.
 
 ---
 
@@ -71,11 +80,17 @@ mask(px) = OR over rules r of:
 | `text_rules_cb` | textDAT | Callbacks for `script_rules`. |
 | `script_rules` | scriptTOP | Emits the rules as an N×1 RGBA32F data texture from `fetch('colormask_rules')` on container storage. A single texel with `a = -1` means "no rules". |
 | `text_rules_frag` | textDAT | GLSL source for `glsl_rules` (`shaders/rules.frag`). |
-| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`, input 2 = `script_rules`. Loops over the rule texture (`textureSize` gives the count — the shader itself has no cap; `MAX_RULES = 32` is enforced upstream by `protocol.validate_rules` and mirrored client-side in `app.js`) and evaluates the mask formula above. Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
+| `glsl_rules` | glslTOP | Input 0 = `null_src`, input 1 = `script_stencil`, input 2 = `script_rules`. Loops over the rule texture (`textureSize` gives the count — the shader itself has no cap; `MAX_RULES = 32` is enforced upstream by `webserver_callbacks.validate_rules` and mirrored client-side in `app.js`) and evaluates the mask formula above. Output resolution follows input 0. R = combined mask (1.0 selected), A = 1.0. |
 | `text_viz_frag` | textDAT | GLSL source for `glsl_viz` (`shaders/viz.frag`). |
 | `glsl_viz` | glslTOP | Input 0 = `null_src`, input 1 = `out_mask`. Tints the source magenta (60% blend) where masked, for eyeballing inside TD. |
 | `out_mask` | outTOP ← `glsl_rules` | The deliverable mask. |
 | `out_viz` | outTOP ← `glsl_viz` | Source tinted magenta where masked. |
+| `text_webserver_cb` | textDAT | WebServer callbacks, loaded from [`webserver_callbacks.py`](webserver_callbacks.py) (repo file is the source of truth). |
+| `webserver_colormask` | webserverDAT | Serves the app + `/frame` + `/send` on port 8903. |
+| `webrender1` | webrenderTOP | CEF rendering `http://127.0.0.1:8903/`; the container's Background TOP (1280×840). |
+| `panelexec1` | panelexecuteDAT | Forwards panel mouse (`insideu/insidev` + buttons + wheel) to `webrender1.interactMouse`. |
+| `keyboardin1` + `keyboardin1_callbacks` | keyboardinDAT + textDAT | Forwards keys to `webrender1.sendKey` (unreliable in-panel — hence the Undo button). |
+| `parexec_colormask` | parameterexecuteDAT | `Reload App` custom pulse on the container → `webrender1.par.reload.pulse()`. |
 
 All TOPs are nearest-filtered (`inputfiltertype`/`filtertype = nearest`) so mask edges never blur. The stencil is sampled with normalized coordinates, so its resolution need not match the source.
 
@@ -91,16 +106,16 @@ Rules and the stencil live on **container storage** (`op('/project1/cont_colorma
 
 | Key | Written by | Shape | Contents |
 |-----|-----------|-------|----------|
-| `colormask_stencil` | SEND script | `{w, h, data: np.ndarray}` | Combined wand-region stencil, `uint8`, one byte per pixel, **TD (bottom-up) row order** — see orientation note below. |
-| `colormask_rules` | SEND script | `list[(type_int, r, g, b, tol)]` | Validated rule tuples. `type_int`: 0 = wand (stencil-gated), 1 = bycolor (frame-wide). `r`, `g`, `b`, `tol` are floats normalized 0–1 (tol up to 2.0). |
+| `colormask_stencil` | `/send` handler | `{w, h, data: np.ndarray}` | Combined wand-region stencil, `uint8`, one byte per pixel, **TD (bottom-up) row order** — see orientation note below. |
+| `colormask_rules` | `/send` handler | `list[(type_int, r, g, b, tol)]` | Validated rule tuples. `type_int`: 0 = wand (stencil-gated), 1 = bycolor (frame-wide). `r`, `g`, `b`, `tol` are floats normalized 0–1 (tol up to 2.0). |
 
 `script_rules`' output texel encodes each rule as `rgb = reference color`, **`a = tol + 10 × type`** (`type` 1 = bycolor), so a texel's alpha alone tells the shader both the tolerance and the rule kind without a second lookup. A single texel with `a = -1` is the sentinel for "no rules" (empty mask).
 
-The SEND script is one `/execute` call that stores stencil + rules and then force-cooks both `script_stencil` and `script_rules` as its last act, so a half-uploaded state never renders (storage writes are not cook dependencies, hence the explicit `cook(force=True)`).
+The `/send` handler stores stencil + rules and then force-cooks both `script_stencil` and `script_rules` as its last act, so a half-uploaded state never renders (storage writes are not cook dependencies, hence the explicit `cook(force=True)`).
 
 ### Orientation: `flipud` on SEND
 
-The browser canvas is **top-down** (row 0 = top of the image, standard `<canvas>`/image convention); TD textures are **bottom-up** (row 0 = bottom, like every other TOP in this repo). The SEND script applies `np.flipud()` to the decoded stencil bytes before storing them, so `colormask_stencil` is already in TD's row order by the time `script_stencil` reads it — no orientation math is needed downstream in the shader.
+The browser canvas is **top-down** (row 0 = top of the image, standard `<canvas>`/image convention); TD textures are **bottom-up** (row 0 = bottom, like every other TOP in this repo). The `/send` handler applies `np.flipud()` to the decoded stencil bytes before storing them, so `colormask_stencil` is already in TD's row order by the time `script_stencil` reads it — no orientation math is needed downstream in the shader.
 
 ---
 
@@ -109,7 +124,7 @@ The browser canvas is **top-down** (row 0 = top of the image, standard `<canvas>
 ```
 python -m pytest touchdesigner/colormask/tests -v
 ```
-27 tests — rule validation (`protocol.validate_rules`), stencil compress/decompress round-trip byte-exactness, SEND script building, and the server's HTTP handling (`test_protocol.py`, `test_server.py`).
+27 tests (`test_webserver_callbacks.py`) — rule validation, static-file routing + path-traversal guard, `/frame`, and `/send` (flipud orientation, store contents, cook order, bad-payload 400s) against fake TD op objects; no TD needed.
 
 ```
 node --test touchdesigner/colormask/tests/floodfill.test.js
@@ -119,4 +134,4 @@ node --test touchdesigner/colormask/tests/floodfill.test.js
 ```
 python touchdesigner/colormask/tests/integration_td.py
 ```
-Requires a live TD session with the MCP bridge up and `/project1/cont_colormask` built. Wires a temporary red Constant TOP into `in1`, sends known rules through the real `/send` path, reads `out_mask` back via `numpyArray`, and asserts exact pixel values — including a stencil-orientation check (top-half stencil selects only the top half of `out_mask`). Cleans up the temporary Constant TOP on exit. Prints `ALL INTEGRATION CHECKS PASSED` on success.
+Requires a live TD session with the MCP bridge up (setup/readback) and `/project1/cont_colormask` built with its web server on :8903. Wires a temporary red Constant TOP into `in1`, sends known rules through the real in-TD `POST /send`, reads `out_mask` back via `numpyArray`, and asserts exact pixel values — including a stencil-orientation check (top-half stencil selects only the top half of `out_mask`). Cleans up the temporary Constant TOP on exit (note: it replaces whatever was wired into `in1`; re-wire your source after a run). Prints `ALL INTEGRATION CHECKS PASSED` on success.

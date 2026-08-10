@@ -4,7 +4,7 @@
 const TOL_PER_PIXEL = 1 / 300;   // drag-distance -> tolerance (tuning constant)
 const MAX_TOL = 1.2;
 const FLOOD_MAX_DIM = 512;       // flood buffer cap
-const MAX_RULES = 32;            // must match protocol.MAX_RULES
+const MAX_RULES = 32;            // must match webserver_callbacks.MAX_RULES
 
 const view = document.getElementById("view");
 const overlay = document.getElementById("overlay");
@@ -135,7 +135,7 @@ function renderChips() {
 view.addEventListener("mousedown", ev => {
   if (!flood) return;
   if (gestures.length >= MAX_RULES) {
-    showBanner(`Rule cap reached (${MAX_RULES}) — SEND or Ctrl+Z first.`);
+    showBanner(`Rule cap reached (${MAX_RULES}) — SEND or Undo first.`);
     return;
   }
   const [sx, sy] = toFlood(ev);
@@ -166,12 +166,20 @@ window.addEventListener("mouseup", () => {
   redrawOverlay();
 });
 
+function undoGesture() {
+  gestures.pop();
+  renderChips();
+  redrawOverlay();
+}
+
+// Toolbar button is the primary undo: keystrokes don't forward reliably into
+// the panel-embedded browser in TD. Ctrl+Z still works in external browsers.
+document.getElementById("undo").addEventListener("click", undoGesture);
+
 window.addEventListener("keydown", ev => {
   if (ev.key === "z" && (ev.ctrlKey || ev.metaKey)) {
     ev.preventDefault();
-    gestures.pop();
-    renderChips();
-    redrawOverlay();
+    undoGesture();
   } else if (ev.key === "r" || ev.key === "R") {
     fetchFrame();
   }

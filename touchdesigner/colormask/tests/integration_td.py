@@ -1,36 +1,47 @@
-"""Integration check against the LIVE TD bridge. Run manually:
+"""Integration check against the LIVE TD session. Run manually:
 
     python touchdesigner/colormask/tests/integration_td.py
 
-Requires: TD running with the MCP bridge on :9980 and /project1/cont_colormask
-built (plan Task 5). Creates a temporary 64x64 red constant wired into in1,
-sends rules through the real SEND path, reads out_mask back, then cleans up.
+Requires: TD running with the MCP bridge on :9980 (setup/readback only) and
+/project1/cont_colormask built with its in-TD web server on :8903 (the real
+SEND path — same endpoint the webapp posts to). Creates a temporary 64x64 red
+constant wired into in1, sends rules through POST /send, reads out_mask back,
+then cleans up.
 """
-import os
-import sys
+import base64
+import json
+import urllib.request
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "webapp"))
-import protocol
-import server
+BRIDGE_URL = "http://127.0.0.1:9980"
+APP_URL = "http://127.0.0.1:8903"
 
 W = H = 64
 
 
 def run(script, label):
-    ok, result = server.bridge_post("/execute", {"script": script,
-                                                 "undo_label": label})
-    if not ok:
-        raise SystemExit(f"bridge unreachable: {result}")
+    req = urllib.request.Request(
+        BRIDGE_URL + "/execute",
+        data=json.dumps({"script": script, "undo_label": label}).encode("utf-8"),
+        headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        result = json.loads(resp.read().decode("utf-8"))
     if result.get("errors"):
         raise SystemExit(f"TD error in {label!r}: {result['errors']}")
     return result.get("output", "")
 
 
 def send(rules_dicts, stencil_raw, w=W, h=H):
-    rules = protocol.validate_rules(rules_dicts)
-    script = protocol.build_send_script(rules, w, h,
-                                        protocol.encode_stencil(stencil_raw))
-    return run(script, "colormask integration send")
+    payload = {"rules": rules_dicts,
+               "stencil": {"w": w, "h": h,
+                           "data": base64.b64encode(stencil_raw).decode()}}
+    req = urllib.request.Request(
+        APP_URL + "/send", data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        result = json.loads(resp.read().decode("utf-8"))
+    if not result.get("ok"):
+        raise SystemExit(f"/send failed: {result}")
+    return result
 
 
 def read_mask_quadrant_means():

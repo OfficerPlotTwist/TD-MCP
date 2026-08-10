@@ -119,7 +119,14 @@
       "text_viz_frag": [660, 200],
       "glsl_viz": [660, -200],
       "out_mask": [660, 0],
-      "out_viz": [880, -200]
+      "out_viz": [880, -200],
+      "text_webserver_cb": [0, -600],
+      "webserver_colormask": [220, -600],
+      "webrender1": [440, -600],
+      "keyboardin1_callbacks": [440, -750],
+      "panelexec1": [660, -600],
+      "keyboardin1": [660, -750],
+      "parexec_colormask": [880, -600]
     }
   }
 }

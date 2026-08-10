@@ -28,7 +28,7 @@ Seven horizontal bands, top→bottom in signal order, each with an `annotateCOMP
 
 ## `cont_colormask`
 
-A second pinned container, alongside `cont_blobtrack_glsl`, for the color-mask selection webapp. Pinned in `layout.json` under `/project1` (`cont_colormask: [1900, -300]`) and internally under `/project1/cont_colormask` (`parkDocked: true`), left→right: `in1`/`null_src` → `text_stencil_cb`+`script_stencil` / `text_rules_cb`+`script_rules` → `text_rules_frag`+`glsl_rules` → `text_viz_frag`+`glsl_viz` → `out_mask`/`out_viz`. See [`touchdesigner/colormask/README.md`](colormask/README.md) for op semantics.
+A second pinned container, alongside `cont_blobtrack_glsl`, for the color-mask selection webapp. Pinned in `layout.json` under `/project1` (`cont_colormask: [1900, -300]`) and internally under `/project1/cont_colormask` (`parkDocked: true`), left→right: `in1`/`null_src` → `text_stencil_cb`+`script_stencil` / `text_rules_cb`+`script_rules` → `text_rules_frag`+`glsl_rules` → `text_viz_frag`+`glsl_viz` → `out_mask`/`out_viz`. A web-hosting row at y −600/−750 (`text_webserver_cb` → `webserver_colormask` → `webrender1`/`keyboardin1_callbacks` → `panelexec1`/`keyboardin1` → `parexec_colormask`) serves the app on :8903 and displays it on the container's panel. See [`touchdesigner/colormask/README.md`](colormask/README.md) for op semantics.
 
 ## Who reads this
 
