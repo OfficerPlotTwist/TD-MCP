@@ -6,11 +6,17 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
-import { join, dirname } from "path";
+import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-export const CHECKPOINTS_DIR = join(__dirname, "..", "checkpoints");
+
+// A project repo points this at its own checkpoints dir (relative values are
+// resolved against the server's working directory, i.e. the project root).
+// Unset, checkpoints land beside the bridge as they always have.
+export const CHECKPOINTS_DIR = process.env.TD_CHECKPOINTS_DIR
+  ? resolve(process.cwd(), process.env.TD_CHECKPOINTS_DIR)
+  : join(__dirname, "..", "checkpoints");
 const INDEX_PATH = join(CHECKPOINTS_DIR, "index.json");
 
 function ensureDir() {

@@ -2,8 +2,6 @@
 
 > An MCP server that bridges AI agents to a live TouchDesigner session over its WebServer DAT — so an agent can run Python, build and wire operators, read errors, capture the rendered output, and snapshot/restore networks without ever touching the TD UI.
 
-![Gothic window render from the wall_candle_30s sequence](renders/wall_candle_30s/frame_0001.png)
-
 ## What it is
 
 `td-mcp-server` is a [Model Context Protocol](https://modelcontextprotocol.io) server written in Node (ESM, `@modelcontextprotocol/sdk`). It speaks **stdio** to the AI host (Claude, Antigravity/Gemini, etc.) on one side and **HTTP** to a running TouchDesigner instance on the other.
@@ -95,9 +93,8 @@ The server is configured in `.mcp.json`:
   "mcpServers": {
     "touchdesigner": {
       "command": "node",
-      "args": ["<repo>/td-mcp-server/index.js"],
+      "args": ["td-mcp-server/index.js"],
       "env": {
-        "TD_API_DB": "<repo>/td_python_api.json",
         "TD_HOST": "127.0.0.1",
         "TD_PORT": "9980"
       }
@@ -106,46 +103,57 @@ The server is configured in `.mcp.json`:
 }
 ```
 
+A **project repo** cloned as a sibling of this one points at the bridge with a
+relative path instead, and redirects its checkpoints into itself:
+
+```json
+"args": ["../TD-MCP/td-mcp-server/index.js"],
+"env": { "TD_HOST": "127.0.0.1", "TD_PORT": "9980", "TD_CHECKPOINTS_DIR": "checkpoints" }
+```
+
 Environment variables:
 - `TD_HOST` / `TD_PORT` — where the WebServer DAT listens (default `localhost:9980`).
-- `TD_API_DB` — path to the TD Python API database used for `validate_script` and the API resources.
+- `TD_CHECKPOINTS_DIR` — where `.tox` checkpoints are written. Relative values
+  resolve against the MCP host's working directory (the project root). Unset,
+  checkpoints land in this repo's `checkpoints/`.
+- `TD_API_DB` — optional override for the TD Python API database. Leave it
+  unset: the server resolves `td_python_api.json` from its own directory, so the
+  database always travels with the bridge.
 
 ## Layout
 
 ```
-TD MCP/
+TD-MCP/
 ├─ td-mcp-server/            # the Node MCP server
 │  ├─ index.js               #   tool + resource definitions, server entry
 │  ├─ td-bridge.js           #   HTTP client → TD WebServer DAT
 │  ├─ api-validator.js       #   script validation against the TD API DB
 │  ├─ checkpoints.js         #   .tox checkpoint save/restore helpers
 │  ├─ a2a-server.js / a2a-client.js
+│  ├─ hooks/                 #   Stop hooks: error check, wire check, layout apply
 │  └─ tone-rules.json        #   tone-analysis rule config
 ├─ touchdesigner/            # webserver_callbacks.py — paste into TD WebServer DAT
-├─ toe/                      # TouchDesigner .toe projects (Cartoon_FX, TD_MCP, ...)
-├─ shaders/                  # GLSL: mandelbulb.glsl + cartoon/ shader set
-├─ shader_pipeline/          # shader-curation → TD implementation queue (see its README)
-├─ scripts/                  # Python helpers (shader grids, APC40 HTML, queue sync)
-├─ renders/                  # rendered frame sequences (e.g. wall_candle_30s/)
-├─ screenshots/              # captured TOP output + dailies
-├─ checkpoints/              # saved .tox checkpoints
-├─ docs/                     # supporting docs
-├─ td_python_api.json        # TD Python API database (TD_API_DB)
+├─ scraper/                  # regenerates td_python_api.json / td_operators.json
+├─ .agents/skills/td-mcp/    # bridge safety, verification, TD technique references
+├─ checkpoints/              # default .tox checkpoint store (projects override it)
+├─ td_python_api.json        # TD Python API database
 ├─ td_operators.json         # TD operator catalog
 └─ .mcp.json                 # MCP host registration
 ```
 
-## Gallery
+## Related repos
 
-Stills captured from TD output and rendered sequences via the server's `take_screenshot` tool and the render pipeline.
+This repo is the reusable bridge only. Project work lives alongside it as
+sibling clones:
 
-| | |
-|---|---|
-| ![wall_candle_30s frame 1](renders/wall_candle_30s/frame_0001.png) | ![wall_candle_30s frame 450](renders/wall_candle_30s/frame_0450.png) |
-| *Gothic window — `wall_candle_30s` frame 0001* | *Same sequence, frame 0450* |
-| ![Mandelbulb raymarch](screenshots/mandelbulb_final.png) | ![Halftone stele depth pass](screenshots/dailies_stele_depth_20260416_1554.png) |
-| *Mandelbulb (`shaders/mandelbulb.glsl`)* | *Dithered/halftone stele depth daily* |
+| Repo | Contents |
+| --- | --- |
+| [TD_Components](https://github.com/OfficerPlotTwist/TD_Components) | Installation components: blobtrack, colormask, maskcombiner, resttrigger, shaders, pipelines, network layout |
+| [TD_TutorialScraping](https://github.com/OfficerPlotTwist/TD_TutorialScraping) | HITL tutorial-to-network rebuild pipeline and its captures |
 
-![ASCII bug-samurai daily](screenshots/dailies_blackfloor_bug_samurai_20260416_1608.png)
-
-*ASCII / dithered "bug samurai" daily, black-floor variant.*
+```
+dev/
+  TD-MCP/                <- this repo
+  TD_Components/
+  TD_TutorialScraping/
+```

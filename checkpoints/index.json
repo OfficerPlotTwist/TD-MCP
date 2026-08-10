@@ -34,6 +34,720 @@
       "tox_path": "c:/Users/nik/Documents/AI/MCP/TD MCP/checkpoints/pre_resolution_hacking_tile_workflow_1781219786431.tox",
       "description": "Before building sample tiled workflow around oversized moviefilein1",
       "created_at": "2026-06-11T23:16:26.458Z"
+    },
+    {
+      "name": "pre_spout_in_build",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_spout_in_build_1782669090646.tox",
+      "description": "Known-good state of /project1 before adding Spout In TOP -> Null TOP for OptiTrack camera video receive. Project is untitled (NewProject.1.toe), so disk save would prompt; using checkpoint instead.",
+      "created_at": "2026-06-28T17:51:30.682Z"
+    },
+    {
+      "name": "task1-scaffold",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task1-scaffold_1782686198108.tox",
+      "description": "Task 1 FINAL: container + custom Blob Track page (Threshold/Minarea/Procres/Matchradius/Maxblobs/Showoverlay), in1 inTOP wired from glsl_synth. glsl_synth: 128x128 rgba32float, uTime via vec0 sequence (absTime.seconds), 3 disks verified including live oscillation of c2. No errors on blobtrack ops.",
+      "created_at": "2026-06-28T22:36:38.130Z"
+    },
+    {
+      "name": "task2-mask",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task2-mask_1782686617040.tox",
+      "description": "Task 2 complete: glsl_mask luminance-threshold TOP added. 128x128 rgba32float, binary output, uThreshold wired to parent Threshold, input from in1.",
+      "created_at": "2026-06-28T22:43:37.071Z"
+    },
+    {
+      "name": "task3-seed",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task3-seed_1782686838968.tox",
+      "description": "Stage 2 glsl_seed built and verified: rgba32float 128x128, foreground pixels seeded with their own (x,y) coords, background = (1e8,1e8,0,1)",
+      "created_at": "2026-06-28T22:47:18.999Z"
+    },
+    {
+      "name": "pre-task4-jfa-build",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-task4-jfa-build_1782687110577.tox",
+      "description": "Known-good state after stages 1-3, before JFA chain build",
+      "created_at": "2026-06-28T22:51:50.602Z"
+    },
+    {
+      "name": "task4-jfa",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task4-jfa_1782687335024.tox",
+      "description": "Stage 3 JFA CCL complete: 18x step=1 fallback chain, null_label verified, 3 distinct roots",
+      "created_at": "2026-06-28T22:55:35.048Z"
+    },
+    {
+      "name": "pre-task5",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-task5_1782687581608.tox",
+      "description": "State before Task 5: scatter centroid/area reduction. Pipeline through null_label verified working.",
+      "created_at": "2026-06-28T22:59:41.630Z"
+    },
+    {
+      "name": "task5-centroid",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task5-centroid_1782689977239.tox",
+      "description": "GPU gather centroid complete: glsl_centroid reads null_label directly, gather shader computes centroids for 3 blobs, all verified correct",
+      "created_at": "2026-06-28T23:39:37.271Z"
+    },
+    {
+      "name": "task5-fixes",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task5-fixes_1782690298921.tox",
+      "description": "Pre-fix checkpoint: before applying task5 review fixes (early-out + NaN guard)",
+      "created_at": "2026-06-28T23:44:58.952Z"
+    },
+    {
+      "name": "pre-task6-blobtrack",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-task6-blobtrack_1782690666530.tox",
+      "description": "Before task 6: feedback ID association stage. Container has glsl_centroid (stage 4) working with 3 active blobs. Task 6 will add glsl_idtrack + feedback_id.",
+      "created_at": "2026-06-28T23:51:06.553Z"
+    },
+    {
+      "name": "task6-idtrack",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task6-idtrack_1782695081741.tox",
+      "description": "Stage 5 feedback ID association: glsl_idtrack (glslTOP) + feedback_id (feedbackTOP) + text_idtrack, wired glsl_centroid→input0, feedback_id→input1. 3 active slots, distinct non-zero IDs, no shader errors. chopread_idtrack toptoCHOP + chop_exec_feed + select_idtrack_feed at /project1 for display pipeline.",
+      "created_at": "2026-06-29T01:04:41.764Z"
+    },
+    {
+      "name": "task6-fixes-pre",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task6-fixes-pre_1782695597731.tox",
+      "description": "Pre-task6 review fixes: bounded salt, ternary, stray op removal",
+      "created_at": "2026-06-29T01:13:17.764Z"
+    },
+    {
+      "name": "task6-fixes",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task6-fixes_1782696222180.tox",
+      "description": "task6 review fixes applied: bounded uFrameSalt expression, ternary fixed, null_idtrack_mon display/viewer set, select_idtrack_feed removed",
+      "created_at": "2026-06-29T01:23:42.216Z"
+    },
+    {
+      "name": "task7-outputs",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task7-outputs_1782697395128.tox",
+      "description": "Stage 6 complete: glsl_labelviz, glsl_overlay, out_mask/labels/viz nullTOPs, script_blobs scriptCHOP (16384 samples, 6ch), out_blobs nullCHOP. All verified numerically.",
+      "created_at": "2026-06-29T01:43:15.168Z"
+    },
+    {
+      "name": "pre-task8-wiring",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-task8-wiring_1782697766624.tox",
+      "description": "Known-good state before wiring in1 to null_optitrack_cam (dev source glsl_synth still connected)",
+      "created_at": "2026-06-29T01:49:26.647Z"
+    },
+    {
+      "name": "task8-final",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/task8-final_1782697972611.tox",
+      "description": "Task 8 final: in1 wired to null_optitrack_cam (container external input), glsl_synth left inside but disconnected for regression. Pipeline verified on real (empty) feed: 0 blobs, no new errors. README committed 73eb6bc.",
+      "created_at": "2026-06-29T01:52:52.630Z"
+    },
+    {
+      "name": "pre_feedback_fix_and_layout",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_feedback_fix_and_layout_1782718865478.tox",
+      "description": "Before fixing feedback cook-loop, adding Out connectors, and re-laying-out the network",
+      "created_at": "2026-06-29T07:43:33.894Z"
+    },
+    {
+      "name": "feedback_fixed_outs_layout",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/feedback_fixed_outs_layout_1782719352316.tox",
+      "description": "Cook loop fixed (Feedback Target param + non-cyclic init), Out TOP/CHOP connectors added, dead chopread ops removed, network re-laid-out. Verified: no errors/warnings, 3 blobs with bounded IDs via synth fallback.",
+      "created_at": "2026-06-29T07:49:12.349Z"
+    },
+    {
+      "name": "pre_blob_table_dat",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_blob_table_dat_1782797240735.tox",
+      "description": "Before adding script_blob_table scriptDAT + out_blob_table outDAT (per-blob ID/size/centroid table output).",
+      "created_at": "2026-06-30T05:27:20.763Z"
+    },
+    {
+      "name": "blob_table_dat_added",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/blob_table_dat_added_1782797307967.tox",
+      "description": "Added script_blob_table (scriptDAT) -> out_blob_table (outDAT): per-blob table id/tx/ty/area/w/h, one row per blob (filter area>0). Verified header + emit path.",
+      "created_at": "2026-06-30T05:28:27.995Z"
+    },
+    {
+      "name": "id_persist_fix_and_color_by_id",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/id_persist_fix_and_color_by_id_1782799769910.tox",
+      "description": "Fixed ID churn: feedback_id input rewired glsl_centroid->glsl_idtrack (feedback now carries previous-frame IDs, so static blobs keep IDs). Color-by-ID: glsl_labelviz gains glsl_idtrack as input1; text_labelviz now hashes the persistent ID at each pixel's root slot instead of the root coordinate. Also added earlier: script_blob_table->out_blob_table per-blob DAT. Verified with synthetic 3-dot source: static IDs persist across frames; out_labels color == hash(id), constant per blob.",
+      "created_at": "2026-06-30T06:09:29.953Z"
+    },
+    {
+      "name": "blobtrack_id_fixed_clean",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/blobtrack_id_fixed_clean_1782800089255.tox",
+      "description": "CLEAN fixed state (no cook loop). Feedback fix: feedback_id input=glsl_idtrack AND Target top param CLEARED (the phantom cook-loop was caused by Target=glsl_idtrack while also feeding idtrack). IDs now persist for stationary blobs. Color-by-ID: glsl_labelviz input1=glsl_idtrack, text_labelviz hashes persistent ID at root slot. out_blob_table DAT (id,tx,ty,area,w,h, one row per blob). Verified: static dots keep IDs across frames, no errors, viz color==hash(id).",
+      "created_at": "2026-06-30T06:14:49.281Z"
+    },
+    {
+      "name": "pre_cpu_idtrack",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_cpu_idtrack_1782801355937.tox",
+      "description": "Before re-architecting ID association to CPU (script_idtrack scriptTOP) and removing GPU feedback loop (glsl_idtrack/feedback_id). Current: GPU feedback functional but logs cook-loop error every frame.",
+      "created_at": "2026-06-30T06:35:55.971Z"
+    },
+    {
+      "name": "cpu_idtrack_final",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/cpu_idtrack_final_1782802111227.tox",
+      "description": "FINAL clean CPU ID-tracking architecture. script_idtrack (scriptTOP) is sole tracker: reads glsl_centroid, greedy one-to-one nearest match vs prev frame (container storage), outputs (id,cx,cy,valid) texture + stores blob list on container. glsl_labelviz colors by persistent ID (hash of id at root slot). script_blobs + out_blob_table read container storage (no script->script cooked reads -> NO cook loop). GPU glsl_idtrack/feedback_id/feedback_seed removed. Verified: IDs 1,2,3 persist incl moving dot, color==hash(id), zero cook-loop errors, out_blobs/out_blob_table populated.",
+      "created_at": "2026-06-30T06:48:31.265Z"
+    },
+    {
+      "name": "pre_5sweeps",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_5sweeps_1782803409370.tox",
+      "description": "before converting single sweep chain into 5-unit round-robin",
+      "created_at": "2026-06-30T07:10:09.404Z"
+    },
+    {
+      "name": "unit0_converted",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/unit0_converted_1782803561964.tox",
+      "description": "existing chain renamed to _0; ramp_keys_master unit-relative exprs; rampA_0.dat expr -> eval_0; rampB_0 reads shared static ramp2_keys",
+      "created_at": "2026-06-30T07:12:42.006Z"
+    },
+    {
+      "name": "units_cloned",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/units_cloned_1782804097911.tox",
+      "description": "5 sweep units (trig/eval/rampA/rampB/comp _0.._4) sharing ramp_keys_master+ramp2_keys, per-unit trigger resolution verified; restored pre-existing ramp4_keys",
+      "created_at": "2026-06-30T07:21:37.941Z"
+    },
+    {
+      "name": "keybus_and_master_trig",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/keybus_and_master_trig_1782805242742.tox",
+      "description": "per-unit keys tables driven by key_vals/key_vals_null bus; master_trig -> seq_exec round-robin one-at-a-time with overlap verified; comp_all composites 5",
+      "created_at": "2026-06-30T07:40:42.777Z"
+    },
+    {
+      "name": "pre_containerize",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_containerize_1782805450575.tox",
+      "description": "full 5-sweep system working flat: key bus, per-unit keys, master_trig round-robin, comp_all, num_active_sweep. Restore point before containerizing.",
+      "created_at": "2026-06-30T07:44:10.616Z"
+    },
+    {
+      "name": "five_sweeps_containerized",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/five_sweeps_containerized_1782806823378.tox",
+      "description": "cont_sweeps: 5-unit round-robin sweep system, key_vals bus, master_trig one-at-a-time+overlap, num_active_sweep on master_controls, comp3 fed by combined output. Keyboard-fires-all bug removed. Verified.",
+      "created_at": "2026-06-30T08:07:03.411Z"
+    },
+    {
+      "name": "keyword_channel_trigger",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/keyword_channel_trigger_1782850771626.tox",
+      "description": "cont_sweeps: in_sig -> sel_trig (selects channel named by Triggerchan custom par, default 'trigger') -> master_trig (fires on increase). Wire any CHOP with that channel in to drive the round-robin.",
+      "created_at": "2026-06-30T20:19:31.675Z"
+    },
+    {
+      "name": "pre_cam_controls_panel",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_cam_controls_panel_1783374251190.tox",
+      "description": "Before building cont_cam_controls (camera OSC control panel)",
+      "created_at": "2026-07-06T21:44:11.237Z"
+    },
+    {
+      "name": "cam_controls_panel_built",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/cam_controls_panel_built_1783374396678.tox",
+      "description": "cont_cam_controls with 4 widgets + cam_values + oscout_cam (OSC to 127.0.0.1:7400)",
+      "created_at": "2026-07-06T21:46:36.755Z"
+    },
+    {
+      "name": "cam_controls_panel_verified",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/cam_controls_panel_verified_1783374776074.tox",
+      "description": "Verified camera OSC control panel: real ranges (exp 10-8133, fps 20-240, gain 0-7), sane defaults, OSC to 127.0.0.1:7400",
+      "created_at": "2026-07-06T21:52:56.161Z"
+    },
+    {
+      "name": "pre_optitrack_toggle",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_optitrack_toggle_1783375301257.tox",
+      "description": "Before adding cont_optitrack camera spawn/kill toggle panel",
+      "created_at": "2026-07-06T22:01:41.346Z"
+    },
+    {
+      "name": "cam_controls_range_poll",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/cam_controls_range_poll_1783375849616.tox",
+      "description": "Camera control panel + init range poll: oscin_ranges (:7401) stores camera min/max, sliders auto-range via parent().fetch()",
+      "created_at": "2026-07-06T22:10:49.714Z"
+    },
+    {
+      "name": "pre_real_unit_sliders",
+      "op_path": "/project1/cont_cam_controls",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_real_unit_sliders_1783376826318.tox",
+      "description": "Before converting exposure/intensity/framerate sliders from 0-1 to real camera units",
+      "created_at": "2026-07-06T22:27:06.396Z"
+    },
+    {
+      "name": "pre-rest-trigger",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-rest-trigger_1783439939341.tox",
+      "description": "Restore point before building cont_rest_trigger (GLSL morph rest trigger)",
+      "created_at": "2026-07-07T15:58:59.429Z"
+    },
+    {
+      "name": "rest-t1-skeleton",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t1-skeleton_1783440017357.tox",
+      "description": "Task 1 complete: cont_rest_trigger skeleton + external wiring (out_mask, blob_idx0)",
+      "created_at": "2026-07-07T16:00:17.473Z"
+    },
+    {
+      "name": "rest-t2-morph",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t2-morph_1783440071356.tox",
+      "description": "Task 2 complete: morph diff chain (top_maskclean, feedback_mask, text_morph, glsl_morph -> out_morph_viz)",
+      "created_at": "2026-07-07T16:01:11.443Z"
+    },
+    {
+      "name": "rest-t3-energy",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t3-energy_1783440108526.tox",
+      "description": "Task 3 complete: script_morph_energy numpyArray-mean reduce -> out_morph_energy",
+      "created_at": "2026-07-07T16:01:48.612Z"
+    },
+    {
+      "name": "rest-t5-trigger",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t5-trigger_1783440160403.tox",
+      "description": "Task 5 complete: trigger_rest clones trigger7 params (diff==[]); threshup=.85*max_morph, triggeron=decrease",
+      "created_at": "2026-07-07T16:02:40.493Z"
+    },
+    {
+      "name": "rest-t6-gate",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t6-gate_1783440282303.tox",
+      "description": "Task 6 complete: select_area/gate_present/rename_trig/math_gate -> out_rest_trigger (chan1), blob-present gate",
+      "created_at": "2026-07-07T16:04:42.385Z"
+    },
+    {
+      "name": "rest-t7-pars",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-t7-pars_1783440417564.tox",
+      "description": "Task 7 complete: custom Rest Trigger page (Threshfrac/Windowsec/Edgeclean/Presentgate) bound to internals; switch_clean gives true passthrough at Edgeclean=0",
+      "created_at": "2026-07-07T16:06:57.653Z"
+    },
+    {
+      "name": "rest-trigger-complete",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/rest-trigger-complete_1783440510137.tox",
+      "description": "Task 8 complete: cont_rest_trigger fully built + structurally verified; live behavioral check pending (needs moving IR feed)",
+      "created_at": "2026-07-07T16:08:30.234Z"
+    },
+    {
+      "name": "pre-blobsig-collapse",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-blobsig-collapse_1783445891608.tox",
+      "description": "Restore point before collapsing 21 blob signal-processing ops into blob_signal_processing Base COMP",
+      "created_at": "2026-07-07T17:38:11.693Z"
+    },
+    {
+      "name": "blobsig-collapsed",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/blobsig-collapsed_1783445976349.tox",
+      "description": "21 blob signal ops collapsed into blob_signal_processing Base COMP; boundary rewired (topblobs_chop in, blob_idx0 out to cont_rest_trigger)",
+      "created_at": "2026-07-07T17:39:36.436Z"
+    },
+    {
+      "name": "pre-blobtrack-relayout",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-blobtrack-relayout_1783447144224.tox",
+      "description": "Before nodeX-only L->R layout fix of 3 backward wires (glsl_synth/in1, glsl_mask/out_mask, script_idtrack/labelviz tail)",
+      "created_at": "2026-07-07T17:59:04.251Z"
+    },
+    {
+      "name": "blobtrack-wires-lr",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/blobtrack-wires-lr_1783447191853.tox",
+      "description": "3 backward wires fixed to L->R (nodeX-only): glsl_synth left of in1, out_mask right of glsl_mask, output tail script_idtrack->labelviz->overlay->out reordered",
+      "created_at": "2026-07-07T17:59:51.884Z"
+    },
+    {
+      "name": "pre_ghost_tracks",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_ghost_tracks_1784055161302.tox",
+      "description": "Before adding ghost-track ID persistence (Persistframes) to script_idtrack",
+      "created_at": "2026-07-14T18:52:41.368Z"
+    },
+    {
+      "name": "ghost_tracks_done",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/ghost_tracks_done_1784055309140.tox",
+      "description": "Ghost-track ID persistence working: Persistframes par + script_idtrack ghost matching, verified with synthetic-frame tests",
+      "created_at": "2026-07-14T18:55:09.170Z"
+    },
+    {
+      "name": "network_reorg",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/network_reorg_1784059602153.tox",
+      "description": "Network layout reorg: main chain y=0 with compacted JFA run, outputs row below, CPU data ops under tracker, shader templates above hosts, docked DATs parked at hosts",
+      "created_at": "2026-07-14T20:06:42.186Z"
+    },
+    {
+      "name": "pre_trigger_tab",
+      "op_path": "/project1/cont_rest_trigger",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_trigger_tab_1784060815854.tox",
+      "description": "Before exposing trigger ADSR params as container tab + min blob area gate",
+      "created_at": "2026-07-14T20:26:55.883Z"
+    },
+    {
+      "name": "trigger_tab_done",
+      "op_path": "/project1/cont_rest_trigger",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/trigger_tab_done_1784060974824.tox",
+      "description": "Trigger tab (ADSR binds + manual pulse via parexec), Minblobarea gate, gate_present wired into math_gate (mul)",
+      "created_at": "2026-07-14T20:29:34.865Z"
+    },
+    {
+      "name": "pre_seafoam",
+      "op_path": "/project1/waves_effect",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_seafoam_1784070074861.tox",
+      "description": "Before inserting seafoam GLSL POP chain (noise flow + neighbor + glsl) into waves_effect",
+      "created_at": "2026-07-14T23:01:14.896Z"
+    },
+    {
+      "name": "pre-occlusion-idtrack",
+      "op_path": "/project1/cont_blobtrack_glsl",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-occlusion-idtrack_1784935624654.tox",
+      "description": "",
+      "created_at": "2026-07-24T23:27:04.686Z"
+    },
+    {
+      "name": "pre_tutorial_etskz_iifoy",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre_tutorial_etskz_iifoy_1785883347940.tox",
+      "description": "Before attention-handoff rebuild of elekktronaut Psychedelic Flower tutorial network",
+      "created_at": "2026-08-04T22:42:28.057Z"
+    },
+    {
+      "name": "tutorial_etskz_iifoy_rebuilt",
+      "op_path": "/project1/tutorial_etskz_iifoy",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/tutorial_etskz_iifoy_rebuilt_1785883693154.tox",
+      "description": "Attention-handoff rebuild of elekktronaut Psychedelic Flower (first 9min): 21 ops, 15 wires, 15 bus channels, attribution DAT",
+      "created_at": "2026-08-04T22:48:13.183Z"
+    },
+    {
+      "name": "pre-image-import",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-image-import_1785979019432.tox",
+      "description": "",
+      "created_at": "2026-08-06T01:16:59.463Z"
+    },
+    {
+      "name": "post-image-import",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-image-import_1785979068041.tox",
+      "description": "moviefilein_img8539 added, loading IMG_8539.jpeg",
+      "created_at": "2026-08-06T01:17:48.067Z"
+    },
+    {
+      "name": "pre-region-split",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-region-split_1785980944916.tox",
+      "description": "before building cont_region_split",
+      "created_at": "2026-08-06T01:49:04.938Z"
+    },
+    {
+      "name": "post-region-split",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-region-split_1785981003712.tox",
+      "description": "cont_region_split working: 8 ranked region outputs, verified on red mask",
+      "created_at": "2026-08-06T01:50:03.733Z"
+    },
+    {
+      "name": "pre-grid-refactor",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-grid-refactor_1785981805488.tox",
+      "description": "before refactoring cont_region_split to 4x4 grid + submask routing",
+      "created_at": "2026-08-06T02:03:35.140Z"
+    },
+    {
+      "name": "post-grid-refactor",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-grid-refactor_1785981958896.tox",
+      "description": "cont_region_split: 4x4 ID grid on node viewer, Submask1-6 + Ignore params routing to 6 outs",
+      "created_at": "2026-08-06T02:05:58.917Z"
+    },
+    {
+      "name": "post-grid-firstout",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-grid-firstout_1785982066674.tox",
+      "description": "grid_view on node viewer (opviewer abs path) + out0_grid as first connector",
+      "created_at": "2026-08-06T02:07:46.705Z"
+    },
+    {
+      "name": "post-out-rename",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-out-rename_1785982346537.tox",
+      "description": "outs renamed submask1-6; connector order verified grid,1-6",
+      "created_at": "2026-08-06T02:12:26.569Z"
+    },
+    {
+      "name": "post-opviewer-fix",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-opviewer-fix_1785982637602.tox",
+      "description": "opviewer -> ./grid_view relative on all 3 region-split comps; copies now self-contained",
+      "created_at": "2026-08-06T02:17:17.633Z"
+    },
+    {
+      "name": "pre-grid-overlay",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-grid-overlay_1785982937164.tox",
+      "description": "before grid cells become source-image + outline overlay",
+      "created_at": "2026-08-06T02:22:17.196Z"
+    },
+    {
+      "name": "post-grid-overlay",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-grid-overlay_1785982989652.tox",
+      "description": "grid cells = source image + thin black region outline; in2_source added to all 3 comps",
+      "created_at": "2026-08-06T02:23:09.678Z"
+    },
+    {
+      "name": "post-grid-ring",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-grid-ring_1785983101325.tox",
+      "description": "grid outline moved outside mask (dilate ring) so region pixels stay visible",
+      "created_at": "2026-08-06T02:25:01.359Z"
+    },
+    {
+      "name": "post-grid-fill-dark",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-grid-fill-dark_1785983153959.tox",
+      "description": "grid cells: darkened source (0.6) + 45% white fill on region + black ring outline",
+      "created_at": "2026-08-06T02:25:53.983Z"
+    },
+    {
+      "name": "post-submask-naming",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-submask-naming_1785983463282.tox",
+      "description": "Submask fields accept $Name to rename out TOP; connectorder pins connector order",
+      "created_at": "2026-08-06T02:31:03.316Z"
+    },
+    {
+      "name": "pre-15-submasks",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-15-submasks_1785983822135.tox",
+      "description": "before expanding region-split comps from 6 to 15 submask outs",
+      "created_at": "2026-08-06T02:37:02.183Z"
+    },
+    {
+      "name": "post-15-submasks",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-15-submasks_1785983854826.tox",
+      "description": "15 submask params/outs on all 3 comps; palette tox re-saved and verified",
+      "created_at": "2026-08-06T02:37:34.850Z"
+    },
+    {
+      "name": "post-state-audit",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-state-audit_1786054092368.tox",
+      "description": "audit: all 3 comps match spec; fixed cont_region_split self-feedback (null1 -> moviefilein3)",
+      "created_at": "2026-08-06T22:08:12.405Z"
+    },
+    {
+      "name": "post-ignore-parse-fix",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-ignore-parse-fix_1786057679679.tox",
+      "description": "ignore/submask parsers split run-together IDs; comp1 Ignoremasks value corrected",
+      "created_at": "2026-08-06T23:07:59.707Z"
+    },
+    {
+      "name": "post-panel-top-fix",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-panel-top-fix_1786058153909.tox",
+      "description": "container panel background TOP = ./grid_view (fixes white square); nodeview=default",
+      "created_at": "2026-08-06T23:15:53.939Z"
+    },
+    {
+      "name": "pre-nearestpixel-comp",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-nearestpixel-comp_1786058203943.tox",
+      "description": "before creating cont_nearestpixel utility",
+      "created_at": "2026-08-06T23:16:43.969Z"
+    },
+    {
+      "name": "post-nearestpixel-comp",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-nearestpixel-comp_1786058302093.tox",
+      "description": "cont_nearestpixel: set_nearest script + widget button + Apply pulse par; verified on 117 TOPs",
+      "created_at": "2026-08-06T23:18:22.119Z"
+    },
+    {
+      "name": "post-nearestpixel-clean",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-nearestpixel-clean_1786058328929.tox",
+      "description": "cont_nearestpixel verified error-free after clearing orphan widget callbacks ref",
+      "created_at": "2026-08-06T23:18:48.968Z"
+    },
+    {
+      "name": "pre-split2-fork",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-split2-fork_1786063957165.tox",
+      "description": "before adding second grid + Split2 page + assigned-IDs-hidden-from-grid",
+      "created_at": "2026-08-07T00:54:41.760Z"
+    },
+    {
+      "name": "post-split2-fork",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-split2-fork_1786064266536.tox",
+      "description": "Split2 page + second grid + 15 more outs on all 3 comps; grid hides claimed+ignored IDs",
+      "created_at": "2026-08-07T00:57:46.584Z"
+    },
+    {
+      "name": "post-empty-cell-blank",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-empty-cell-blank_1786064688999.tox",
+      "description": "grid: cells with no mask render fully blank (no ID, no bg); tiny regions preserved at cell scale",
+      "created_at": "2026-08-07T01:04:49.034Z"
+    },
+    {
+      "name": "post-all-included",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-all-included_1786064906577.tox",
+      "description": "All_included out (connector 32): all regions minus union of both ignore lists",
+      "created_at": "2026-08-07T01:08:26.625Z"
+    },
+    {
+      "name": "pre-mask-combiner",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-mask-combiner_1786145845567.tox",
+      "description": "before building cont_mask_combiner webapp container",
+      "created_at": "2026-08-07T23:37:25.605Z"
+    },
+    {
+      "name": "post-mask-combiner-shell",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-mask-combiner-shell_1786145878459.tox",
+      "description": "cont_mask_combiner container + webserver serving /mask on 9981",
+      "created_at": "2026-08-07T23:37:58.504Z"
+    },
+    {
+      "name": "post-mask-combiner",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-mask-combiner_1786145994770.tox",
+      "description": "mask combiner v2 webapp verified end-to-end",
+      "created_at": "2026-08-07T23:39:54.811Z"
+    },
+    {
+      "name": "pre-mask-combiner-panel",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-mask-combiner-panel_1786147324665.tox",
+      "description": "before port move to 8899 + webBrowser panel hosting",
+      "created_at": "2026-08-08T00:02:04.712Z"
+    },
+    {
+      "name": "post-mask-combiner-panel",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-mask-combiner-panel_1786147388124.tox",
+      "description": "webapp on port 8899, hosted on container panel via webBrowser, undo button",
+      "created_at": "2026-08-08T00:03:08.158Z"
+    },
+    {
+      "name": "pre-mask-combiner-parpage",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-mask-combiner-parpage_1786147890353.tox",
+      "description": "before Reload App custom par on cont_mask_combiner",
+      "created_at": "2026-08-08T00:11:30.394Z"
+    },
+    {
+      "name": "post-mask-combiner-parpage",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-mask-combiner-parpage_1786147917761.tox",
+      "description": "Reloadapp pulse par verified; panel-only operation complete",
+      "created_at": "2026-08-08T00:11:57.808Z"
+    },
+    {
+      "name": "pre-colormask",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-colormask_1786147954968.tox",
+      "description": "Restore point before building cont_colormask container for color-mask selection webapp task 5",
+      "created_at": "2026-08-08T00:12:35.013Z"
+    },
+    {
+      "name": "colormask-built",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-built_1786148029482.tox",
+      "description": "cont_colormask container built with in1/null_src/script_rules(+cb)/script_stencil(+cb)/text_rules_frag/glsl_rules/text_viz_frag/glsl_viz/out_mask/out_viz, verified structurally and via force-cook",
+      "created_at": "2026-08-08T00:13:49.524Z"
+    },
+    {
+      "name": "pre-flatten-webbrowser",
+      "op_path": "/project1/cont_mask_combiner",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-flatten-webbrowser_1786148104372.tox",
+      "description": "before flattening webBrowser internals onto cont_mask_combiner panel",
+      "created_at": "2026-08-08T00:15:04.398Z"
+    },
+    {
+      "name": "post-flatten-webbrowser",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/post-flatten-webbrowser_1786148266413.tox",
+      "description": "webrender flattened onto cont_mask_combiner panel; interaction verified via snapshot",
+      "created_at": "2026-08-08T00:17:46.465Z"
+    },
+    {
+      "name": "colormask-verified",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-verified_1786148524558.tox",
+      "description": "colormask integration test (Task 6) passed against live TD: bycolor hit/miss, wand+stencil orientation, clear. constant_cmtest created/destroyed, in1 confirmed unwired after cleanup.",
+      "created_at": "2026-08-08T00:22:04.595Z"
+    },
+    {
+      "name": "colormask-format32f",
+      "op_path": "/project1",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-format32f_1786149492029.tox",
+      "description": "script_rules and script_stencil format pars set to rgba32float (was rgba8fixed) so the copyNumpyArray float32 encoding (sentinel -1, alphas 10-12 on script_rules) survives without 8-bit clamping. Integration test re-verified passing after the change.",
+      "created_at": "2026-08-08T00:38:12.081Z"
+    },
+    {
+      "name": "pre-panelhost",
+      "op_path": "/project1/cont_colormask",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/pre-panelhost_1786328958239.tox",
+      "description": "",
+      "created_at": "2026-08-10T02:29:18.265Z"
+    },
+    {
+      "name": "colormask-panelhost",
+      "op_path": "/project1/cont_colormask",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-panelhost_1786329150010.tox",
+      "description": "",
+      "created_at": "2026-08-10T02:32:30.057Z"
+    },
+    {
+      "name": "colormask-panelhost-final",
+      "op_path": "/project1/cont_colormask",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-panelhost-final_1786329370060.tox",
+      "description": "",
+      "created_at": "2026-08-10T02:36:10.086Z"
+    },
+    {
+      "name": "colormask-bindexpr-cleared",
+      "op_path": "/project1/cont_colormask",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/colormask-bindexpr-cleared_1786336475947.tox",
+      "description": "",
+      "created_at": "2026-08-10T04:34:36.005Z"
+    },
+    {
+      "name": "maskcombiner-bindexpr-cleared",
+      "op_path": "/project1/cont_mask_combiner",
+      "tox_path": "C:/Users/NICKESCHEN/dev/TD-MCP/checkpoints/maskcombiner-bindexpr-cleared_1786336491507.tox",
+      "description": "",
+      "created_at": "2026-08-10T04:34:51.541Z"
     }
   ]
 }

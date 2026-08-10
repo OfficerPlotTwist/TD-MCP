@@ -1,8 +1,15 @@
-# TD MCP Project Guidance
+# TD-MCP Bridge Guidance
 
-This repo hosts the TouchDesigner MCP bridge. The MCP server in `td-mcp-server/` talks to a live, usually unsaved TouchDesigner session through the in-TD WebServer DAT on port `9980`, inside `/project1/TD_MCP`.
+This repo hosts the TouchDesigner MCP bridge and nothing else. The MCP server in
+`td-mcp-server/` talks to a live, usually unsaved TouchDesigner session through
+the in-TD WebServer DAT on port `9980`, inside `/project1/MCP_Server`.
 
-Edits made through MCP mutate the running TouchDesigner project immediately. They are not durable on disk until `project.save()` runs.
+Edits made through MCP mutate the running TouchDesigner project immediately. They
+are not durable on disk until `project.save()` runs.
+
+Project-specific conventions live in the sibling project repos
+(`../TD_Components`, `../TD_TutorialScraping`), each with its own `AGENTS.md`.
+Nothing that is true of only one installation belongs in this file.
 
 ## TouchDesigner MCP Discipline
 
@@ -11,17 +18,13 @@ Edits made through MCP mutate the running TouchDesigner project immediately. The
 - After verification passes, run `execute_script("project.save()")` again.
 - For bulk destructive work, save a checkpoint on the parent COMP first.
 - Never combine bulk destroy operations with force-cooking in one script; this can freeze TouchDesigner.
-- Never press Start, Restart, or other server-control buttons on `/project1/TD_MCP`; that can reinitialize the WebServer DAT and sever the live MCP bridge.
+- Never press Start, Restart, or other server-control buttons on `/project1/MCP_Server`; that can reinitialize the WebServer DAT and sever the live MCP bridge.
 - Build or verify server controls structurally only. A real restart is the user's action at the keyboard.
 - Place new disconnected or top-level COMPs away from the existing node cluster with `nodeX` and `nodeY` so the network stays readable.
 
 ## Network Hygiene
 
-- Pull a Null operator (`nullCHOP`, `nullTOP`, `nullDAT`, etc.) off the end of each logical subsection of the network, and reference that Null downstream instead of reaching into the subsection's internals. This gives a stable tap/pull point: you can rewire or rebuild the subsection behind the Null without touching every consumer, and the Null is the obvious place to probe values during debugging. Do this often — after control buses, after a generator stage, after any cluster whose output other parts depend on. Example in this project: `key_vals` (Constant CHOP, editable) → `key_vals_null` (the shared pull point that the ramp key tables reference).
-
-## Parameter Changes Go Through Master Controls
-
-- When the user says "set \<param\> of \<operator\> to \<value\>", that means: **add a new channel to the master control comp (`/project1/master_controls` bus) carrying that value, and make the operator's parameter reference that channel** (expression/export, e.g. `op('/project1/master_controls')['chan_name']`) — do NOT hardcode the constant on the operator's parameter. This keeps every tunable value on the central control bus where it can be monitored, overridden, and driven live.
+- Pull a Null operator (`nullCHOP`, `nullTOP`, `nullDAT`, etc.) off the end of each logical subsection of the network, and reference that Null downstream instead of reaching into the subsection's internals. This gives a stable tap/pull point: you can rewire or rebuild the subsection behind the Null without touching every consumer, and the Null is the obvious place to probe values during debugging. Do this often — after control buses, after a generator stage, after any cluster whose output other parts depend on.
 
 ## UI In TouchDesigner
 
@@ -37,15 +40,13 @@ Edits made through MCP mutate the running TouchDesigner project immediately. The
 
 - `execute_script` runs code in a wrapper where nested functions cannot reliably close over top-level locals.
 - Prefer iterative tree walks with explicit stacks or queues inside TouchDesigner scripts.
-- When creating controls meant to react to image-analysis or tone thresholds, route them through `/project1/null_expressive` rather than hardwiring values.
 
-## Component Copies & Palette (from Aug 2026 session audit)
+## Configuration
 
-- After editing a COMP, apply the same change to **every existing copy** in the project AND re-save the master over the component in the **My Components** palette. Then verify a fresh copy actually refreshes when a new input is plugged in — copies have silently kept stale internals before.
-- At session start or after any gap, diff live TD project state against the last recorded/observed state and repair drift before acting.
-- When rebuilding a network from a video/reference, mirror the source's **spatial layout** (not auto-column placement), and distinguish purple data wires from gray dotted parameter-reference lines — they are not interchangeable.
-- License is **Non-Commercial**: hard 1280×1280 TOP resolution cap. Design around it with tiling; never propose bypasses.
+- `TD_HOST` / `TD_PORT` — where the WebServer DAT listens.
+- `TD_CHECKPOINTS_DIR` — checkpoint destination; relative values resolve against the MCP host's working directory. Project repos set this so snapshots stay with the project.
+- `TD_API_DB` — leave unset. `api-validator.js` resolves `td_python_api.json` from its own directory, keeping the API database with the bridge. `scraper/` regenerates it.
 
-## Codex Skill
+## Skill
 
-Use the repo-local `$td-mcp` skill for deeper TouchDesigner MCP workflows, including widget creation patterns, expressive-control conventions, shader review grids, and conversion notes from the previous Claude setup.
+Use the repo-local `$td-mcp` skill for deeper TouchDesigner MCP workflows: live-bridge safety, crash recovery, verification discipline, widget creation patterns, expressive-control conventions, and POP attribute maths.

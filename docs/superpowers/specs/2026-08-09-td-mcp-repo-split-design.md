@@ -1,7 +1,7 @@
 # TD_MCP repo split — universal plumbing vs. components and projects
 
 **Date:** 2026-08-09
-**Status:** approved, not yet implemented
+**Status:** implemented — see "Implementation notes" for deviations
 
 ## Problem
 
@@ -107,7 +107,7 @@ Each project repo carries its own `.mcp.json`:
   "mcpServers": {
     "touchdesigner": {
       "command": "node",
-      "args": ["${TD_MCP_HOME}/td-mcp-server/index.js"],
+      "args": ["../TD-MCP/td-mcp-server/index.js"],
       "env": {
         "TD_HOST": "127.0.0.1",
         "TD_PORT": "9980",
@@ -231,3 +231,60 @@ Deletion is last. Nothing leaves `TD-MCP` until the new repos are verified.
   them resolve their inputs.
 - **Two `.mcp.json` files drifting.** Both project repos carry near-identical
   config. If a third project appears, revisit the npm packaging option.
+
+## Implementation notes
+
+Executed 2026-08-09. Six deviations from the design above, all deliberate.
+
+1. **Sibling-relative path instead of `TD_MCP_HOME`.** Project repos use
+   `"args": ["../TD-MCP/td-mcp-server/index.js"]`. Node resolving a relative
+   argument against the host's working directory was verified directly; whether
+   this Claude Code build expands `${VAR}` inside `.mcp.json` could not be
+   verified without restarting the MCP host mid-task, and a failed expansion
+   would have broken the bridge on next launch. The relative form needs no
+   environment variable at all, and "clone them as siblings" was already the
+   design. No `TD_MCP_HOME` variable was created.
+2. **`touchdesigner/LAYOUT.md` moved to `TD_Components`** rather than staying.
+   On reading it, roughly 90% is project-specific — the seven-band `/project1`
+   arrangement, `cont_colormask`, `cont_blobtrack_glsl`. `reorganize.mjs` reads
+   `layout.json` via `join(projectDir, "touchdesigner", "layout.json")`, so the
+   hook follows whichever project it runs in. `TD-MCP/CLAUDE.md` keeps the
+   project-agnostic rules and points at the project repo for the rest.
+3. **The attention-handoff spec and plan went to `TD_TutorialScraping`**, not
+   `TD_Components`. `SKILL.md` references its design spec by relative path, so
+   the docs had to travel with the skill.
+4. **`checkpoints/index.json` stayed in `TD-MCP`.** It indexes the `.tox`
+   snapshots physically present in `TD-MCP/checkpoints/`, which remains the
+   bridge's default store when `TD_CHECKPOINTS_DIR` is unset. Removing it would
+   have orphaned them.
+5. **Three tracked `.pyc` files were dropped, not moved**
+   (`scripts/__pycache__/*`, `shader_pipeline/__pycache__/_db.*`). Compiled
+   bytecode should never have been tracked; the new repos gitignore
+   `__pycache__/`.
+6. **Binaries were left in place.** `TD-MCP/toe/` still holds 414 MB of `.toe`
+   files and `tutorials/eTSKz_iiFOY/video.mp4` is still 285 MB on disk, because
+   TouchDesigner may have one of those projects open. Untracked
+   `screenshots/` and `touchdesigner/assets/` copies also remain. These are
+   gitignored everywhere and need a manual move with TD closed.
+
+### Verification performed
+
+Before anything was deleted from `TD-MCP`:
+
+- Every one of the 241 pruned files was SHA256-compared against its copy in the
+  new repos. 227 matched byte-for-byte; 11 were the intentional deletions
+  (`Touchdesigner Cline Workflow/`, `mcp_config.json`); 3 were the dropped
+  `.pyc` files.
+- `CHECKPOINTS_DIR` resolution checked in all three cases from a foreign working
+  directory: unset → bridge directory, relative → working directory, absolute →
+  passthrough.
+- API database loads with `TD_API_DB` unset (87 classes).
+- The server boots over the sibling-relative path from both new repo
+  directories.
+- Test suites pass from their new homes: colormask 27, attention-handoff 34,
+  blobtrack 8, maskcombiner 1.
+- The live TD session was reachable throughout (`list_operators` on
+  `/project1/MCP_Server`).
+
+The bridge fixes only take effect when the MCP host restarts the server; the
+session that made them ran the previous code the whole time.

@@ -1,8 +1,20 @@
-# TD_MCP — project guidance for agents
+# TD-MCP — project guidance for agents
 
-This repo hosts the TouchDesigner MCP bridge. The MCP server (`td-mcp-server/`) talks to a **live, unsaved** TouchDesigner session via an in-TD WebServer DAT on port **9980** (inside `/project1/MCP_Server`). Edits made through the MCP mutate the running project immediately but are not on disk until `project.save()`.
+This repo hosts the TouchDesigner MCP bridge and nothing else. The MCP server
+(`td-mcp-server/`) talks to a **live, unsaved** TouchDesigner session via an in-TD
+WebServer DAT on port **9980** (inside `/project1/MCP_Server`). Edits made through
+the MCP mutate the running project immediately but are not on disk until
+`project.save()`.
 
-Every MCP call is logged to `/project1/MCP_Server/table_mcp_log` (`time | frame | method | uri | label | status`, newest last, capped at 1000, `/health` excluded) — check it to reconstruct what the bridge did and when.
+Project work lives in sibling repos — `../TD_Components` (installation
+components) and `../TD_TutorialScraping` (tutorial rebuild pipeline). Each has
+its own `CLAUDE.md` with project conventions, and its own `.mcp.json` pointing
+back at this bridge. Keep this repo free of project-specific content: if
+something is only true of one installation, it belongs in that project's repo.
+
+Every MCP call is logged to `/project1/MCP_Server/table_mcp_log` (`time | frame |
+method | uri | label | status`, newest last, capped at 1000, `/health` excluded)
+— check it to reconstruct what the bridge did and when.
 
 ---
 
@@ -49,7 +61,7 @@ Putting widgets inside a `containerCOMP` is **not** enough to see them. The pane
 - `comp.viewer = True` (activates the node viewer), and/or `comp.openViewer(unique=True, borders=True)` (floating window), and/or
 - a `windowCOMP` / the Perform window targets it (`/perform.par.winop = <comp>`), and/or it is nested inside a displayed ancestor.
 
-`.viewer` is an **op attribute, not a parameter** — diffing two containers' parameters will NOT reveal why one shows UI and another doesn't. (This cost a whole debugging loop: a widget was correctly parented in `cont_uidemo`, but `cont_uidemo.viewer=False` while `/project1.viewer=True`, so it only appeared nested in `/project1`'s panel.)
+`.viewer` is an **op attribute, not a parameter** — diffing two containers' parameters will NOT reveal why one shows UI and another doesn't.
 
 ### 5. `execute_script` scoping gotcha
 Code runs in a wrapper where nested `def`s can't see top-level names — **recursion and closures over outer locals fail**. Walk trees iteratively (stack/queue), keep helpers inline.
@@ -63,25 +75,20 @@ Code runs in a wrapper where nested `def`s can't see top-level names — **recur
 
 - Bulk-destructive ops (mass delete / containerize / mass param rewrite): `save_checkpoint` on the parent COMP first, and **never combine bulk destroy with force-cook in one script** (freezes TD).
 - **NEVER press the Start/Restart (or any server-control) button on `/project1/MCP_Server`** — it re-inits the WebServer DAT and severs the live MCP bridge mid-task. Editing `webserver1_callbacks` text is safe **only if** you `compile()` the new text first and swap it in one script; a syntax error there kills the bridge on the next request. Build/verify such controls **structurally only**; a real restart is the user's to do at the keyboard.
-- **Network layout: `touchdesigner/LAYOUT.md` is the SINGLE SOURCE OF TRUTH** (with `touchdesigner/layout.json` holding the pinned positions; the Stop hooks apply/check it). Core rules: never move user-placed operators unless explicitly asked; only ops pinned in `layout.json` are managed; to change layout, edit `layout.json` — never ad-hoc node moves. Read LAYOUT.md before any layout work. (Network position ≠ panel `x/y`.)
+- **Network layout is owned by the project repo**, not by this one. Each project keeps `touchdesigner/LAYOUT.md` + `touchdesigner/layout.json`; the Stop hooks in `td-mcp-server/hooks/` read `layout.json` relative to whichever project directory they run in. Core rules regardless of project: never move user-placed operators unless explicitly asked; only pinned ops are managed; change layout by editing `layout.json`, never by ad-hoc node moves. (Network position ≠ panel `x/y`.)
 - Panels can't be screenshotted through this bridge (`take_screenshot` is TOP-only; control panels aren't TOP-renderable). Verify UI numerically/functionally, or ask the user to glance at the viewer.
 
 ---
 
-## Parameter changes go through master controls
+## Checkpoints
 
-"Set \<param\> of \<operator\> to \<value\>" means: add a channel to the `/project1/master_controls` bus and reference it from that operator's parameter — never hardcode the constant. Full convention in `AGENTS.md` ("Parameter Changes Go Through Master Controls").
+`save_checkpoint` writes to `TD_CHECKPOINTS_DIR` when set (relative values resolve
+against the MCP host's working directory), otherwise to this repo's
+`checkpoints/`. Project repos set it so their snapshots stay with the project.
 
-## Component copies, palette, and license
+## The API database
 
-After editing a COMP: propagate to every copy, re-save the master to the My Components palette, and verify a fresh copy refreshes with new input. Reconcile live TD state against last observed state at session start. Non-Commercial license: 1280×1280 TOP cap — tile, don't bypass. Full notes in `AGENTS.md` ("Component Copies & Palette").
-
-## POP attribute math notes
-
-Before adjusting POP point positions with Attribute Combine POP, Math Combine POP, or POP-to-CHOP inspection, read:
-
-```text
-.agents/skills/td-mcp/references/td-pop-attribute-math.md
-```
-
-The current `tile_chain_0_0` displacement is upstream in the POP chain, not inside `circle_point_render`: `attcombine1 -> mathcombine1 -> out1`. `circle_point_render/pop_attrs` now reads `out1` and uses `P Color height brightness`; Z displacement is baked into `P_2`, not driven by the old render-local `PointScale` attempt.
+`td_python_api.json` and `td_operators.json` belong to this repo and are
+regenerated by `scraper/`. `api-validator.js` resolves the database from its own
+directory, so leave `TD_API_DB` unset — a project repo should never point the
+bridge at a different database.

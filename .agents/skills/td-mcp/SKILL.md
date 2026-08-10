@@ -15,7 +15,7 @@ Use this skill when a task will mutate or inspect the live TouchDesigner project
 4. Verify with `get_operator_info`, `get_par_value`, `get_errors`, and TOP screenshots where applicable.
 5. Save again only after verification passes.
 
-Never press or pulse Start, Restart, or other server-control buttons on `/project1/TD_MCP`. Those controls can sever the MCP connection.
+Never press or pulse Start, Restart, or other server-control buttons on `/project1/MCP_Server`. Those controls can sever the MCP connection.
 
 ## References
 
@@ -23,7 +23,6 @@ Never press or pulse Start, Restart, or other server-control buttons on `/projec
 - Read `references/td-container-finish.md` after building or substantially modifying any container COMP, and apply it before the final save. It defines the required finishing pass: a curated custom param tab plus a capped control panel (max 4 buttons/sliders, 1–2 displays).
 - Read `references/live-bridge-safety.md` before destructive edits, checkpointing, save/restore work, or server-control changes.
 - Read `references/expressive-controls.md` before adding controls that should react to tone/image-analysis thresholds.
-- Read `references/shadergrid.md` when the user asks for shader candidate review grids or approval workflow.
 - Read `references/td-pop-attribute-math.md` before editing POP point attributes with Attribute Combine, Math Combine, POP-to-CHOP inspection, or brightness/color-driven point displacement.
 - Read `references/td-crash-recovery.md` when the user reopens TD after a crash, freeze, or restart, or says "reopened td", "we crashed", "check project state".
 - Read `references/td-approval-boundaries.md` when deciding whether to ask for approval on a parameter change or just execute it.
