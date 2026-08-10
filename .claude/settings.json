@@ -1,1 +1,38 @@
-{}
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\",\"additionalContext\":\"TD_MCP reminder: when creating or editing TOPs, set their filter to Nearest Pixel (inputfiltertype=nearest and filtertype=nearest on GLSL/resampling TOPs, not linear/interpolate) so pixel data is preserved with no blur on resize/sampling - matters for masks, label fields, and small bright markers.\"}}'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/td-mcp-server/hooks/reorganize.mjs\"",
+            "timeout": 15,
+            "statusMessage": "Reorganizing TD network layout (left→right)"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/td-mcp-server/hooks/check-wires.mjs\"",
+            "timeout": 15,
+            "statusMessage": "Checking TD wires run left→right"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/td-mcp-server/hooks/check-errors.mjs\"",
+            "timeout": 15,
+            "statusMessage": "Checking TD network for new live op errors"
+          }
+        ]
+      }
+    ]
+  }
+}
