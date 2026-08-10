@@ -1,6 +1,8 @@
 # TD_MCP — project guidance for agents
 
-This repo hosts the TouchDesigner MCP bridge. The MCP server (`td-mcp-server/`) talks to a **live, unsaved** TouchDesigner session via an in-TD WebServer DAT on port **9980** (inside `/project1/TD_MCP`). Edits made through the MCP mutate the running project immediately but are not on disk until `project.save()`.
+This repo hosts the TouchDesigner MCP bridge. The MCP server (`td-mcp-server/`) talks to a **live, unsaved** TouchDesigner session via an in-TD WebServer DAT on port **9980** (inside `/project1/MCP_Server`). Edits made through the MCP mutate the running project immediately but are not on disk until `project.save()`.
+
+Every MCP call is logged to `/project1/MCP_Server/table_mcp_log` (`time | frame | method | uri | label | status`, newest last, capped at 1000, `/health` excluded) — check it to reconstruct what the bridge did and when.
 
 ---
 
@@ -60,11 +62,19 @@ Code runs in a wrapper where nested `def`s can't see top-level names — **recur
 3. Only **after** verification passes: `project.save()` again.
 
 - Bulk-destructive ops (mass delete / containerize / mass param rewrite): `save_checkpoint` on the parent COMP first, and **never combine bulk destroy with force-cook in one script** (freezes TD).
-- **NEVER press the Start/Restart (or any server-control) button on `/project1/TD_MCP`** — it re-inits the WebServer DAT and severs the live MCP bridge mid-task. Build/verify such controls **structurally only**; a real restart is the user's to do at the keyboard.
-- New disconnected/top-level COMPs: set `nodeX/nodeY` far from the existing node cluster so the patch stays readable. (Network position ≠ panel `x/y`.)
+- **NEVER press the Start/Restart (or any server-control) button on `/project1/MCP_Server`** — it re-inits the WebServer DAT and severs the live MCP bridge mid-task. Editing `webserver1_callbacks` text is safe **only if** you `compile()` the new text first and swap it in one script; a syntax error there kills the bridge on the next request. Build/verify such controls **structurally only**; a real restart is the user's to do at the keyboard.
+- **Network layout: `touchdesigner/LAYOUT.md` is the SINGLE SOURCE OF TRUTH** (with `touchdesigner/layout.json` holding the pinned positions; the Stop hooks apply/check it). Core rules: never move user-placed operators unless explicitly asked; only ops pinned in `layout.json` are managed; to change layout, edit `layout.json` — never ad-hoc node moves. Read LAYOUT.md before any layout work. (Network position ≠ panel `x/y`.)
 - Panels can't be screenshotted through this bridge (`take_screenshot` is TOP-only; control panels aren't TOP-renderable). Verify UI numerically/functionally, or ask the user to glance at the viewer.
 
 ---
+
+## Parameter changes go through master controls
+
+"Set \<param\> of \<operator\> to \<value\>" means: add a channel to the `/project1/master_controls` bus and reference it from that operator's parameter — never hardcode the constant. Full convention in `AGENTS.md` ("Parameter Changes Go Through Master Controls").
+
+## Component copies, palette, and license
+
+After editing a COMP: propagate to every copy, re-save the master to the My Components palette, and verify a fresh copy refreshes with new input. Reconcile live TD state against last observed state at session start. Non-Commercial license: 1280×1280 TOP cap — tile, don't bypass. Full notes in `AGENTS.md` ("Component Copies & Palette").
 
 ## POP attribute math notes
 

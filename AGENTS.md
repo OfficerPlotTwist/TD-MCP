@@ -19,6 +19,10 @@ Edits made through MCP mutate the running TouchDesigner project immediately. The
 
 - Pull a Null operator (`nullCHOP`, `nullTOP`, `nullDAT`, etc.) off the end of each logical subsection of the network, and reference that Null downstream instead of reaching into the subsection's internals. This gives a stable tap/pull point: you can rewire or rebuild the subsection behind the Null without touching every consumer, and the Null is the obvious place to probe values during debugging. Do this often — after control buses, after a generator stage, after any cluster whose output other parts depend on. Example in this project: `key_vals` (Constant CHOP, editable) → `key_vals_null` (the shared pull point that the ramp key tables reference).
 
+## Parameter Changes Go Through Master Controls
+
+- When the user says "set \<param\> of \<operator\> to \<value\>", that means: **add a new channel to the master control comp (`/project1/master_controls` bus) carrying that value, and make the operator's parameter reference that channel** (expression/export, e.g. `op('/project1/master_controls')['chan_name']`) — do NOT hardcode the constant on the operator's parameter. This keeps every tunable value on the central control bus where it can be monitored, overridden, and driven live.
+
 ## UI In TouchDesigner
 
 - Use Basic Widgets palette components for UI, not bare `sliderCOMP` or `buttonCOMP`.
@@ -34,6 +38,13 @@ Edits made through MCP mutate the running TouchDesigner project immediately. The
 - `execute_script` runs code in a wrapper where nested functions cannot reliably close over top-level locals.
 - Prefer iterative tree walks with explicit stacks or queues inside TouchDesigner scripts.
 - When creating controls meant to react to image-analysis or tone thresholds, route them through `/project1/null_expressive` rather than hardwiring values.
+
+## Component Copies & Palette (from Aug 2026 session audit)
+
+- After editing a COMP, apply the same change to **every existing copy** in the project AND re-save the master over the component in the **My Components** palette. Then verify a fresh copy actually refreshes when a new input is plugged in — copies have silently kept stale internals before.
+- At session start or after any gap, diff live TD project state against the last recorded/observed state and repair drift before acting.
+- When rebuilding a network from a video/reference, mirror the source's **spatial layout** (not auto-column placement), and distinguish purple data wires from gray dotted parameter-reference lines — they are not interchangeable.
+- License is **Non-Commercial**: hard 1280×1280 TOP resolution cap. Design around it with tiling; never propose bypasses.
 
 ## Codex Skill
 

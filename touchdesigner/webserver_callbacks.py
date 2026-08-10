@@ -15,6 +15,9 @@ Setup:
   2. Create a Text DAT, paste this script into it
   3. Set the WebServer DAT's Callbacks DAT to point to this Text DAT
   4. Create an Error DAT (name it 'error1') to capture Python errors
+  5. Create a Table DAT (name it 'table_mcp_log') — every MCP call is logged
+     to it as: time | frame | method | uri | label | status. /health keepalives
+     are excluded. Capped at the most recent 1000 entries.
 """
 
 import json
@@ -23,6 +26,54 @@ import sys
 
 
 def onHTTPRequest(webServerDAT, request, response):
+    """Log every MCP call to table_mcp_log, then dispatch to the endpoint handler."""
+    resp = _dispatch(webServerDAT, request, response)
+    _log_call(request, resp)
+    return resp
+
+
+def _log_call(request, response):
+    """Append one row per MCP call to table_mcp_log. Must NEVER raise."""
+    try:
+        log = op('table_mcp_log')
+        if log is None:
+            return
+        uri = request.get('uri', '')
+        if uri == '/health':
+            return  # bridge keepalive, not a tool call
+        method = request.get('method', '')
+        label = ''
+        if uri == '/execute':
+            try:
+                body = request.get('data', b'')
+                if isinstance(body, bytes):
+                    body = body.decode('utf-8')
+                label = json.loads(body).get('undo_label', '')
+            except Exception:
+                label = '<unparsed>'
+        import datetime
+        if log.numRows == 0:
+            log.appendRow(['time', 'frame', 'method', 'uri', 'label', 'status'])
+        status = ''
+        try:
+            status = str(response.get('statusCode', ''))
+        except Exception:
+            pass
+        log.appendRow([
+            datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            str(int(absTime.frame)),
+            method,
+            uri,
+            label,
+            status,
+        ])
+        while log.numRows > 1001:
+            log.deleteRow(1)
+    except Exception:
+        pass
+
+
+def _dispatch(webServerDAT, request, response):
     """Handle incoming HTTP requests from the MCP server."""
     uri = request['uri']
     method = request['method']
