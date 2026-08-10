@@ -15,7 +15,9 @@ bridge's 9980; 8899 is mask combiner), and the container's own panel displays
 it — `webrender1` (Web Render TOP) is the container's Background TOP, with
 `panelexec1` / `keyboardin1` forwarding mouse and keys (flattened from the
 palette webBrowser component; its `parent.WebBrowser` binds were stripped to
-constants, which is required or CEF never starts). Open the container's viewer
+constants AND their `bindExpr` strings cleared — mode alone is not enough, the
+stored string still evaluates in the param-dialog UI and shows a live error
+badge; constants are required or CEF never starts). Open the container's viewer
 to use it inside TD, or open the URL in any external browser. The container's
 `Reload App` custom pulse par restarts the embedded browser.
 
