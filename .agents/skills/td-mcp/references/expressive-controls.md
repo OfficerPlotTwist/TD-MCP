@@ -1,21 +1,7 @@
-# Expressive Controls
+# Optional shared controls
 
-An Expressive control is a project control meant to react to the image-analysis or tone pipeline crossing a threshold. Tone rules live in `td-mcp-server/tone-rules.json` and can be inspected through MCP tone tools.
+Tone tools analyze explicitly supplied row/column CHOP paths and return rule matches. A rule's `skill` field is a descriptive action label, not an installed or automatically executed agent skill.
 
-Route Expressive controls through the single aggregating CHOP:
+For projects that need image-driven controls, use a role-named Null CHOP as the stable shared handoff and drive target parameters by expression or binding to its semantic channels. Discover or create the handoff within the relevant project component; no global path is required. Keep fixed/manual controls fixed unless the task calls for analysis-driven behavior.
 
-```python
-op('/project1/null_expressive')
-```
-
-Do not hardwire these parameter values directly on target operators. Drive target parameters by expression or binding to a channel on `/project1/null_expressive`.
-
-Example:
-
-```python
-t.par.X.expr = "op('/project1/null_expressive')['feedbackbloom_threshold']"
-```
-
-Name channels by the purpose of the operator-tree subsection they drive, not the raw operator or parameter name. For example, prefer `feedbackbloom_threshold` for a feedback bloom threshold control.
-
-Bias inclusive: when unsure whether a control is Expressive, route it through `null_expressive`. Over-routing is easier to undo than discovering later that tone-driven behavior bypasses the shared control path.
+Tone rules are optional. Copy the generic bundled rules to an ignored local file and select it with `TD_TONE_RULES` before customizing; the bridge does not require an analysis network.

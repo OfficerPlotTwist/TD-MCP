@@ -1,7 +1,7 @@
 /**
  * TouchDesigner MCP Server
  * ========================
- * Bridges AI agents (Antigravity/Gemini) to TouchDesigner via WebServer DAT.
+ * Bridges MCP clients to TouchDesigner via WebServer DAT.
  *
  * Transport: stdio (spawned by the AI host)
  * Bridge:    HTTP → TD WebServer DAT (localhost:9980)
@@ -27,7 +27,7 @@ import * as api from "./api-validator.js";
 import * as ckpt from "./checkpoints.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const RULES_PATH = join(__dirname, "tone-rules.json");
+const RULES_PATH = process.env.TD_TONE_RULES || join(__dirname, "tone-rules.json");
 
 function loadRules() {
   return JSON.parse(readFileSync(RULES_PATH, "utf-8"));
@@ -53,16 +53,12 @@ const server = new McpServer(
     instructions: [
       "This server bridges to a live, unsaved TouchDesigner session. Edits made via execute_script / set_par_value / create_operator mutate the running project immediately but are NOT persisted to the .toe on disk until the project is saved.",
       "",
-      "Project save discipline (follow this around every editing task):",
-      "1. BEFORE you make the first mutating edit of a task, save the open project so there is a known-good restore point on disk:",
-      "     execute_script(\"project.save()\")",
-      "   (For a non-destructive snapshot, use project.saveBackup() which writes a timestamped copy without overwriting the live .toe.)",
-      "2. Make the scoped changes.",
-      "3. VERIFY the changes are complete and correct (get_operator_info / get_par_value / get_errors / take_screenshot as appropriate).",
-      "4. ONLY AFTER verification passes, save again to persist the finished work:",
-      "     execute_script(\"project.save()\")",
-      "   If verification fails, do NOT save over the good state — fix or revert first.",
-      "",
+      "Project save discipline: before editing, save a new unused versioned project path or checkpoint the affected COMP. Preserve all previous restore points.",
+      "Use project.folder for project saves; do not assume a local project directory. project.saveBackup() is unavailable in some TD builds.",
+      "After scoped edits, verify operator state, parameter values, errors, and relevant TOP screenshots; then save another unused versioned file.",
+      "Read project.name and check the actual saved filename: TD can increment explicit filename suffixes.",
+      "Never restart, deactivate, destroy, or replace the bridge serving this connection through MCP. Inspect server controls structurally only.",
+      "A timeout does not prove a script failed; reconnect and inspect state before retrying a mutation.",
       "For bulk-destructive operations (mass delete, containerize, mass param rewrite), additionally use save_checkpoint on the parent COMP before the destructive step, and never combine bulk destroy with force-cook in one script (it can freeze TD).",
     ].join("\n"),
   }
@@ -158,7 +154,7 @@ server.tool(
       .describe("Optional name for the new operator"),
   },
   async ({ parent_path, op_type, name }) => {
-    let script = `parent = op('${parent_path}')\n`;
+    let script = `parent = op(${JSON.stringify(parent_path)})\n`;
     script += `new_op = parent.create(${JSON.stringify(op_type)}`;
     if (name) script += `, ${JSON.stringify(name)}`;
     script += `)\n`;
@@ -178,7 +174,7 @@ server.tool(
     path: z.string().describe("Path to the operator to delete"),
   },
   async ({ path }) => {
-    const script = `op('${path}').destroy()\nprint('deleted ${path}')\n`;
+    const script = `op(${JSON.stringify(path)}).destroy()\nprint(${JSON.stringify('deleted ' + path)})\n`;
     const result = await bridge.executeScript(script, `Delete ${path}`);
     return {
       content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
@@ -205,7 +201,7 @@ server.tool(
   async ({ source, target, source_index, target_index }) => {
     const si = source_index ?? 0;
     const ti = target_index ?? 0;
-    const script = `op('${source}').outputConnectors[${si}].connect(op('${target}').inputConnectors[${ti}])\nprint('connected ${source}[${si}] -> ${target}[${ti}]')\n`;
+    const script = `op(${JSON.stringify(source)}).outputConnectors[${si}].connect(op(${JSON.stringify(target)}).inputConnectors[${ti}])\nprint(${JSON.stringify(`${source}[${si}] -> ${target}[${ti}]`)})\n`;
     const result = await bridge.executeScript(
       script,
       `Connect ${source} → ${target}`
@@ -232,7 +228,7 @@ server.tool(
   },
   async ({ path, connector_index, is_input }) => {
     const dir = is_input !== false ? "inputConnectors" : "outputConnectors";
-    const script = `op('${path}').${dir}[${connector_index}].disconnect()\nprint('disconnected ${path} ${dir}[${connector_index}]')\n`;
+    const script = `op(${JSON.stringify(path)}).${dir}[${connector_index}].disconnect()\nprint(${JSON.stringify(`disconnected ${path} ${dir}[${connector_index}]`)})\n`;
     const result = await bridge.executeScript(script, `Disconnect ${path}`);
     return {
       content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
@@ -250,7 +246,7 @@ server.tool(
   async ({ path }) => {
     const script = `
 import json
-o = op('${path}')
+o = op(${JSON.stringify(path)})
 info = {
     'path': o.path,
     'name': o.name,
@@ -280,7 +276,7 @@ server.tool(
   async ({ path }) => {
     const script = `
 import json
-parent = op('${path}')
+parent = op(${JSON.stringify(path)})
 children = [{'name': c.name, 'path': c.path, 'type': c.OPType, 'family': c.family} for c in parent.children]
 print(json.dumps(children, indent=2))
 `;
@@ -300,7 +296,7 @@ server.tool(
     par_name: z.string().describe("Parameter name"),
   },
   async ({ path, par_name }) => {
-    const script = `print(op('${path}').par.${par_name}.val)\n`;
+    const script = `print(getattr(op(${JSON.stringify(path)}).par, ${JSON.stringify(par_name)}).val)\n`;
     const result = await bridge.executeScript(script, "Get parameter");
     return {
       content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
@@ -318,13 +314,17 @@ server.tool(
     value: z.string().describe("New value for the parameter (as a string)"),
   },
   async ({ path, par_name, value }) => {
-    // Try to set as number if possible, otherwise string
+    // Values are data, not arbitrary Python expressions. Use execute_script for code.
     const script = `
+import ast
+raw_value = ${JSON.stringify(value)}
 try:
-    op('${path}').par.${par_name}.val = ${value}
-except:
-    op('${path}').par.${par_name}.val = ${JSON.stringify(value)}
-print(op('${path}').par.${par_name}.val)
+    value = ast.literal_eval(raw_value)
+except (ValueError, SyntaxError):
+    value = raw_value
+parameter = getattr(op(${JSON.stringify(path)}).par, ${JSON.stringify(par_name)})
+parameter.val = value
+print(parameter.val)
 `;
     const result = await bridge.executeScript(
       script,
@@ -447,7 +447,7 @@ server.tool(
     save_dir: z
       .string()
       .optional()
-      .describe("Directory to save screenshots on the TD machine (default: C:/Users/nik/Documents/AI/MCP/TD MCP/screenshots)"),
+      .describe("Directory to save screenshots on the TD machine (default: temporary td-mcp/screenshots directory on the TD machine)"),
   },
   async ({ op_path, save_dir }) => {
     const result = await bridge.takeScreenshot(

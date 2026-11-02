@@ -1,27 +1,11 @@
-# Live Bridge Safety
+# Live bridge safety
 
-The TD MCP bridge mutates a live, usually unsaved TouchDesigner session. Changes are immediate in memory but are not durable until `project.save()` runs.
+Follow the save/edit/verify/save discipline in `AGENTS.md`. Create a new unused project file or a COMP checkpoint before mutation, preserving existing restore points. Do not assume `project.saveBackup()` exists. Verify the actual save path because TD may increment explicit filenames.
 
-Before the first mutating edit in a task, run:
+Use `save_checkpoint(name='pre_change', op_path='<affected COMP>', description='Before scoped change')` before bulk edits. The Node host and TD must share access to the checkpoint directory. A COMP snapshot omits unrelated project/global settings.
 
-```python
-project.save()
-```
+Never restart/deactivate/replace the serving WebServer DAT through MCP. Never combine bulk destroy with force-cook. Keep changes small and inspect errors and TOP output before saving a finished version.
 
-For experiments, bulk destructive work, containerization, or mass parameter rewrites, save a checkpoint on the parent COMP first with the MCP `save_checkpoint` tool.
+New callback source executes scripts with one request-local namespace so nested functions resolve script imports and variables. An older installed callback may retain the separate-scope bug: use iterative walks or explicitly passed variables there. `COMP.children` is a list.
 
-After edits:
-
-1. Check recent errors with `get_errors`.
-2. Inspect changed operators with `get_operator_info`.
-3. Inspect important parameters with `get_par_value`.
-4. Capture relevant TOP output with `take_screenshot` when the visual result is TOP-renderable.
-5. Run `project.save()` only after verification passes.
-
-Do not combine bulk destruction with force-cooking in the same script. This can freeze TouchDesigner.
-
-Never activate Start, Restart, or server-control buttons on `/project1/TD_MCP`; doing so can reinitialize the WebServer DAT and disconnect the MCP bridge mid-task. It is acceptable to create or inspect those controls structurally.
-
-When creating new disconnected or top-level COMPs, set `nodeX` and `nodeY` away from the existing network cluster so the patch remains readable. Network position is not panel position.
-
-`execute_script` scoping gotcha: scripts run in a wrapper where nested functions cannot reliably see top-level locals. Avoid recursion and closures over outer locals. Prefer iterative tree walks with explicit stacks or queues.
+A timeout is not a rollback. Check the live project/operator state before retrying any mutation. Report disk evidence separately from live verification.

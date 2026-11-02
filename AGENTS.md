@@ -1,36 +1,36 @@
-# TD MCP Project Guidance
+# TD MCP agent guidance
 
-This repo hosts the TouchDesigner MCP bridge. The MCP server in `td-mcp-server/` talks to a live, usually unsaved TouchDesigner session through the in-TD WebServer DAT on port `9980`, inside `/project1/TD_MCP`.
+This repository provides a general-purpose stdio MCP server and a portable TouchDesigner WebServer DAT component. It does not require a particular creative project, controller, AI provider, external account, or local workflow manager.
 
-Edits made through MCP mutate the running TouchDesigner project immediately. They are not durable on disk until `project.save()` runs.
+Read `.agents/skills/td-mcp/SKILL.md` for live work and `docs/SESSION_LEARNINGS.md` for session-derived troubleshooting. Repository code and an installed live component can differ; inspect the running callbacks before assuming a source edit is deployed.
 
-## TouchDesigner MCP Discipline
+## Live bridge discipline
 
-- Before the first mutating TouchDesigner edit in a task, run `execute_script("project.save()")` or save a checkpoint for a known restore point.
-- Make scoped changes, then verify with `get_operator_info`, `get_par_value`, `get_errors`, and TOP screenshots when relevant.
-- After verification passes, run `execute_script("project.save()")` again.
-- For bulk destructive work, save a checkpoint on the parent COMP first.
-- Never combine bulk destroy operations with force-cooking in one script; this can freeze TouchDesigner.
-- Never press Start, Restart, or other server-control buttons on `/project1/TD_MCP`; that can reinitialize the WebServer DAT and sever the live MCP bridge.
-- Build or verify server controls structurally only. A real restart is the user's action at the keyboard.
-- Place new disconnected or top-level COMPs away from the existing node cluster with `nodeX` and `nodeY` so the network stays readable.
+- Use MCP for live edits and inspection. First confirm the intended project and bridge with a read-only request. Example operator paths are illustrative; discover actual paths.
+- Before mutating, create a known restore point: checkpoint the affected COMP or save to a NEW unused versioned project path. Never overwrite the last known-good project. Before bulk destruction, checkpoint the parent COMP.
+- Make scoped edits, verify with `get_operator_info`, `get_par_value`, `get_errors`, and relevant TOP screenshots, then save a new unused version. A COMP checkpoint is not a whole-project save.
+- Derive project destinations from `project.folder` or explicit user configuration. `project.saveBackup()` is absent in some builds. TouchDesigner may increment even an explicit filename: verify `project.name` and actual file existence after every save.
+- Never pulse Start/Restart or deactivate, replace, or destroy the serving bridge through its own connection. Inspect controls structurally. The operator activates or restarts the server outside MCP.
+- A timeout has an unknown mutation outcome. Reconnect and inspect before retrying; a listening port alone does not establish bridge health.
+- Never combine bulk destruction and force-cooking in one script. Keep long GPU jobs bounded, checkpoint between stages, and preserve existing unsaved work.
+- Place new disconnected COMPs away from existing nodes with `nodeX`/`nodeY`.
 
-## UI In TouchDesigner
+## Network conventions learned in practice
 
-- Use Basic Widgets palette components for UI, not bare `sliderCOMP` or `buttonCOMP`.
-- Derive the Basic Widgets path at runtime from `app.installFolder`; do not hardcode a TouchDesigner install version.
-- Instantiate widgets programmatically with `loadTox`, then copy out the native `widget` operator from the temporary holder.
-- Panel coordinates use bottom-left origin. A missing widget is often at `(0, 0)`.
-- A container only shows its panel UI when its panel is displayed, for example through `comp.viewer = True`, `openViewer`, a `windowCOMP`, the Perform window, or a displayed ancestor.
-- `viewer` is an operator attribute, not a parameter.
-- `take_screenshot` captures TOP output only; it cannot directly screenshot panels.
+- Use role-named Null operators at meaningful branch boundaries, before composites/shared effects, and before paths referenced by expressions, exports, lookups, or driver parameters.
+- For generated TOPs, set `filtertype` and `inputfiltertype` to `nearest` wherever supported, unless the task requests interpolation. This is an authoring convention, not a requirement for the bridge.
+- For UI, prefer Basic Widgets palette components over bare slider/button COMPs. Resolve palette paths from `app.installFolder`; load into a temporary holder and copy the native `widget` out.
+- Panel coordinates start at bottom-left. `viewer` is an operator attribute. A panel needs a displayed ancestor/viewer/window to be visible. TOP screenshots do not capture arbitrary panels.
+- Verify runtime menu values, parameter existence, and sequence block counts instead of assuming another TD build's API. `COMP.children` is a list, not a function.
+- Older callback deployments used separate `exec` scopes, breaking nested functions that reference script variables/imports. This source uses one isolated namespace per request; prefer iterative walks for compatibility with older deployments.
+- Tone analysis and shared control Nulls are optional project patterns. Discover or create a scoped handoff with user intent; never require a fixed `/project1/null_expressive` path.
 
-## Scripting Gotchas
+## Save names and verification
 
-- `execute_script` runs code in a wrapper where nested functions cannot reliably close over top-level locals.
-- Prefer iterative tree walks with explicit stacks or queues inside TouchDesigner scripts.
-- When creating controls meant to react to image-analysis or tone thresholds, route them through `/project1/null_expressive` rather than hardwiring values.
+Use short semantic component/project filenames such as `role.variant.vN.YYYYMMDD.tox` and `role.vN.YYYYMMDD.toe`, with the actual local date and an unused revision. Keep live operator paths stable. Do not assume a numeric suffix remains unchanged after a TD project save.
 
-## Codex Skill
+Source inspection, automated tests, live operator inspection, rendered visual inspection, and physical hardware tests are separate evidence. State which was actually performed. Save standalone review images when requested so review does not require rerunning processing. Preserve unresolved human choices; background task completion is not approval.
 
-Use the repo-local `$td-mcp` skill for deeper TouchDesigner MCP workflows, including widget creation patterns, expressive-control conventions, shader review grids, and conversion notes from the previous Claude setup.
+## Repository scope
+
+Keep bridge source, generic setup, API snapshots/scrapers, tests, and reusable agent lessons tracked. Keep project binaries, screenshots/renders, checkpoints, creative scripts/pipelines, private host settings, and workflow hooks local and ignored. Keep the npm lockfile tracked. Never delete local project work to clean the repository; use index-only removal. Git ignore rules do not remove old files from Git history.

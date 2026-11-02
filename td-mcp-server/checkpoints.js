@@ -6,11 +6,11 @@
  */
 
 import { readFileSync, writeFileSync, mkdirSync, existsSync, unlinkSync } from "fs";
-import { join, dirname } from "path";
+import { join, dirname, resolve } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-export const CHECKPOINTS_DIR = join(__dirname, "..", "checkpoints");
+export const CHECKPOINTS_DIR = resolve(process.env.TD_CHECKPOINTS_DIR || join(__dirname, "..", "checkpoints"));
 const INDEX_PATH = join(CHECKPOINTS_DIR, "index.json");
 
 function ensureDir() {
@@ -74,50 +74,50 @@ export function removeCheckpoint(name) {
   return entry;
 }
 
-/** Build the Python script that saves a COMP as a .tox file. */
+// JSON string literals are also valid Python string literals, including escaped quotes.
+const pyString = (value) => JSON.stringify(value);
+
+/** Build a COMP snapshot script without interpolating executable path text. */
 export function buildSaveScript(opPath, toxPath) {
-  // Use raw string to avoid backslash issues in Python
-  const safeToxPath = toxPath.replace(/\\/g, "/");
-  return `\
-import os
-tox_path = '${safeToxPath}'
-os.makedirs(os.path.dirname(tox_path), exist_ok=True)
-o = op('${opPath}')
+  return `import os
+tox_path = ${pyString(toxPath.replace(/\\/g, "/"))}
+o = op(${pyString(opPath)})
 if o is None:
-    print('ERROR: operator not found: ${opPath}')
-elif o.family not in ('COMP',):
-    o.save(tox_path)
-    print('saved:' + tox_path)
-else:
-    o.save(tox_path)
-    print('saved:' + tox_path)
+    raise ValueError('Operator not found')
+if o.family != 'COMP':
+    raise ValueError('Checkpoint target must be a COMP')
+os.makedirs(os.path.dirname(tox_path), exist_ok=True)
+o.save(tox_path)
+if not os.path.isfile(tox_path):
+    raise RuntimeError('Checkpoint file was not written to the requested path')
+print('saved:' + tox_path)
 `;
 }
 
-/** Build the Python script that restores a .tox into the parent of op_path. */
+/** Load and validate a snapshot before destroying the existing target. */
 export function buildRestoreScript(opPath, toxPath) {
-  const safeToxPath = toxPath.replace(/\\/g, "/");
-  // Derive parent path: '/project1/myComp' → '/project1'
+  if (opPath === "/" || !opPath.startsWith("/") || opPath.endsWith("/")) {
+    throw new Error("Checkpoint restore requires a non-root absolute operator path");
+  }
   const parentPath = opPath.substring(0, opPath.lastIndexOf("/")) || "/";
-  return `\
-import os
-tox_path = '${safeToxPath}'
-op_path = '${opPath}'
-parent_path = '${parentPath}'
-if not os.path.exists(tox_path):
-    print('ERROR: checkpoint file not found: ' + tox_path)
-else:
-    existing = op(op_path)
-    if existing:
-        existing.destroy()
-    parent = op(parent_path)
-    if parent is None:
-        print('ERROR: parent not found: ${parentPath}')
-    else:
-        new_comp = parent.loadTox(tox_path)
-        if new_comp:
-            print('restored:' + new_comp.path)
-        else:
-            print('ERROR: loadTox returned None')
+  const name = opPath.substring(opPath.lastIndexOf("/") + 1);
+  return `import os
+tox_path = ${pyString(toxPath.replace(/\\/g, "/"))}
+op_path = ${pyString(opPath)}
+parent_path = ${pyString(parentPath)}
+if not os.path.isfile(tox_path):
+    raise ValueError('Checkpoint file not found')
+parent = op(parent_path)
+if parent is None:
+    raise ValueError('Checkpoint parent not found')
+existing = op(op_path)
+# Load first: an unreadable snapshot must not destroy the current network.
+new_comp = parent.loadTox(tox_path)
+if new_comp is None:
+    raise RuntimeError('loadTox returned None')
+if existing:
+    existing.destroy()
+new_comp.name = ${pyString(name)}
+print('restored:' + new_comp.path)
 `;
 }

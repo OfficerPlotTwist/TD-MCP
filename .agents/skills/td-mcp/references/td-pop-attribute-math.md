@@ -7,7 +7,7 @@ Use this note when editing POP point attributes with native POP operators, espec
 - Save the TouchDesigner project before mutating the live network.
 - Prefer changing parameters on existing POPs when the user has selected or named them.
 - Verify with a `poptoCHOP` or existing CHOP export by checking numeric channel ranges, especially `P_0`, `P_1`, and `P_2`.
-- If a requested scalar attribute such as `brightness` is all zero, do not assume it is the useful signal. Inspect `Color_0`, `Color_1`, `Color_2`, and `Color_3`; in this project the usable brightness-like value was often `Color.rgb`.
+- If a requested scalar attribute such as `brightness` is all zero, do not assume it is the useful signal. Inspect `Color_0`, `Color_1`, `Color_2`, and `Color_3`; inspect whether the useful brightness signal is `Color.rgb`.
 - Do not add Script CHOPs or Python-generated attributes for POP displacement unless explicitly requested.
 
 ## Native Z Displacement Pattern
@@ -28,7 +28,7 @@ P.z = P.z + avg(height.rgb) * z_amount
 
 ## Attribute Combine POP Settings
 
-For the current `tile_chain_0_0` pattern:
+Example attribute settings (verify parameter names on the installed build):
 
 ```text
 attrclass              point
@@ -107,7 +107,7 @@ height_0 height_1 height_2 ranges
 Color_0 Color_1 Color_2 ranges
 ```
 
-Expected for the current setup:
+Example expected values when z_amount is 0.035:
 
 ```text
 P_2 range: 0.0 .. 0.035
@@ -122,54 +122,3 @@ If `P_2` remains `0.0 .. 0.0`, check these first:
 - `vec0type` is `float3`, not `float`.
 - `comb2result` is `P`.
 - The final `outPOP` is fed by the `Math Combine POP`, not by the pre-displacement POP.
-
-## Current Network State From This Session
-
-Current live output path:
-
-```text
-/project1/resolution_hacking/tile_chain_0_0/attcombine1
-  -> /project1/resolution_hacking/tile_chain_0_0/mathcombine1
-  -> /project1/resolution_hacking/tile_chain_0_0/out1
-```
-
-Current render attribute reader:
-
-```text
-/project1/resolution_hacking/tile_chain_0_0/circle_point_render/pop_attrs
-```
-
-It now points to:
-
-```text
-/project1/resolution_hacking/tile_chain_0_0/out1
-```
-
-and uses:
-
-```text
-attribscope = P Color height brightness
-```
-
-`geo_instanced_circles` uses `P_0`, `P_1`, and `P_2` for instance translation. Its previous `PointScale` Z-scale reference was cleared because displacement is now baked into `P`.
-
-## Difference From The Earlier `circle_point_render` Attempt
-
-The earlier attempt inside `circle_point_render` built a separate render-local POP/CHOP path:
-
-```text
-pop_pointscale_from_color
-probe_pointscale_chop
-inst_attrs_zscale
-pointscale_from_color_native
-lookup_point_brightness
-```
-
-That approach differed from the current state in several ways:
-
-- It tried to drive instance Z scale through a generated `PointScale`/`zscale` channel.
-- It was partly outside the main POP chain and depended on `pop_attrs` reading a derived branch.
-- It included a Script CHOP path at one point, which the user rejected.
-- It did not actually move POP point positions; it only attempted to scale rendered instances.
-
-The current state does not rely on that render-local branch. The point positions are changed upstream in `tile_chain_0_0` before `out1`, and render consumers read the displaced `P_2` directly.

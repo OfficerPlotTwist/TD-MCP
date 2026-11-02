@@ -5,9 +5,24 @@
  * The WebServer DAT listens on TD_HOST:TD_PORT (default localhost:9980).
  */
 
-const TD_HOST = process.env.TD_HOST || "localhost";
+const TD_HOST = process.env.TD_HOST || "127.0.0.1";
 const TD_PORT = process.env.TD_PORT || "9980";
 const BASE_URL = `http://${TD_HOST}:${TD_PORT}`;
+const REQUEST_TIMEOUT_MS = Number(process.env.TD_TIMEOUT_MS || 30000);
+if (!Number.isFinite(REQUEST_TIMEOUT_MS) || REQUEST_TIMEOUT_MS <= 0) {
+  throw new Error("TD_TIMEOUT_MS must be a positive number");
+}
+
+async function request(url, options = {}) {
+  try {
+    return await fetch(url, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS), ...options });
+  } catch (error) {
+    if (error.name === "TimeoutError") {
+      throw new Error("TD request timed out; execution may still have completed. Inspect live state before retrying.", { cause: error });
+    }
+    throw error;
+  }
+}
 
 /**
  * POST a script to TD for execution.
@@ -17,7 +32,7 @@ const BASE_URL = `http://${TD_HOST}:${TD_PORT}`;
  */
 export async function executeScript(script, undoLabel = "MCP Script") {
   const payload = JSON.stringify({ script, undo_label: undoLabel });
-  const resp = await fetch(`${BASE_URL}/execute`, {
+  const resp = await request(`${BASE_URL}/execute`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: payload,
@@ -33,7 +48,7 @@ export async function executeScript(script, undoLabel = "MCP Script") {
  * @returns {{ errors: Array<{type: string, absFrame: string, text: string}> }}
  */
 export async function getErrors() {
-  const resp = await fetch(`${BASE_URL}/errors`);
+  const resp = await request(`${BASE_URL}/errors`);
   if (!resp.ok) {
     throw new Error(`TD returned ${resp.status}: ${await resp.text()}`);
   }
@@ -46,7 +61,7 @@ export async function getErrors() {
  * @returns {{ name, type, pars, inputs, outputs, children }}
  */
 export async function getOperatorInfo(path) {
-  const resp = await fetch(
+  const resp = await request(
     `${BASE_URL}/operator?path=${encodeURIComponent(path)}`
   );
   if (!resp.ok) {
@@ -63,7 +78,7 @@ export async function getOperatorInfo(path) {
  */
 export async function getImageStats(rowsChop, colsChop) {
   const url = `${BASE_URL}/image_stats?rows_chop=${encodeURIComponent(rowsChop)}&cols_chop=${encodeURIComponent(colsChop)}`;
-  const resp = await fetch(url);
+  const resp = await request(url);
   if (!resp.ok) {
     throw new Error(`TD returned ${resp.status}: ${await resp.text()}`);
   }
@@ -79,7 +94,7 @@ export async function getImageStats(rowsChop, colsChop) {
 export async function takeScreenshot(opPath, saveDir) {
   let url = `${BASE_URL}/screenshot?path=${encodeURIComponent(opPath)}`;
   if (saveDir) url += `&save_dir=${encodeURIComponent(saveDir)}`;
-  const resp = await fetch(url);
+  const resp = await request(url);
   if (!resp.ok) {
     throw new Error(`TD returned ${resp.status}: ${await resp.text()}`);
   }
@@ -92,7 +107,7 @@ export async function takeScreenshot(opPath, saveDir) {
  */
 export async function isConnected() {
   try {
-    const resp = await fetch(`${BASE_URL}/health`, { signal: AbortSignal.timeout(2000) });
+    const resp = await request(`${BASE_URL}/health`, { signal: AbortSignal.timeout(2000) });
     return resp.ok;
   } catch {
     return false;

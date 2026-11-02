@@ -1,151 +1,82 @@
-# TD MCP — TouchDesigner MCP Server
+# TouchDesigner MCP bridge
 
-> An MCP server that bridges AI agents to a live TouchDesigner session over its WebServer DAT — so an agent can run Python, build and wire operators, read errors, capture the rendered output, and snapshot/restore networks without ever touching the TD UI.
-
-![Gothic window render from the wall_candle_30s sequence](renders/wall_candle_30s/frame_0001.png)
-
-## What it is
-
-`td-mcp-server` is a [Model Context Protocol](https://modelcontextprotocol.io) server written in Node (ESM, `@modelcontextprotocol/sdk`). It speaks **stdio** to the AI host (Claude, Antigravity/Gemini, etc.) on one side and **HTTP** to a running TouchDesigner instance on the other.
-
-The TD side is a **WebServer DAT** listening on `localhost:9980`. The server never pokes TD's process directly — every operation is an HTTP request that the WebServer DAT's callback handler executes inside the live project. That means edits mutate the **running, unsaved** session immediately; they are not persisted to the `.toe` on disk until the project is saved (the server's own instructions enforce a save → edit → verify → save discipline).
+A general-purpose [Model Context Protocol](https://modelcontextprotocol.io) server for a live TouchDesigner session. Any stdio MCP client can execute TD Python, inspect and connect operators, read errors, capture TOP output, analyze image channels, and checkpoint components.
 
 ```
-AI host  ──stdio──>  td-mcp-server (index.js)  ──HTTP :9980──>  TouchDesigner WebServer DAT
-                          │                                          │
-                          │                                          └─ webserver_callbacks.py
-                          ├─ td-bridge.js   (HTTP client)               (/execute /errors /operator
-                          ├─ api-validator.js (TD API DB check)          /screenshot /image_stats /chop /health)
-                          └─ checkpoints.js (.tox snapshots)
+MCP client --stdio--> Node server --HTTP--> TD WebServer DAT
 ```
 
-## Capabilities / Tools
+No creative project, AI provider account, controller, or workflow service is required. The TD component embeds its callbacks and can be copied/exported into other projects without a path back to this repository.
 
-All tools below are exposed by `td-mcp-server/index.js`.
+## Requirements
 
-### Scripting & validation
-| Tool | What it does |
-|------|--------------|
-| `execute_script` | Run a Python script inside TD, wrapped in an undo block. Returns stdout plus any Error-DAT errors and pre-execution validation warnings. |
-| `validate_script` | Check a Python script against the bundled TD API database **without executing** it (flags unnecessary imports and invalid API usage). |
-| `get_errors` | Read the current Error DAT table (recent Python errors). |
+- Node.js 20 or newer and npm, on the MCP host.
+- TouchDesigner with Python and a WebServer DAT, on the same machine by default.
+- A trusted local connection. The HTTP bridge executes Python with TD's permissions and has no authentication. Restrict WebServer binding/firewall access to trusted clients; do not expose its port publicly.
 
-### Operator / network editing
-| Tool | What it does |
-|------|--------------|
-| `create_operator` | Create a new operator under a parent COMP (e.g. `noise`, `constant`, `baseCOMP`, `text`, `geo`). |
-| `delete_operator` | Destroy an operator by path. |
-| `connect_operators` | Wire one operator's output to another's input (operator and COMP connections). |
-| `disconnect_operators` | Disconnect a wire from an operator's input or output connector. |
-| `get_operator_info` | Get name, type, family, parameters (value + mode), connections, and child count for an operator. |
-| `list_operators` | List the child operators of a COMP path. |
-| `get_par_value` | Read a single parameter value. |
-| `set_par_value` | Set a single parameter value (numeric or string). |
+## Install the TD component
 
-### Visual feedback & tone analysis
-| Tool | What it does |
-|------|--------------|
-| `take_screenshot` | Save a TOP's current frame as PNG and return it inline so the agent can *see* the output. Defaults to `/project1/out1`. |
-| `analyze_image_tone` | Read row/column average CHOPs, compute R/G/B/A + luminance stats, evaluate the configured tone rules, and return matched conditions with the skill to apply. |
-| `set_tone_rule` | Add or update a tone rule (channel/stat thresholds → skill) in `tone-rules.json`. |
-| `list_tone_rules` | List all configured tone rules and their thresholds. |
+Preserve your current project first. Run this in the TouchDesigner Textport, replacing the source path with your checkout:
 
-### Checkpoints (`.tox` snapshots)
-| Tool | What it does |
-|------|--------------|
-| `save_checkpoint` | Snapshot a COMP to a named `.tox` checkpoint — use before risky experiments. |
-| `restore_checkpoint` | Destroy the current op at the saved path and reload the `.tox` snapshot. |
-| `list_checkpoints` | List saved checkpoints (name, op path, description, timestamp). |
-| `delete_checkpoint` | Remove a checkpoint and its `.tox` file from disk. |
+```python
+installer = '/absolute/path/to/TD_MCP/touchdesigner/install_bridge.py'
+ns = {'__file__': installer}
+exec(compile(open(installer, encoding='utf-8').read(), installer, 'exec'), ns)
+bridge = ns['install_bridge'](op('/project1'), name='TD_MCP', port=9980)
+```
 
-### Resources
-| URI | What it returns |
-|-----|-----------------|
-| `td://api/classes` | The full TouchDesigner API class list + metadata. |
-| `td://api/class/{name}` | Resolved API info for a single TD class. |
+The installer refuses an existing name and creates an **inactive** Base COMP containing `webserver`, `webserver_callbacks`, `error1`, and a README DAT. It embeds callback source rather than using an external File In DAT. Parent path/name are configurable. Inspect it, save to a new project path, then manually activate `webserver`. Use only one active bridge on a given port. Never restart a serving bridge through its own MCP connection.
 
-## Setup / Run
+Alternatively, create those DATs in any COMP, paste `touchdesigner/webserver_callbacks.py` into the Text DAT, and set the WebServer's Callbacks DAT to that sibling. Keep the Error DAT named `error1`. No `.toe` or `.tox` download is needed. You may export the COMP locally as a `.tox`; binaries are intentionally ignored.
 
-### 1. TouchDesigner side (the bridge)
-Set up the WebServer DAT that the server talks to (see `touchdesigner/webserver_callbacks.py`):
+## Install and register the MCP server
 
-1. Create a **WebServer DAT**, set **Port** to `9980` and **Active** to On.
-2. Create a **Text DAT** and paste the contents of `touchdesigner/webserver_callbacks.py` into it.
-3. Point the WebServer DAT's **Callbacks DAT** at that Text DAT.
-4. Create an **Error DAT** named `error1` to capture Python errors.
-
-The callback handler routes `POST /execute`, `GET /errors`, `GET /operator`, `GET /screenshot`, `GET /image_stats`, `GET /chop`, and `GET /health`.
-
-### 2. Server side (Node)
-```bash
+```sh
 cd td-mcp-server
-npm install
-npm start            # node index.js  — the MCP server (stdio)
+npm ci
+npm start
 ```
 
-Other scripts in `package.json`:
-- `npm run start:a2a` — `node a2a-server.js` (Agent-to-Agent variant)
-- `npm run client` — `node a2a-client.js`
+`npm start` speaks MCP over stdio; normally your MCP client launches it. Copy the `touchdesigner` entry from [mcp.example.json](mcp.example.json) into your host's configuration and replace the absolute source path. Host-specific `.mcp.json` and `mcp_config.json` are local and ignored. The server resolves its bundled API database relative to its source, independently of the launch directory.
 
-### 3. Register with your MCP host
-The server is configured in `.mcp.json`:
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `TD_HOST` | `127.0.0.1` | TD HTTP bridge host |
+| `TD_PORT` | `9980` | WebServer DAT port |
+| `TD_TIMEOUT_MS` | `30000` | HTTP request timeout; timeout does not cancel TD execution |
+| `TD_API_DB` | bundled `td_python_api.json` | Optional Python API snapshot override |
+| `TD_CHECKPOINTS_DIR` | repo `checkpoints/` | Checkpoint index and snapshots; must be accessible at the same path on both machines |
+| `TD_TONE_RULES` | bundled `tone-rules.json` | Optional custom rules JSON; use an ignored local copy for edits |
 
-```json
-{
-  "mcpServers": {
-    "touchdesigner": {
-      "command": "node",
-      "args": ["<repo>/td-mcp-server/index.js"],
-      "env": {
-        "TD_API_DB": "<repo>/td_python_api.json",
-        "TD_HOST": "127.0.0.1",
-        "TD_PORT": "9980"
-      }
-    }
-  }
-}
+## Tools and endpoints
+
+- Scripts: `execute_script`, `validate_script`, `get_errors`.
+- Networks: `create_operator`, `delete_operator`, `connect_operators`, `disconnect_operators`, `get_operator_info`, `list_operators`, `get_par_value`, `set_par_value`.
+- Images: `take_screenshot`, `analyze_image_tone`, `set_tone_rule`, `list_tone_rules`. Tone rules are advisory labels and require explicitly supplied analysis CHOPs; no fixed network is expected.
+- Recovery: `save_checkpoint`, `restore_checkpoint`, `list_checkpoints`, `delete_checkpoint`. Restore replaces the target operator; checkpoint names may replace previous entries. Preserve unique names when prior snapshots matter.
+- Resources: `td://api/classes`, `td://api/class/{name}`. Snapshot validation is advisory; check the running TD build for authoritative API behavior.
+
+HTTP endpoints: `GET /health`, `/errors`, `/operator?path=...`, `/chop?path=...`, `/screenshot?path=...`, `/image_stats?rows_chop=...&cols_chop=...`; `POST /execute` accepts `script` and optional `undo_label`.
+
+Start with `/health` and `list_operators` at your actual network root. Screenshots default to `/project1/out1` for compatibility; supply your TOP path if different. PNGs default to the TD machine's temporary `td-mcp/screenshots` directory; `save_dir` explicitly selects a durable destination. TOP capture cannot capture arbitrary panel UI.
+
+## Safe editing and recovery
+
+Changes affect the live session immediately. Preserve a new unused project save or scoped checkpoint before editing; verify errors, operator/parameter state, and relevant TOP output; then save another version. Verify `project.name` and actual saved filename because TD can increment requested suffixes. Undo blocks do not guarantee rollback of file writes or all TD operations. On timeouts, inspect state before retrying.
+
+Read [AGENTS.md](AGENTS.md), [session learnings](docs/SESSION_LEARNINGS.md), and the [agent skill](.agents/skills/td-mcp/SKILL.md). They preserve lessons from prior work without requiring those projects.
+
+## Development and repository scope
+
+```sh
+cd td-mcp-server
+npm test
 ```
 
-Environment variables:
-- `TD_HOST` / `TD_PORT` — where the WebServer DAT listens (default `localhost:9980`).
-- `TD_API_DB` — path to the TD Python API database used for `validate_script` and the API resources.
-
-## Layout
-
-```
-TD MCP/
-├─ td-mcp-server/            # the Node MCP server
-│  ├─ index.js               #   tool + resource definitions, server entry
-│  ├─ td-bridge.js           #   HTTP client → TD WebServer DAT
-│  ├─ api-validator.js       #   script validation against the TD API DB
-│  ├─ checkpoints.js         #   .tox checkpoint save/restore helpers
-│  ├─ a2a-server.js / a2a-client.js
-│  └─ tone-rules.json        #   tone-analysis rule config
-├─ touchdesigner/            # webserver_callbacks.py — paste into TD WebServer DAT
-├─ toe/                      # TouchDesigner .toe projects (Cartoon_FX, TD_MCP, ...)
-├─ shaders/                  # GLSL: mandelbulb.glsl + cartoon/ shader set
-├─ shader_pipeline/          # shader-curation → TD implementation queue (see its README)
-├─ scripts/                  # Python helpers (shader grids, APC40 HTML, queue sync)
-├─ renders/                  # rendered frame sequences (e.g. wall_candle_30s/)
-├─ screenshots/              # captured TOP output + dailies
-├─ checkpoints/              # saved .tox checkpoints
-├─ docs/                     # supporting docs
-├─ td_python_api.json        # TD Python API database (TD_API_DB)
-├─ td_operators.json         # TD operator catalog
-└─ .mcp.json                 # MCP host registration
+```sh
+python -m unittest discover -s tests -p "test_*.py"
 ```
 
-## Gallery
+Tracked: Node MCP bridge, source installer/callbacks, API snapshots and optional scrapers, generic setup, tests, reusable agent guidance, and npm lockfile. Scrapers optionally require `requests` and `beautifulsoup4`.
 
-Stills captured from TD output and rendered sequences via the server's `take_screenshot` tool and the render pipeline.
-
-| | |
-|---|---|
-| ![wall_candle_30s frame 1](renders/wall_candle_30s/frame_0001.png) | ![wall_candle_30s frame 450](renders/wall_candle_30s/frame_0450.png) |
-| *Gothic window — `wall_candle_30s` frame 0001* | *Same sequence, frame 0450* |
-| ![Mandelbulb raymarch](screenshots/mandelbulb_final.png) | ![Halftone stele depth pass](screenshots/dailies_stele_depth_20260416_1554.png) |
-| *Mandelbulb (`shaders/mandelbulb.glsl`)* | *Dithered/halftone stele depth daily* |
-
-![ASCII bug-samurai daily](screenshots/dailies_blackfloor_bug_samurai_20260416_1608.png)
-
-*ASCII / dithered "bug samurai" daily, black-floor variant.*
+Ignored: TD project/component binaries, backups, runtime checkpoint indexes, render/review outputs, host settings/hooks, and local creative pipelines. Existing local work is preserved on disk. Ignoring/untracking files does not remove them from old Git commits; no history rewrite is performed.

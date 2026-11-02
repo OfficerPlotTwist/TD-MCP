@@ -24,8 +24,10 @@ import sys
 
 def onHTTPRequest(webServerDAT, request, response):
     """Handle incoming HTTP requests from the MCP server."""
-    uri = request['uri']
+    from urllib.parse import urlsplit
+    uri = urlsplit(request['uri']).path
     method = request['method']
+    response['headers'] = {'Content-Type': 'application/json'}
 
     if uri == '/health':
         response['statusCode'] = 200
@@ -39,16 +41,16 @@ def onHTTPRequest(webServerDAT, request, response):
     if uri == '/errors' and method == 'GET':
         return _handle_errors(response)
 
-    if uri.startswith('/operator') and method == 'GET':
+    if uri == '/operator' and method == 'GET':
         return _handle_operator(request, response)
 
-    if uri.startswith('/chop') and method == 'GET':
+    if uri == '/chop' and method == 'GET':
         return _handle_chop(request, response)
 
-    if uri.startswith('/screenshot') and method == 'GET':
+    if uri == '/screenshot' and method == 'GET':
         return _handle_screenshot(request, response)
 
-    if uri.startswith('/image_stats') and method == 'GET':
+    if uri == '/image_stats' and method == 'GET':
         return _handle_image_stats(request, response)
 
     # Unknown endpoint
@@ -83,7 +85,10 @@ def _handle_execute(request, response):
         # Wrap in undo block
         ui.undo.startBlock(undo_label)
         sys.stdout = buf
-        exec(script)
+        # One namespace makes script imports/locals visible to nested functions.
+        namespace = dict(globals())
+        namespace.update({'op': op, 'me': me, 'project': project, 'ui': ui})
+        exec(compile(script, '<MCP script>', 'exec'), namespace, namespace)
         sys.stdout = old_stdout
         ui.undo.endBlock()
         result['output'] = buf.getvalue()
@@ -96,7 +101,7 @@ def _handle_execute(request, response):
         result['errors'].append(str(e))
 
     # Also read errors from the Error DAT
-    error_dat = op('error1')
+    error_dat = me.parent().op('error1')
     if error_dat and error_dat.numRows > 1:
         for row in range(1, error_dat.numRows):
             try:
@@ -118,7 +123,7 @@ def _handle_execute(request, response):
 def _handle_errors(response):
     """Read the Error DAT table."""
     errors = []
-    error_dat = op('error1')
+    error_dat = me.parent().op('error1')
     if error_dat and error_dat.numRows > 1:
         for row in range(1, error_dat.numRows):
             try:
@@ -140,10 +145,12 @@ def _handle_errors(response):
 def _handle_chop(request, response):
     """Return all channel values from a CHOP. Query param: ?path=/ascii_UI"""
     uri = request['uri']
-    path = '/ascii_UI'
-    if '?path=' in uri:
-        from urllib.parse import unquote
-        path = unquote(uri.split('?path=')[1])
+    from urllib.parse import parse_qs, urlsplit
+    path = parse_qs(urlsplit(uri).query).get('path', [''])[0]
+    if not path:
+        response['statusCode'] = 400
+        response['data'] = json.dumps({'error': 'path query parameter required'})
+        return response
 
     target = op(path)
     if target is None:
@@ -183,8 +190,8 @@ def _handle_screenshot(request, response):
     parsed = urlparse(uri)
     params = parse_qs(parsed.query)
 
-    op_path = unquote(params.get('path', ['/project1/out1'])[0])
-    save_dir = unquote(params.get('save_dir', ['C:/Users/nik/Documents/AI/MCP/TD MCP/screenshots'])[0])
+    op_path = params.get('path', ['/project1/out1'])[0]
+    save_dir = params.get('save_dir', [os.path.join(tempfile.gettempdir(), 'td-mcp', 'screenshots')])[0]
 
     target = op(op_path)
     if target is None:
@@ -236,8 +243,8 @@ def _handle_image_stats(request, response):
     parsed = urlparse(uri)
     params = parse_qs(parsed.query)
 
-    rows_path = unquote(params.get('rows_chop', [''])[0])
-    cols_path = unquote(params.get('cols_chop', [''])[0])
+    rows_path = params.get('rows_chop', [''])[0]
+    cols_path = params.get('cols_chop', [''])[0]
 
     if not rows_path or not cols_path:
         response['statusCode'] = 400
@@ -311,6 +318,11 @@ def _handle_image_stats(request, response):
         response['data'] = json.dumps({'error': cols_err})
         return response
 
+    if not rows_samples or not cols_samples:
+        response['statusCode'] = 400
+        response['data'] = json.dumps({'error': 'Analysis CHOPs must contain samples'})
+        return response
+
     rows_agg = aggregate(rows_samples)
     cols_agg = aggregate(cols_samples)
 
@@ -336,11 +348,8 @@ def _handle_image_stats(request, response):
 def _handle_operator(request, response):
     """Get operator info."""
     uri = request['uri']
-    path = '/'
-    if '?path=' in uri:
-        path = uri.split('?path=')[1]
-        from urllib.parse import unquote
-        path = unquote(path)
+    from urllib.parse import parse_qs, urlsplit
+    path = parse_qs(urlsplit(uri).query).get('path', ['/'])[0]
 
     target = op(path)
     if target is None:

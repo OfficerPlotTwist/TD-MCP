@@ -2,8 +2,7 @@
 TouchDesigner Operator Catalog Scraper
 ======================================
 Walks docs.derivative.ca category pages for the 6 operator families and emits
-td_operators.json with the schema consumed by Brute Force Visuals'
-KnowledgeGraph seeding (graph/__init__.py, graph/_db.py).
+td_operators.json with a reusable catalog grouped by operator family.
 
 Schema:
     {
